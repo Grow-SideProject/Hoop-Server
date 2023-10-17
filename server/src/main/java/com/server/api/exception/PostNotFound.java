@@ -3,7 +3,7 @@ package com.server.api.exception;
 /**
  * status -> 404
  */
-public class PostNotFound extends HodologException {
+public class PostNotFound extends HoopException {
 
     private static final String MESSAGE = "존재하지 않는 글입니다.";
 

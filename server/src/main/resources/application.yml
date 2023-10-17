@@ -22,10 +22,12 @@ spring:
     hibernate:
       format_sql: true
       ddl-auto: create  # 서버 재부팅 시 DB에 저장된 파일 초기화하지 않음(초기화 : update -> create)
-
   data:
     web:
       pageable:
         max-page-size: 2000
         default-page-size: 20
         one-indexed-parameters: true
+
+hoop:
+  jwt-key: "rTPmA9Sgk+Q1XwuJbG7E6xFFUhQpdi+al5iyPnRTK/Q="

@@ -6,7 +6,7 @@ import lombok.Getter;
  * status -> 400
  */
 @Getter
-public class InvalidRequest extends HodologException {
+public class InvalidRequest extends HoopException {
 
     private static final String MESSAGE = "잘못된 요청입니다.";
 
