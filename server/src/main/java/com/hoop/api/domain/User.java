@@ -26,15 +26,18 @@ public class User {
 
     private LocalDateTime createdAt;
 
+    private Long kakao;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts;
 
     @Builder
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password, long kakao) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.createdAt = LocalDateTime.now();
+        this.kakao = kakao;
     }
 
 }

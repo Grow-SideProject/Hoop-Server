@@ -2,7 +2,7 @@ package com.hoop.api.controller;
 
 import com.hoop.api.config.AppConfig;
 import com.hoop.api.request.Signup;
-import com.hoop.api.service.AuthService;
+import com.hoop.api.service.sign.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

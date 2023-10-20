@@ -5,7 +5,7 @@ spring:
       path: /h2-console
 
   datasource:
-    url: jdbc:h2:mem:Hoop;NON_KEYWORDS=USER
+    url: jdbc:h2:mem:test;NON_KEYWORDS=USER
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -17,6 +17,15 @@ spring:
         max-page-size: 2000
         default-page-size: 20
         one-indexed-parameters: true
-
+  social:
+    kakao:
+      client_id: c821057d14c2438354f518b12064a435
+      redirect: http://localhost:8080/oauth/kakao
+      url:
+        login: https://kauth.kakao.com/oauth/authorize
+        token: https://kauth.kakao.com/oauth/token
+        profile: https://kapi.kakao.com/v2/user/me
+    url:
+      base: http://localhost:8080
 hoop:
   jwt-key: "rTPmA9Sgk+Q1XwuJbG7E6xFFUhQpdi+al5iyPnRTK/Q="

@@ -10,4 +10,5 @@ public class Signup {
     private String email;
     private String password;
     private String name;
+    private long kakao;
 }
