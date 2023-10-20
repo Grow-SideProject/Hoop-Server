@@ -33,7 +33,6 @@ include::{snippets}/auth-kakao/query-parameters.adoc[]
 
 include::{snippets}/auth-kakao/http-response.adoc[]
 
-include::{snippets}/auth-kakao/response-fields.adoc[]
 
 
 == 인증 임시 테스트
@@ -46,7 +45,32 @@ include::{snippets}/auth-test/request-headers.adoc[]
 
 === 응답
 
-include::{snippets}/auth-auth/http-response.adoc[]
+include::{snippets}/auth-test/http-response.adoc[]
+
+
+== 프로필 조회 GET
+
+=== 요청
+
+include::{snippets}/profile-inquiry/http-request.adoc[]
+
+include::{snippets}/profile-inquiry/path-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/profile-inquiry/http-response.adoc[]
+
+== 프로필 수정 PATCH
+
+=== 요청
+
+include::{snippets}/profile-modify/http-request.adoc[]
+
+include::{snippets}/profile-modify/request-fields.adoc[]
+
+=== 응답
+
+include::{snippets}/profile-modify/http-response.adoc[]
 
 
 == 글 단건조회(참고용 임시 구현) GET

@@ -18,8 +18,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
     private String email; // 아이디
 
     private String password;
@@ -31,6 +29,13 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts;
 
+    //Profiles
+    private Long height;
+    private Long weight;
+    private String desc;
+    private List<String> positions;
+    private String name;
+
     @Builder
     public User(String name, String email, String password, long kakao) {
         this.name = name;
@@ -39,5 +44,23 @@ public class User {
         this.createdAt = LocalDateTime.now();
         this.kakao = kakao;
     }
+
+    public ProfileEditor.ProfileEditorBuilder toEditor() {
+        return ProfileEditor.builder()
+                .name(name)
+                .height(height)
+                .weight(weight)
+                .desc(desc)
+                .positions(positions);
+    }
+
+    public void edit(ProfileEditor profileEditor) {
+        name = profileEditor.getName();
+        height = profileEditor.getHeight();
+        weight = profileEditor.getWeight();
+        desc = profileEditor.getDesc();
+        positions = profileEditor.getPositions();
+    }
+
 
 }

@@ -1,13 +1,11 @@
-package com.hoop.api.service.sign;
+package com.hoop.api.service.auth;
 import com.google.gson.Gson;
 import com.hoop.api.domain.User;
-import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.response.KakaoProfile;
 import com.hoop.api.exception.CommunicationException;
 import com.hoop.api.response.KakaoAuth;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;

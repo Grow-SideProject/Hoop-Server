@@ -114,12 +114,6 @@ public class AuthControllerDocTest {
     @DisplayName("AUTH TEST")
     void test3() throws Exception {
         Long kakaoId = 1234L;
-        Signup signup = Signup.builder()
-                .email(Long.toString(kakaoId))
-                .password(Long.toString(kakaoId))
-                .name("카카오")
-                .kakao(kakaoId)
-                .build();
         SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
         String jws = Jwts.builder()
                 .setSubject(Long.toString(kakaoId))

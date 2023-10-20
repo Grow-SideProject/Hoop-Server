@@ -1,4 +1,4 @@
-package com.hoop.api.service.sign;
+package com.hoop.api.service.auth;
 
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsEmailException;
