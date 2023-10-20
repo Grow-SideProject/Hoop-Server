@@ -78,12 +78,12 @@ public class ProfileControllerDocTest {
     void test1() throws Exception {
         User user = User.builder()
                 .name("이름")
-                .email("hodolman88@gmail.com")
+                .email("temp123@gmail.com")
                 .password("1234")
                 .build();
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
         // expected
-        mockMvc.perform(get("/profile/{userId}", 1L)
+        mockMvc.perform(get("/profile/{userId}", user.getId())
                         .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -94,17 +94,16 @@ public class ProfileControllerDocTest {
                 ));
     }
 
-
     @Test
     @HoopMockUser
     @DisplayName("UPDATE PROFILE")
-    void test2(RestDocumentationContextProvider restDocumentation) throws Exception {
+    void test2() throws Exception {
         User user = User.builder()
                 .name("이름")
                 .email("hodolman88@gmail.com")
                 .password("1234")
                 .build();
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
 
         List<String> myList = Arrays.asList("포인트가드", "센터");
         ProfileEdit profileEdit = ProfileEdit.builder()
@@ -115,25 +114,23 @@ public class ProfileControllerDocTest {
                 .positions(myList)
                 .build();
 
-        // REST Docs용 ResultHandler를 생성
-        RestDocumentationResultHandler resultHandler = MockMvcRestDocumentation.document(
-                "profile-update",
-                requestFields(
-                        fieldWithPath("name").description("이름")
-                                .attributes(key("constraint").value("닉네임")),
-                        fieldWithPath("height").description("키"),
-                        fieldWithPath("weight").description("몸무게"),
-                        fieldWithPath("desc").description("상세 내용").optional(),
-                        fieldWithPath("positions[]").description("포지션을 리스트로 입력")
-                )
-        );
 
         // expected
-        mockMvc.perform(patch("/profile/{userId}", 1L)
+        mockMvc.perform(patch("/profile/{userId}", user.getId())
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileEdit)))
-                .andDo(resultHandler);
+                .andDo(document(
+                        "profile-update",
+                        requestFields(
+                                fieldWithPath("name").description("이름")
+                                        .attributes(key("constraint").value("닉네임")),
+                                fieldWithPath("height").description("키"),
+                                fieldWithPath("weight").description("몸무게"),
+                                fieldWithPath("desc").description("상세 내용").optional(),
+                                fieldWithPath("positions[]").description("포지션을 리스트로 입력")
+                        )
+                ));
     }
 }
 
