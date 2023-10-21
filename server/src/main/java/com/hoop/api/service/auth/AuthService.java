@@ -3,7 +3,7 @@ package com.hoop.api.service.auth;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsEmailException;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.Signup;
+import com.hoop.api.request.sign.Signup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

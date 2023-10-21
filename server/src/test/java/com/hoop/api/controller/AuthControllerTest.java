@@ -2,7 +2,7 @@ package com.hoop.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.Signup;
+import com.hoop.api.request.sign.Signup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

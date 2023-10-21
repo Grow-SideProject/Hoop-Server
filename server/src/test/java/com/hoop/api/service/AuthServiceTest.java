@@ -3,7 +3,7 @@ package com.hoop.api.service;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsEmailException;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.Signup;
+import com.hoop.api.request.sign.Signup;
 import com.hoop.api.service.auth.AuthService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

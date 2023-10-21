@@ -1,4 +1,4 @@
-package com.hoop.api.request;
+package com.hoop.api.request.sign;
 
 import lombok.Builder;
 import lombok.Data;
