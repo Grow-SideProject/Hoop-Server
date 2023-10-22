@@ -17,13 +17,10 @@ public class SingIn {
     @NotBlank(message = "Access Token")
     private String accessToken;
 
-    @NotBlank(message = "Refresh Token")
-    private String refreshToken;
 
     @Builder
     public SingIn(String category, String accessToken, String refreshToken) {
         this.category = category;
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
     }
 }

@@ -11,6 +11,10 @@ public class AppConfig {
 
     private byte[] jwtKey;
 
+    private long accessTokenExpiration = 1000L * 60 * 60 * 24 * 7; // 일주일
+    private long refreshTokenExpiration = 1000L * 60 * 60 * 24 * 30 ; // 한달
+
+
     public void setJwtKey(String jwtKey) {
         this.jwtKey = Base64.getDecoder().decode(jwtKey);
     }

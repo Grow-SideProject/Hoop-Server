@@ -3,7 +3,6 @@ package com.hoop.api.response;
 import lombok.Builder;
 
 public class TokenResponse {
-    private String grantType;
     private String accessToken;
     private String refreshToken;
 
@@ -12,8 +11,7 @@ public class TokenResponse {
 
 
     @Builder //빌더 패턴 새용
-    public TokenResponse(String grantType, String accessToken, Long accessTokenExpirationTime, String refreshToken, Long refreshTokenExpirationTime) {
-        this.grantType = grantType;
+    public TokenResponse(String accessToken, Long accessTokenExpirationTime, String refreshToken, Long refreshTokenExpirationTime) {
         this.accessToken = accessToken;
         this.accessTokenExpirationTime = accessTokenExpirationTime;
         this.refreshToken = refreshToken;

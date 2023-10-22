@@ -2,6 +2,7 @@ package com.hoop.api.controller;
 
 import com.hoop.api.config.AppConfig;
 import com.hoop.api.domain.User;
+import com.hoop.api.exception.Unauthorized;
 import com.hoop.api.request.sign.Signup;
 import com.hoop.api.request.sign.SingIn;
 import com.hoop.api.response.KakaoAuth;
@@ -55,37 +56,22 @@ public class AuthController {
      */
     @PostMapping(value = "/signin")
     public @ResponseBody TokenResponse signIn (@RequestBody SingIn singIn) {
-        Long kakaoId = null;
         if (singIn.getCategory().equals("KAKAO")){
             KakaoProfile profile =kakaoService.getKakaoProfile(singIn.getAccessToken());
-            kakaoId = profile.getId();
-        }
-        Optional<User> user= kakaoService.getByKakao(kakaoId);
-        //만약 empty일 경우, 회원가입으로 이동 아닐 경우 로그인 진행
-        if (user.isEmpty()){
-            //임시 더미 아이디 생성
-            authService.signupByKakao(Signup.builder().email(Long.toString(kakaoId)).password(Long.toString(kakaoId)).kakao(kakaoId).build());
-            String accessToken = jwtService.createToken(Long.toString(kakaoId));
-            String refreshToken = jwtService.createToken(Long.toString(kakaoId));
+            Long kakaoId = profile.getId();
+            Optional<User> user= kakaoService.getByKakao(kakaoId);
+            if (user.isEmpty()){
+                authService.signupByKakao(Signup.builder().email(Long.toString(kakaoId)).password(Long.toString(kakaoId)).kakao(kakaoId).build());
+            }
+            String accessToken = jwtService.createAccessToken(Long.toString(kakaoId));
+            String refreshToken = jwtService.createRefreshToken(Long.toString(kakaoId));
             return TokenResponse.builder()
-                    .grantType("")
-                    .accessTokenExpirationTime(1234L)
-                    .refreshTokenExpirationTime(1234L)
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
+                    .accessTokenExpirationTime(jwtService.getAccessTokenExpiration())
+                    .refreshTokenExpirationTime(jwtService.getRefreshTokenExpiration())
                     .build();
         }
-        else{
-            authService.signupByKakao(Signup.builder().email(Long.toString(kakaoId)).password(Long.toString(kakaoId)).kakao(kakaoId).build());
-            String accessToken = jwtService.createToken(Long.toString(kakaoId));
-            String refreshToken = jwtService.createToken(Long.toString(kakaoId));
-            return TokenResponse.builder()
-                    .grantType("")
-                    .accessTokenExpirationTime(1234L)
-                    .refreshTokenExpirationTime(1234L)
-                    .accessToken(accessToken)
-                    .refreshToken(refreshToken)
-                    .build();
-        }
+        throw new Unauthorized();
     }
 }
