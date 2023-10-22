@@ -26,26 +26,26 @@ include::{snippets}/auth-signup/http-response.adoc[]
 === 요청
 
 include::{snippets}/auth-kakao/http-request.adoc[]
+include::{snippets}/auth-kakao/request-fields.adoc[]
 
-include::{snippets}/auth-kakao/query-parameters.adoc[]
 
 === 응답
 
 include::{snippets}/auth-kakao/http-response.adoc[]
 
 
+//
+//== 인증 임시 테스트
+//
+//=== 요청
+//
+//include::{snippets}/auth-test/http-request.adoc[]
+//
+//include::{snippets}/auth-test/request-headers.adoc[]
 
-== 인증 임시 테스트
-
-=== 요청
-
-include::{snippets}/auth-test/http-request.adoc[]
-
-include::{snippets}/auth-test/request-headers.adoc[]
-
-=== 응답
-
-include::{snippets}/auth-test/http-response.adoc[]
+//=== 응답
+//
+//include::{snippets}/auth-test/http-response.adoc[]
 
 
 == 프로필 조회 GET
@@ -64,13 +64,13 @@ include::{snippets}/profile-inquiry/http-response.adoc[]
 
 === 요청
 
-include::{snippets}/profile-modify/http-request.adoc[]
+include::{snippets}/profile-update/http-request.adoc[]
 
-include::{snippets}/profile-modify/request-fields.adoc[]
+include::{snippets}/profile-update/request-fields.adoc[]
 
 === 응답
 
-include::{snippets}/profile-modify/http-response.adoc[]
+include::{snippets}/profile-update/http-response.adoc[]
 
 
 == 글 단건조회(참고용 임시 구현) GET

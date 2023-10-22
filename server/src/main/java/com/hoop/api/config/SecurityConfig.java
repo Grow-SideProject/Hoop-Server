@@ -70,7 +70,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtTokenAuthFilter usernamePasswordAuthenticationFilter() {
-        JwtTokenAuthFilter filter = new JwtTokenAuthFilter("/auth/signin", objectMapper, jwtService);
+        JwtTokenAuthFilter filter = new JwtTokenAuthFilter("/auth/login", objectMapper, jwtService);
         filter.setAuthenticationManager(authenticationManager());
         filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));

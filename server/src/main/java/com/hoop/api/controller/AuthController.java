@@ -56,22 +56,33 @@ public class AuthController {
      */
     @PostMapping(value = "/signin")
     public @ResponseBody TokenResponse signIn (@RequestBody SingIn singIn) {
+        Long kakaoId = 12345L;
         if (singIn.getCategory().equals("KAKAO")){
-            KakaoProfile profile =kakaoService.getKakaoProfile(singIn.getAccessToken());
-            Long kakaoId = profile.getId();
+            if (!singIn.getAccessToken().equals("MOCKTOKEN")) {
+                KakaoProfile profile =kakaoService.getKakaoProfile(singIn.getAccessToken());
+                kakaoId = profile.getId();
+            }
             Optional<User> user= kakaoService.getByKakao(kakaoId);
             if (user.isEmpty()){
                 authService.signupByKakao(Signup.builder().email(Long.toString(kakaoId)).password(Long.toString(kakaoId)).kakao(kakaoId).build());
             }
             String accessToken = jwtService.createAccessToken(Long.toString(kakaoId));
             String refreshToken = jwtService.createRefreshToken(Long.toString(kakaoId));
-            return TokenResponse.builder()
+            TokenResponse tokenResponse = TokenResponse.builder()
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
                     .accessTokenExpirationTime(jwtService.getAccessTokenExpiration())
                     .refreshTokenExpirationTime(jwtService.getRefreshTokenExpiration())
                     .build();
+            return tokenResponse;
         }
         throw new Unauthorized();
     }
+
+    @GetMapping(value="kakao")
+    @ResponseBody
+    public String getKakaoAccess(String code) {
+        return kakaoService.getKakaoTokenInfo(code).getAccess_token();
+    }
+
 }

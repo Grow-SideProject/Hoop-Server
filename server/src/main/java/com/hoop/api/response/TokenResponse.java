@@ -1,11 +1,13 @@
 package com.hoop.api.response;
 
+import com.hoop.api.domain.Post;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class TokenResponse {
     private String accessToken;
     private String refreshToken;
-
     private Long accessTokenExpirationTime;
     private Long refreshTokenExpirationTime;
 
