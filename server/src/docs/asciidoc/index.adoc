@@ -19,7 +19,17 @@ include::{snippets}/auth-signup/request-fields.adoc[]
 
 include::{snippets}/auth-signup/http-response.adoc[]
 
+== 카카오 회원가입
 
+=== 요청
+
+include::{snippets}/auth-signup-social/http-request.adoc[]
+include::{snippets}/auth-signup-social/request-fields.adoc[]
+
+
+=== 응답
+
+include::{snippets}/auth-signup-social/http-response.adoc[]
 
 == 카카오 로그인
 

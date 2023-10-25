@@ -2,9 +2,10 @@ package com.hoop.api.controller;
 
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.Unauthorized;
+import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.request.sign.SignIn;
-import com.hoop.api.request.sign.Signup;
-import com.hoop.api.response.KakaoProfile;
+import com.hoop.api.request.sign.SignUp;
+import com.hoop.api.request.sign.SocialSignUp;
 import com.hoop.api.response.TokenResponse;
 import com.hoop.api.service.auth.AuthService;
 import com.hoop.api.service.auth.JwtService;
@@ -12,6 +13,8 @@ import com.hoop.api.service.auth.KakaoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -37,8 +40,25 @@ public class AuthController {
      * @param signup
      */
     @PostMapping("/signup")
-    public void signup(@RequestBody Signup signup) {
+    public void signup(@RequestBody SignUp signup) {
         authService.signup(signup);
+    }
+
+    /**
+     * 회원 가입
+     * @param
+     */
+    @PostMapping("/signup/social")
+    public ResponseEntity<String> signupByKakao(@RequestBody SocialSignUp socialSignUp) {
+        //일단 카카오 로그인만 구현
+        String category = socialSignUp.getCategory();
+        Long id = kakaoService.getKakaoIdByToken(socialSignUp.getAccessToken());
+        authService.signup(SignUp.builder()
+                .email(Long.toString(id))
+                .password(Long.toString(id))
+                .kakao(id)
+                .build());
+        return new ResponseEntity<>("카카오 회원가입 성공", HttpStatus.OK);
     }
 
     /**
@@ -49,47 +69,36 @@ public class AuthController {
     @PostMapping(value = "/signin")
     public @ResponseBody TokenResponse signIn (@RequestBody SignIn signIn) {
         String category = signIn.getCategory();
-        if (signIn.getAccessToken().equals("MOCKTOKEN")) {
-            Long kakaoId = 12345L;
-            authService.signupByKakao(Signup.builder().email(Long.toString(kakaoId)).password(Long.toString(kakaoId)).kakao(kakaoId).build());
-            Optional<User> user = kakaoService.getByKakao(kakaoId);
-            String accessToken = jwtService.createAccessToken(Long.toString(kakaoId));
-            String refreshToken = jwtService.createRefreshToken(Long.toString(kakaoId));
-            TokenResponse tokenResponse = TokenResponse.builder()
-                    .accessToken(accessToken)
-                    .refreshToken(refreshToken)
-                    .accessTokenExpirationTime(jwtService.getAccessTokenExpiration())
-                    .refreshTokenExpirationTime(jwtService.getRefreshTokenExpiration())
-                    .build();
-            return tokenResponse;
-        }
+        Long id;
         switch (category) {
-            case "GOOGLE" :
-                break;
             case "KAKAO" :
-                Long kakaoId = kakaoService.getKakaoProfile(signIn.getAccessToken()).getId();
-                Optional<User> user= kakaoService.getByKakao(kakaoId);
+                id = kakaoService.getKakaoIdByToken(signIn.getAccessToken());
+                Optional<User> user= kakaoService.getByKakao(id);
                 if (user.isEmpty()){
-                    authService.signupByKakao(Signup.builder().email(Long.toString(kakaoId)).password(Long.toString(kakaoId)).kakao(kakaoId).build());
+                    throw new UserNotFound();
                 }
-                String accessToken = jwtService.createAccessToken(Long.toString(kakaoId));
-                String refreshToken = jwtService.createRefreshToken(Long.toString(kakaoId));
-                return TokenResponse.builder()
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
-                        .accessTokenExpirationTime(jwtService.getAccessTokenExpiration())
-                        .refreshTokenExpirationTime(jwtService.getRefreshTokenExpiration())
-                        .build();
+                break;
             default:
                 throw new Unauthorized();
         }
-        throw new Unauthorized();
+        String accessToken = jwtService.createAccessToken(Long.toString(id));
+        String refreshToken = jwtService.createRefreshToken(Long.toString(id));
+        return TokenResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .accessTokenExpirationTime(jwtService.getAccessTokenExpiration())
+                .refreshTokenExpirationTime(jwtService.getRefreshTokenExpiration())
+                .build();
     }
 
     @GetMapping(value="kakao")
     @ResponseBody
     public String getKakaoAccess(String code) {
-        return kakaoService.getKakaoTokenInfo(code).getAccess_token();
+        log.info("code = {}",code);
+        String token = kakaoService.getKakaoTokenInfo(code).getAccess_token();
+        log.info("token = {}",token);
+        return token;
     }
+
 
 }

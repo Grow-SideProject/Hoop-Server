@@ -2,11 +2,7 @@ package com.hoop.api.service.auth;
 
 
 import com.hoop.api.config.AppConfig;
-import com.hoop.api.domain.User;
-import com.hoop.api.exception.AlreadyExistsEmailException;
 import com.hoop.api.exception.Unauthorized;
-import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.sign.Signup;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -14,15 +10,10 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.util.Base64;
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

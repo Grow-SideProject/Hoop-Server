@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.AppConfig;
 import com.hoop.api.config.HoopMockUser;
 import com.hoop.api.domain.Post;
+import com.hoop.api.domain.User;
 import com.hoop.api.repository.post.PostRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.sign.Signup;
+import com.hoop.api.request.sign.SignUp;
 import com.hoop.api.request.post.PostCreate;
 import com.hoop.api.request.sign.SignIn;
+import com.hoop.api.request.sign.SocialSignUp;
+import com.hoop.api.service.auth.KakaoService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,11 +20,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
+import java.util.Optional;
+
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -56,6 +64,9 @@ public class AuthControllerDocTest {
     @Autowired
     private AppConfig appConfig;
 
+    @MockBean
+    private KakaoService kakaoService;
+
     @AfterEach
     void clean() {
         postRepository.deleteAll();
@@ -64,9 +75,9 @@ public class AuthControllerDocTest {
 
     @Test
     @DisplayName("SIGNUP")
-    void test1() throws Exception {
+    void signup() throws Exception {
         // given
-        Signup signup = Signup.builder()
+        SignUp signup = SignUp.builder()
                 .email("temp@gmail.com")
                 .password("1234")
                 .build();
@@ -90,22 +101,54 @@ public class AuthControllerDocTest {
     }
 
     @Test
-    @DisplayName("KAKAO LOGIN")
-    void test2() throws Exception  {
+    @DisplayName("SIGNUP")
+    void signupByKakao() throws Exception {
         // given
-        SignIn request = SignIn.builder()
+        SocialSignUp signup = SocialSignUp
+                .builder()
                 .category("KAKAO")
                 .accessToken("MOCKTOKEN")
                 .build();
 
-        String json = objectMapper.writeValueAsString(request);
+        when(kakaoService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12345L);
 
         // expected
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/auth/signin")
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/auth/signup/social")
+                        .content(objectMapper.writeValueAsString(signup))
                         .contentType(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON)
-                        .content(json))
+                        .accept(APPLICATION_JSON))
                 .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("auth-signup-social",
+                        requestFields(
+                                fieldWithPath("category").description("KAKAO")
+                                        .attributes(key("constraint").value("소셜 로그인 구분")),
+                                fieldWithPath("accessToken").description("카카오 Access Token")
+                        )
+                ));
+    }
+
+
+    @Test
+    @DisplayName("SIGNIN")
+    void signIn() throws Exception {
+        User user = User.builder()
+                .email("temp@gmail.com")
+                .password("1234")
+                .kakao(12345L)
+                .build();
+        userRepository.saveAndFlush(user);
+        Optional<User> user2 = userRepository.findByKakao(12345L);
+        when(kakaoService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12345L);
+        when(kakaoService.getByKakao(12345L)).thenReturn(user2);
+        SignIn signIn = SignIn.builder()
+                .accessToken("MOCKTOKEN")
+                .category("KAKAO")
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/signin")
+                        .content(objectMapper.writeValueAsString(signIn))
+                        .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("auth-kakao",
                         requestFields(
@@ -115,7 +158,26 @@ public class AuthControllerDocTest {
                         )
                 ));
     }
-
+    @Test
+    @DisplayName("SIGNIN FAIL")
+    void signInFail() throws Exception {
+        when(kakaoService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12345L);
+        SignIn signIn = SignIn.builder()
+                .accessToken("MOCKTOKEN")
+                .category("KAKAO")
+                .build();
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/signin")
+                        .content(objectMapper.writeValueAsString(signIn))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(document("auth-kakao",
+                        requestFields(
+                                fieldWithPath("category").description("KAKAO")
+                                        .attributes(key("constraint").value("소셜 로그인 구분")),
+                                fieldWithPath("accessToken").description("카카오 Access Token")
+                        )
+                ));
+    }
 
     @Test
     @DisplayName("(임시)글 단건 조회")

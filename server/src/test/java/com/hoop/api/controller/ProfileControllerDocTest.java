@@ -177,65 +177,6 @@ public class ProfileControllerDocTest {
                         )
                 ));
     }
-
-//    @Test
-//    @HoopMockUser
-//    @DisplayName("USER GET")
-//    void test1() throws Exception {
-//        User user = User.builder()
-//                .email("temp123@gmail.com")
-//                .password("1234")
-//                .build();
-//        userRepository.saveAndFlush(user);
-//        // expected
-//        mockMvc.perform(get("/profile/{userId}", user.getId())
-//                        .accept(APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andDo(document("profile-inquiry",
-//                        pathParameters(
-//                                parameterWithName("userId").description("유저 ID")
-//                        )
-//                ));
-//    }
-//
-//    @Test
-//    @HoopMockUser
-//    @DisplayName("UPDATE PROFILE")
-//    void test2() throws Exception {
-//        User user = User.builder()
-//                .email("hodolman88@gmail.com")
-//                .password("1234")
-//                .build();
-//        userRepository.saveAndFlush(user);
-//
-//        List<String> myList = Arrays.asList("포인트가드", "센터");
-//        ProfileEdit profileEdit = ProfileEdit.builder()
-//                .name("닉네임")
-//                .height(180L)
-//                .weight(70L)
-//                .desc("강한 타입")
-//                .positions(myList)
-//                .build();
-//
-//
-//        // expected
-//        mockMvc.perform(patch("/profile/{userId}", user.getId())
-//                        .contentType(APPLICATION_JSON)
-//                        .accept(APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(profileEdit)))
-//                .andDo(document(
-//                        "profile-update",
-//                        requestFields(
-//                                fieldWithPath("name").description("이름")
-//                                        .attributes(key("constraint").value("닉네임")),
-//                                fieldWithPath("height").description("키"),
-//                                fieldWithPath("weight").description("몸무게"),
-//                                fieldWithPath("desc").description("상세 내용").optional(),
-//                                fieldWithPath("positions[]").description("포지션을 리스트로 입력")
-//                        )
-//                ));
-//    }
 }
 
 
