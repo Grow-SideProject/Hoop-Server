@@ -2,7 +2,7 @@ package com.hoop.api.controller;
 
 import com.hoop.api.request.comment.CommentCreate;
 import com.hoop.api.request.comment.CommentDelete;
-import com.hoop.api.service.CommentService;
+import com.hoop.api.service.post.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

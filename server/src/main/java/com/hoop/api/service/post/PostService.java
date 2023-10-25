@@ -1,4 +1,4 @@
-package com.hoop.api.service;
+package com.hoop.api.service.post;
 
 import com.hoop.api.domain.Post;
 import com.hoop.api.domain.PostEditor;

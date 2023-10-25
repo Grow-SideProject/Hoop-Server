@@ -33,20 +33,17 @@ include::{snippets}/auth-kakao/request-fields.adoc[]
 
 include::{snippets}/auth-kakao/http-response.adoc[]
 
+== 프로필 생성 POST
 
-//
-//== 인증 임시 테스트
-//
-//=== 요청
-//
-//include::{snippets}/auth-test/http-request.adoc[]
-//
-//include::{snippets}/auth-test/request-headers.adoc[]
+=== 요청
 
-//=== 응답
-//
-//include::{snippets}/auth-test/http-response.adoc[]
+include::{snippets}/profile-create/http-request.adoc[]
 
+include::{snippets}/profile-create/request-fields.adoc[]
+
+=== 응답
+
+include::{snippets}/profile-create/http-response.adoc[]
 
 == 프로필 조회 GET
 

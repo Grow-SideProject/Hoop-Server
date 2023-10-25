@@ -14,13 +14,13 @@ import java.util.List;
 public class ProfileResponse {
 
     private String name;
-    private Long height;
-    private Long weight;
+    private int height;
+    private int weight;
     private String desc;
     private List<String> positions;
 
     @Builder
-    public ProfileResponse(String name, Long height, Long weight, String desc, List<String> positions) {
+    public ProfileResponse(String name, int height, int weight, String desc, List<String> positions) {
         this.name = name;
         this.height = height;
         this.weight = weight;

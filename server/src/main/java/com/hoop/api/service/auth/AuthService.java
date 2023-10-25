@@ -22,13 +22,10 @@ public class AuthService {
         if (userOptional.isPresent()) {
             throw new AlreadyExistsEmailException();
         }
-
         String encryptedPassword = passwordEncoder.encode(signup.getPassword());
-
         var user = User.builder()
                 .email(signup.getEmail())
                 .password(encryptedPassword)
-                .name(signup.getName())
                 .build();
         userRepository.save(user);
     }
@@ -40,11 +37,9 @@ public class AuthService {
         }
 
         String encryptedPassword = passwordEncoder.encode(signup.getPassword());
-
         var user = User.builder()
                 .email(signup.getEmail())
                 .password(encryptedPassword)
-                .name(signup.getName())
                 .kakao(signup.getKakao())
                 .build();
         userRepository.save(user);

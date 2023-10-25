@@ -1,21 +1,22 @@
 package com.hoop.api.request.profile;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+
 
 import java.util.List;
 
 @Data
-public class ProfileEdit {
-    private String name;
+public class ProfileCreate {
     private int height;
     private int weight;
     private String desc;
     private List<String> positions;
+    private String name;
+
 
     @Builder
-    public ProfileEdit(String name, int height, int weight, String desc, List<String> positions) {
+    public ProfileCreate(String name, int height, int weight, String desc, List<String> positions) {
         this.name = name;
         this.height = height;
         this.weight = weight;

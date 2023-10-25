@@ -20,7 +20,6 @@ public class HoopMockSecurityContext implements WithSecurityContextFactory<HoopM
     public SecurityContext createSecurityContext(HoopMockUser annotation) {
         var user = User.builder()
                 .email(annotation.email())
-                .name(annotation.name())
                 .password(annotation.password())
                 .build();
 

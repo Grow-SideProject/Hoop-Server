@@ -5,7 +5,7 @@ import com.hoop.api.request.post.PostCreate;
 import com.hoop.api.request.post.PostEdit;
 import com.hoop.api.request.post.PostSearch;
 import com.hoop.api.response.PostResponse;
-import com.hoop.api.service.PostService;
+import com.hoop.api.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
