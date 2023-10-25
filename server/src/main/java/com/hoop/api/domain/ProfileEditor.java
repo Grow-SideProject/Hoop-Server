@@ -11,13 +11,13 @@ import java.util.List;
 public class ProfileEditor {
 
     private final String name;
-    private final Long height;
-    private final Long weight;
+    private final int height;
+    private final int weight;
     private final String desc;
     private List<String> positions;
 
     @Builder
-    public ProfileEditor(String name, Long height, Long weight, String desc, List<String> positions) {
+    public ProfileEditor(String name, int height, int weight, String desc, List<String> positions) {
         this.name = name;
         this.height = height;
         this.weight = weight;

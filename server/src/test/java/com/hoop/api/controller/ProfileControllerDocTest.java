@@ -3,9 +3,12 @@ package com.hoop.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.AppConfig;
 import com.hoop.api.config.HoopMockUser;
+import com.hoop.api.domain.Profile;
 import com.hoop.api.domain.User;
+import com.hoop.api.repository.ProfileRepository;
 import com.hoop.api.repository.post.PostRepository;
 import com.hoop.api.repository.UserRepository;
+import com.hoop.api.request.profile.ProfileCreate;
 import com.hoop.api.request.profile.ProfileEdit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,23 +19,22 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,6 +50,8 @@ public class ProfileControllerDocTest {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ProfileRepository profileRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -62,18 +66,62 @@ public class ProfileControllerDocTest {
 
     @Test
     @HoopMockUser
-    @DisplayName("USER GET")
+    @DisplayName("CREATE PROFILE")
     void test1() throws Exception {
+        // given
+        List<String> myList = Arrays.asList("포인트가드", "센터");
+        ProfileCreate profileCreate = ProfileCreate.builder()
+                .name("닉네임")
+                .height(180)
+                .weight(70)
+                .desc("강한 타입")
+                .positions(myList)
+                .build();
+
+        // expected
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/profile/create")
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(profileCreate))
+                )
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "profile-create",
+                        requestFields(
+                                fieldWithPath("name").description("이름(닉네임)"),
+                                fieldWithPath("height").description("키"),
+                                fieldWithPath("weight").description("몸무게"),
+                                fieldWithPath("desc").description("상세 내용"),
+                                fieldWithPath("positions[]").description("포지션을 리스트로 입력(추후 수정 예정)")
+                        )
+                ));
+        assertEquals(1, profileRepository.count());
+    }
+
+    @Test
+    @DisplayName("GET PROFILE")
+    void test2() throws Exception {
+        // given
         User user = User.builder()
-                .name("이름")
-                .email("temp123@gmail.com")
+                .email("temp@gmail.com")
                 .password("1234")
                 .build();
         userRepository.saveAndFlush(user);
+        List<String> myList = Arrays.asList("포인트가드", "센터");
+
+        Profile profile = Profile.builder()
+                .name("닉네임")
+                .height(180)
+                .weight(70)
+                .desc("강한 타입")
+                .positions(myList)
+                .user(user)
+                .build();
+        profileRepository.saveAndFlush(profile);
+
         // expected
-        mockMvc.perform(get("/profile/{userId}", user.getId())
-                        .accept(APPLICATION_JSON))
-                .andDo(print())
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/profile/{userId}", user.getId())
+                        .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("profile-inquiry",
                         pathParameters(
@@ -82,44 +130,112 @@ public class ProfileControllerDocTest {
                 ));
     }
 
+
     @Test
     @HoopMockUser
-    @DisplayName("UPDATE PROFILE")
-    void test2() throws Exception {
+    @DisplayName("EDIT PROFILE")
+    void test3() throws Exception {
+        // given
         User user = User.builder()
-                .name("이름")
-                .email("hodolman88@gmail.com")
+                .email("temp@gmail.com")
                 .password("1234")
                 .build();
         userRepository.saveAndFlush(user);
-
         List<String> myList = Arrays.asList("포인트가드", "센터");
-        ProfileEdit profileEdit = ProfileEdit.builder()
+        Profile profile = Profile.builder()
+                .height(180)
+                .weight(70)
                 .name("닉네임")
-                .height(180L)
-                .weight(70L)
                 .desc("강한 타입")
+                .positions(myList)
+                .user(user)
+                .build();
+        profileRepository.saveAndFlush(profile);
+
+        myList = Arrays.asList("파워포워드", "센터");
+
+        ProfileEdit profileEdit = ProfileEdit.builder()
+                .height(200)
+                .weight(100)
+                .desc("매우 강한 타입")
                 .positions(myList)
                 .build();
 
-
         // expected
-        mockMvc.perform(patch("/profile/{userId}", user.getId())
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/profile/{userId}", user.getId())
                         .contentType(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileEdit)))
+                .andExpect(status().isOk())
                 .andDo(document(
                         "profile-update",
                         requestFields(
-                                fieldWithPath("name").description("이름")
-                                        .attributes(key("constraint").value("닉네임")),
+                                fieldWithPath("name").description("이름(닉네임)"),
                                 fieldWithPath("height").description("키"),
                                 fieldWithPath("weight").description("몸무게"),
-                                fieldWithPath("desc").description("상세 내용").optional(),
-                                fieldWithPath("positions[]").description("포지션을 리스트로 입력")
+                                fieldWithPath("desc").description("상세 내용"),
+                                fieldWithPath("positions[]").description("포지션을 리스트로 입력(추후 수정)")
                         )
                 ));
     }
+
+//    @Test
+//    @HoopMockUser
+//    @DisplayName("USER GET")
+//    void test1() throws Exception {
+//        User user = User.builder()
+//                .email("temp123@gmail.com")
+//                .password("1234")
+//                .build();
+//        userRepository.saveAndFlush(user);
+//        // expected
+//        mockMvc.perform(get("/profile/{userId}", user.getId())
+//                        .accept(APPLICATION_JSON))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andDo(document("profile-inquiry",
+//                        pathParameters(
+//                                parameterWithName("userId").description("유저 ID")
+//                        )
+//                ));
+//    }
+//
+//    @Test
+//    @HoopMockUser
+//    @DisplayName("UPDATE PROFILE")
+//    void test2() throws Exception {
+//        User user = User.builder()
+//                .email("hodolman88@gmail.com")
+//                .password("1234")
+//                .build();
+//        userRepository.saveAndFlush(user);
+//
+//        List<String> myList = Arrays.asList("포인트가드", "센터");
+//        ProfileEdit profileEdit = ProfileEdit.builder()
+//                .name("닉네임")
+//                .height(180L)
+//                .weight(70L)
+//                .desc("강한 타입")
+//                .positions(myList)
+//                .build();
+//
+//
+//        // expected
+//        mockMvc.perform(patch("/profile/{userId}", user.getId())
+//                        .contentType(APPLICATION_JSON)
+//                        .accept(APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(profileEdit)))
+//                .andDo(document(
+//                        "profile-update",
+//                        requestFields(
+//                                fieldWithPath("name").description("이름")
+//                                        .attributes(key("constraint").value("닉네임")),
+//                                fieldWithPath("height").description("키"),
+//                                fieldWithPath("weight").description("몸무게"),
+//                                fieldWithPath("desc").description("상세 내용").optional(),
+//                                fieldWithPath("positions[]").description("포지션을 리스트로 입력")
+//                        )
+//                ));
+//    }
 }
 
 

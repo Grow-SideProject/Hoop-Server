@@ -2,6 +2,7 @@ package com.hoop.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.repository.UserRepository;
+import com.hoop.api.request.sign.SignIn;
 import com.hoop.api.request.sign.Signup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,19 +37,30 @@ class AuthControllerTest {
 
     @Test
     @DisplayName("회원가입")
-    void test6() throws Exception {
-        // given
+    void signup() throws Exception{
         Signup signup = Signup.builder()
-                .email("hodolman88@gmail.com")
+                .email("temp@gmail.com")
                 .password("1234")
-                .name("호돌맨")
+                .kakao(12345L)
                 .build();
-
-        // expected
         mockMvc.perform(post("/auth/signup")
                         .content(objectMapper.writeValueAsString(signup))
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    void signIn() throws Exception {
+        SignIn signIn = SignIn.builder()
+                .accessToken("MOCKTOKEN")
+                .category("kakao")
+                .build();
+        mockMvc.perform(post("/auth/signin")
+                        .content(objectMapper.writeValueAsString(signIn))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
 }

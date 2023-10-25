@@ -8,9 +8,7 @@ import com.hoop.api.repository.post.PostRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.sign.Signup;
 import com.hoop.api.request.post.PostCreate;
-import com.hoop.api.request.sign.SingIn;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import com.hoop.api.request.sign.SignIn;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,14 +18,11 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -72,13 +67,12 @@ public class AuthControllerDocTest {
     void test1() throws Exception {
         // given
         Signup signup = Signup.builder()
-                .email("hodolman88@gmail.com")
+                .email("temp@gmail.com")
                 .password("1234")
-                .name("호돌맨")
                 .build();
 
         // expected
-        mockMvc.perform(MockMvcRequestBuilders.post("/auth/signup")
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/auth/signup")
                         .content(objectMapper.writeValueAsString(signup))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
@@ -90,8 +84,7 @@ public class AuthControllerDocTest {
                                         .attributes(key("constraint").value("소셜 로그인일 경우 id")),
                                 fieldWithPath("password").description("비밀번호")
                                         .attributes(key("constraint").value("소셜 로그인일 경우 id")),
-                                fieldWithPath("kakao").description("kakao ID").optional(),
-                                fieldWithPath("name").description("이름").optional()
+                                fieldWithPath("kakao").description("kakao ID").optional()
                         )
                 ));
     }
@@ -100,7 +93,7 @@ public class AuthControllerDocTest {
     @DisplayName("KAKAO LOGIN")
     void test2() throws Exception  {
         // given
-        SingIn request = SingIn.builder()
+        SignIn request = SignIn.builder()
                 .category("KAKAO")
                 .accessToken("MOCKTOKEN")
                 .build();
@@ -108,7 +101,7 @@ public class AuthControllerDocTest {
         String json = objectMapper.writeValueAsString(request);
 
         // expected
-        mockMvc.perform(post("/auth/signin")
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/auth/signin")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .content(json))
@@ -123,27 +116,6 @@ public class AuthControllerDocTest {
                 ));
     }
 
-//    @Test
-//    @DisplayName("AUTH TEST")
-//    void test3() throws Exception {
-//        Long kakaoId = 12345L;
-//        SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
-//        String jws = Jwts.builder()
-//                .setSubject(Long.toString(kakaoId))
-//                .signWith(key)
-//                .setIssuedAt(new Date())
-//                .compact();
-//        mockMvc.perform(get("/helloworld/auth")
-//                        .header("Authorization",jws)
-//                        .accept(APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andDo(document("auth-test",
-//                        requestHeaders(
-//                                headerWithName("Authorization").description("JWT 토큰 헤더")
-//                        )
-//                ));
-//    }
 
     @Test
     @DisplayName("(임시)글 단건 조회")
@@ -156,7 +128,7 @@ public class AuthControllerDocTest {
         postRepository.save(post);
 
         // expected
-        mockMvc.perform(get("/posts/{postId}", 1L)
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{postId}", 1L)
                         .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -179,7 +151,7 @@ public class AuthControllerDocTest {
         String json = objectMapper.writeValueAsString(request);
 
         // expected
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/posts")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .content(json))

@@ -1,14 +1,13 @@
 package com.hoop.api.controller;
 
-import com.hoop.api.request.post.PostEdit;
+import com.hoop.api.config.UserPrincipal;
+import com.hoop.api.request.profile.ProfileCreate;
 import com.hoop.api.request.profile.ProfileEdit;
-import com.hoop.api.response.PostResponse;
 import com.hoop.api.response.ProfileResponse;
-import com.hoop.api.service.profile.ProfileService;
-import jakarta.validation.Valid;
+import com.hoop.api.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -28,4 +27,8 @@ public class ProfileController {
         profileService.edit(userId, request);
     }
 
+    @PostMapping("/profile/create")
+    public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileCreate request) {
+        profileService.create(userPrincipal.getUserId(), request);
+    }
 }
