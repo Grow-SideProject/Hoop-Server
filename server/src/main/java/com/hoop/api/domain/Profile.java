@@ -24,7 +24,7 @@ public class Profile {
     private List<String> positions;
     private String name;
 
-    private String profileImage;
+    private String profileImagePath;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -56,6 +56,9 @@ public class Profile {
         weight = profileEditor.getWeight();
         desc = profileEditor.getDesc();
         positions = profileEditor.getPositions();
+    }
+    public void setProfileImagePath(String path) {
+        this.profileImagePath = path;
     }
 
 }

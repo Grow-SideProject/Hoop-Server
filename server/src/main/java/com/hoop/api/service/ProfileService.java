@@ -2,17 +2,21 @@ package com.hoop.api.service;
 
 import com.hoop.api.domain.Profile;
 import com.hoop.api.domain.ProfileEditor;
+import com.hoop.api.exception.FileUploadException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.repository.ProfileRepository;
+import com.hoop.api.request.FileDto;
 import com.hoop.api.request.profile.ProfileCreate;
-import com.hoop.api.request.post.PostCreate;
 import com.hoop.api.request.profile.ProfileEdit;
 import com.hoop.api.response.ProfileResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 @Slf4j
 @Service
@@ -62,5 +66,36 @@ public class ProfileService {
                 .positions(profileEdit.getPositions())
                 .build();
         profile.edit(profileEditor);
+    }
+
+    @Transactional
+    public void saveImage(Long userId, MultipartFile file) {
+        Profile profile = profileRepository.findByUser_Id(userId)
+                .orElseThrow(UserNotFound::new);
+        try {
+            String basicPath = System.getProperty("user.dir")+ "/files";
+            if (!new File(basicPath).exists()) {
+                new File(basicPath).mkdir();
+            }
+            String savePath = basicPath+ "/profile";
+            if (!new File(savePath).exists()) {
+                new File(savePath).mkdir();
+            }
+            String filename = userId +"_"+ file.getOriginalFilename();
+            String filePath = savePath + "\\" + filename;
+            file.transferTo(new File(filePath));
+            profile.setProfileImagePath(filePath);
+            profileRepository.save(profile);
+        } catch (Exception e) {
+            throw new FileUploadException();
+        }
+    }
+
+    public FileDto getImage(Long userId) {
+        Profile profile = profileRepository.findByUser_Id(userId)
+                .orElseThrow(UserNotFound::new);
+        return FileDto.builder()
+                .filePath("http://localhost:8080/image/"+profile.getProfileImagePath())
+                .build();
     }
 }
