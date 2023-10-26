@@ -1,12 +1,9 @@
 package com.hoop.api.response;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @ToString
-@Getter
+@Data
 @NoArgsConstructor
 public class KakaoProfile {
     private Long id;

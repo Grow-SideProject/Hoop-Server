@@ -1,11 +1,11 @@
-package com.hoop.api.service;
+package com.hoop.api.service.post;
 
 import com.hoop.api.domain.Comment;
 import com.hoop.api.domain.Post;
 import com.hoop.api.exception.CommentNotFound;
 import com.hoop.api.exception.InvalidPassword;
 import com.hoop.api.exception.PostNotFound;
-import com.hoop.api.repository.comment.CommentRepository;
+import com.hoop.api.repository.post.CommentRepository;
 import com.hoop.api.repository.post.PostRepository;
 import com.hoop.api.request.comment.CommentCreate;
 import com.hoop.api.request.comment.CommentDelete;

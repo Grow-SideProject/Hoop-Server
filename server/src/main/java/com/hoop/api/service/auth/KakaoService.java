@@ -63,7 +63,7 @@ public class KakaoService {
     /**
      * 엑세스 토큰으로 카카오 프로필 요청
      */
-    public KakaoProfile getKakaoProfile(String accessToken) {
+    public Long getKakaoIdByToken(String accessToken) {
         // Set header : Content-type: application/x-www-form-urlencoded
 
         HttpHeaders headers = new HttpHeaders();
@@ -80,14 +80,14 @@ public class KakaoService {
             //restTemplate으로 post 방식으로 key를 요청할 수 있음.
             ResponseEntity<String> response = restTemplate.postForEntity(env.getProperty("spring.social.kakao.url.profile"), request, String.class);
             if (response.getStatusCode() == HttpStatus.OK)
-                return gson.fromJson(response.getBody(), KakaoProfile.class);
+                return gson.fromJson(response.getBody(), KakaoProfile.class).getId();
         } catch (Exception e) {
             throw new CommunicationException();
         }
         throw new CommunicationException();
     }
 
-    public Optional<User> getByKakao(long kakao){
+    public Optional<User> getByKakao(Long kakao){
         return userRepository.findByKakao(kakao);
     }
 

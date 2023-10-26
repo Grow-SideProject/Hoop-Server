@@ -1,6 +1,5 @@
 package com.hoop.api.controller;
 
-import com.hoop.api.config.UserSession;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,22 +18,10 @@ public class HelloController {
     public static class Hello {
         private String message;
     }
-    @GetMapping("/helloworld/auth")
-    @ResponseBody
-    public Long auth(UserSession userSession) {
-        log.info("USER ID >>>{}", userSession.id);
-        return userSession.id;
-    }
+
     @GetMapping(value = "/helloworld/string")
     @ResponseBody
     public String helloworldString() {
-        log.debug("Helloworld");
-        log.info("Helloworld");
-        return HELLO;
-    }
-    @GetMapping(value = "/hello/string")
-    @ResponseBody
-    public String helloString() {
         log.debug("Helloworld");
         log.info("Helloworld");
         return HELLO;

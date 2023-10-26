@@ -1,4 +1,4 @@
-package com.hoop.api.repository.comment;
+package com.hoop.api.repository.post;
 
 import com.hoop.api.domain.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;

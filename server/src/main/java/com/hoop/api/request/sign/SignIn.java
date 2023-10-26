@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class SingIn {
+public class SignIn {
 
     @NotBlank(message = "소셜 로그인 종류 입력")
     private String category;
@@ -17,13 +17,10 @@ public class SingIn {
     @NotBlank(message = "Access Token")
     private String accessToken;
 
-    @NotBlank(message = "Refresh Token")
-    private String refreshToken;
 
     @Builder
-    public SingIn(String category, String accessToken, String refreshToken) {
+    public SignIn(String category, String accessToken, String refreshToken) {
         this.category = category;
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
     }
 }

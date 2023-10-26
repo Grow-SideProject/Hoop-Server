@@ -448,8 +448,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_회원가입">회원가입</a></li>
+<li><a href="#_카카오_회원가입">카카오 회원가입</a></li>
 <li><a href="#_카카오_로그인">카카오 로그인</a></li>
-<li><a href="#_인증_임시_테스트">인증 임시 테스트</a></li>
+<li><a href="#_프로필_생성_post">프로필 생성 POST</a></li>
 <li><a href="#_프로필_조회_get">프로필 조회 GET</a></li>
 <li><a href="#_프로필_수정_patch">프로필 수정 PATCH</a></li>
 <li><a href="#_글_단건조회참고용_임시_구현_get">글 단건조회(참고용 임시 구현) GET</a></li>
@@ -463,17 +464,144 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_요청"><a class="link" href="#_요청">요청</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/auth-signup/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /auth/signup HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Content-Length: 54
+Host: api.hoop.com
+
+{"email":"temp@gmail.com","password":"1234","kakao":0}</code></pre>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/auth-signup/request-fields.adoc[]</p>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Optional</th>
+<th class="tableblock halign-left valign-top">Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">email</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">소셜 로그인일 경우 id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">password</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">소셜 로그인일 경우 id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">kakao</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">kakao ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
 <h3 id="_응답"><a class="link" href="#_응답">응답</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/auth-signup/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_카카오_회원가입"><a class="link" href="#_카카오_회원가입">카카오 회원가입</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_2"><a class="link" href="#_요청_2">요청</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /auth/signup/social HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Content-Length: 46
+Host: api.hoop.com
+
+{"category":"KAKAO","accessToken":"MOCKTOKEN"}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Optional</th>
+<th class="tableblock halign-left valign-top">Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">category</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">KAKAO</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">소셜 로그인 구분</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">accessToken</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카카오 Access Token</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_응답_2"><a class="link" href="#_응답_2">응답</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 29
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY
+
+카카오 회원가입 성공</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -482,38 +610,158 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_카카오_로그인"><a class="link" href="#_카카오_로그인">카카오 로그인</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_요청_2"><a class="link" href="#_요청_2">요청</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/auth-kakao/http-request.adoc[]</p>
+<h3 id="_요청_3"><a class="link" href="#_요청_3">요청</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /auth/signin HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 46
+Host: api.hoop.com
+
+{"category":"KAKAO","accessToken":"MOCKTOKEN"}</code></pre>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/auth-kakao/query-parameters.adoc[]</p>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Optional</th>
+<th class="tableblock halign-left valign-top">Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">category</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">KAKAO</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">소셜 로그인 구분</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">accessToken</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카카오 Access Token</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
-<h3 id="_응답_2"><a class="link" href="#_응답_2">응답</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/auth-kakao/http-response.adoc[]</p>
+<h3 id="_응답_3"><a class="link" href="#_응답_3">응답</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY
+Content-Length: 376
+
+{"accessToken":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NSIsImlhdCI6MTY5ODI1MDgxOSwiZXhwIjoxNjk4ODU1NjE5fQ.xneMEq-E83zwPtz1J06RyAYB0K03AlaZ3xsQpFmfzxs","refreshToken":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NSIsImlhdCI6MTY5ODI1MDgxOSwiZXhwIjoxNzAwODQyODE5fQ.Wb1mxFlmrASLREOGoSaYCQTbuMt8g0p1felfB2nQSxA","accessTokenExpirationTime":604800000,"refreshTokenExpirationTime":2592000000}</code></pre>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_인증_임시_테스트"><a class="link" href="#_인증_임시_테스트">인증 임시 테스트</a></h2>
+<h2 id="_프로필_생성_post"><a class="link" href="#_프로필_생성_post">프로필 생성 POST</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_요청_3"><a class="link" href="#_요청_3">요청</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/auth-test/http-request.adoc[]</p>
+<h3 id="_요청_4"><a class="link" href="#_요청_4">요청</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /profile/create HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Content-Length: 109
+Host: api.hoop.com
+
+{"height":180,"weight":70,"desc":"강한 타입","positions":["포인트가드","센터"],"name":"닉네임"}</code></pre>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/auth-test/request-headers.adoc[]</p>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Optional</th>
+<th class="tableblock halign-left valign-top">Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이름(닉네임)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">height</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">키</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">weight</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">몸무게</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">desc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상세 내용</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">positions[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">포지션을 리스트로 입력(추후 수정 예정)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
-<h3 id="_응답_3"><a class="link" href="#_응답_3">응답</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/auth-test/http-response.adoc[]</p>
+<h3 id="_응답_4"><a class="link" href="#_응답_4">응답</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -522,11 +770,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_프로필_조회_get"><a class="link" href="#_프로필_조회_get">프로필 조회 GET</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_요청_4"><a class="link" href="#_요청_4">요청</a></h3>
+<h3 id="_요청_5"><a class="link" href="#_요청_5">요청</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /profile/2 HTTP/1.1
-Accept: application/json
+Content-Type: application/json;charset=UTF-8
 Host: api.hoop.com</code></pre>
 </div>
 </div>
@@ -551,7 +799,7 @@ Host: api.hoop.com</code></pre>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_응답_4"><a class="link" href="#_응답_4">응답</a></h3>
+<h3 id="_응답_5"><a class="link" href="#_응답_5">응답</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -563,9 +811,9 @@ Pragma: no-cache
 Expires: 0
 Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 X-Frame-Options: DENY
-Content-Length: 74
+Content-Length: 109
 
-{"name":"이름","height":null,"weight":null,"desc":null,"positions":null}</code></pre>
+{"name":"닉네임","height":180,"weight":70,"desc":"강한 타입","positions":["포인트가드","센터"]}</code></pre>
 </div>
 </div>
 </div>
@@ -575,18 +823,86 @@ Content-Length: 74
 <h2 id="_프로필_수정_patch"><a class="link" href="#_프로필_수정_patch">프로필 수정 PATCH</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_요청_5"><a class="link" href="#_요청_5">요청</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/profile-modify/http-request.adoc[]</p>
+<h3 id="_요청_6"><a class="link" href="#_요청_6">요청</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /profile/4 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 110
+Host: api.hoop.com
+
+{"name":null,"height":200,"weight":100,"desc":"매우 강한 타입","positions":["파워포워드","센터"]}</code></pre>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/profile-modify/request-fields.adoc[]</p>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Optional</th>
+<th class="tableblock halign-left valign-top">Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이름(닉네임)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">height</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">키</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">weight</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">몸무게</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">desc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상세 내용</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">positions[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">포지션을 리스트로 입력(추후 수정)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
-<h3 id="_응답_5"><a class="link" href="#_응답_5">응답</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/profile-modify/http-response.adoc[]</p>
+<h3 id="_응답_6"><a class="link" href="#_응답_6">응답</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -595,18 +911,51 @@ Content-Length: 74
 <h2 id="_글_단건조회참고용_임시_구현_get"><a class="link" href="#_글_단건조회참고용_임시_구현_get">글 단건조회(참고용 임시 구현) GET</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_요청_6"><a class="link" href="#_요청_6">요청</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/post-inquiry/http-request.adoc[]</p>
+<h3 id="_요청_7"><a class="link" href="#_요청_7">요청</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts/1 HTTP/1.1
+Accept: application/json
+Host: api.hoop.com</code></pre>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/post-inquiry/path-parameters.adoc[]</p>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. /posts/{postId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>postId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게시글 ID</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
-<h3 id="_응답_6"><a class="link" href="#_응답_6">응답</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/post-inquiry/http-response.adoc[]</p>
+<h3 id="_응답_7"><a class="link" href="#_응답_7">응답</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY
+Content-Length: 44
+
+{"id":1,"title":"제목","content":"내용"}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -615,18 +964,66 @@ Content-Length: 74
 <h2 id="_글_작성참고용_임시_구현_post"><a class="link" href="#_글_작성참고용_임시_구현_post">글 작성(참고용 임시 구현) POST</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_요청_7"><a class="link" href="#_요청_7">요청</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/post-create/http-request.adoc[]</p>
+<h3 id="_요청_8"><a class="link" href="#_요청_8">요청</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /posts HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Content-Length: 46
+Host: api.hoop.com
+
+{"title":"호돌맨","content":"반포자이"}</code></pre>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/post-create/request-fields.adoc[]</p>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Optional</th>
+<th class="tableblock halign-left valign-top">Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">title</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">제목</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋은제목 입력해주세요.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">content</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
-<h3 id="_응답_7"><a class="link" href="#_응답_7">응답</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::C:\Users\wlgns\project\Hoop-Server\server\build\generated-snippets/post-create/http-response.adoc[]</p>
+<h3 id="_응답_8"><a class="link" href="#_응답_8">응답</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -635,7 +1032,7 @@ Content-Length: 74
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-10-20 23:53:53 +0900
+Last updated 2023-10-26 01:04:44 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

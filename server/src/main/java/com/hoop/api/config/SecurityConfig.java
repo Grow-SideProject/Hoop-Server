@@ -1,13 +1,14 @@
 package com.hoop.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hoop.api.config.filter.EmailPasswordAuthFilter;
+import com.hoop.api.config.filter.JwtTokenAuthFilter;
 import com.hoop.api.config.handler.Http401Handler;
 import com.hoop.api.config.handler.Http403Handler;
 import com.hoop.api.config.handler.LoginFailHandler;
 import com.hoop.api.config.handler.LoginSuccessHandler;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.UserRepository;
+import com.hoop.api.service.auth.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,7 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
 
+    private final JwtService jwtService;
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
@@ -67,8 +69,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public EmailPasswordAuthFilter usernamePasswordAuthenticationFilter() {
-        EmailPasswordAuthFilter filter = new EmailPasswordAuthFilter("/auth/login", objectMapper);
+    public JwtTokenAuthFilter usernamePasswordAuthenticationFilter() {
+        JwtTokenAuthFilter filter = new JwtTokenAuthFilter("/auth/login", objectMapper, jwtService);
         filter.setAuthenticationManager(authenticationManager());
         filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
@@ -94,7 +96,6 @@ public class SecurityConfig {
         return username -> {
             User user = userRepository.findByEmail(username)
                     .orElseThrow(() -> new UsernameNotFoundException(username + "을 찾을 수 없습니다."));
-
             return new UserPrincipal(user);
         };
     }
