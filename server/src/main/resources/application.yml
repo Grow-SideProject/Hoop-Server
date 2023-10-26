@@ -20,13 +20,16 @@ spring:
   social:
     kakao:
       client_id: c821057d14c2438354f518b12064a435
-      redirect: https://surely-quality-robin.ngrok-free.app/auth/kakao?
-      #      redirect: http://localhost:8080/oauth/kakao
+      redirect: http://localhost:8080/auth/code
       url:
         login: https://kauth.kakao.com/oauth/authorize
         token: https://kauth.kakao.com/oauth/token
         profile: https://kapi.kakao.com/v2/user/me
-
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      location: c:\\temp\\upload
   url:
     base: http://localhost:8080
 hoop:
