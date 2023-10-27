@@ -12,7 +12,7 @@ import static java.lang.Math.min;
 @Builder
 public class PostSearch {
 
-    private static final int MAX_SIZE = 2000;
+    private static final Integer MAX_SIZE = 2000;
 
     @Builder.Default
     private Integer page = 1;

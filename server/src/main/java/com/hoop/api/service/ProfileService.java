@@ -28,7 +28,7 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
 
     public ProfileResponse get(Long userId) {
-        Profile profile = profileRepository.findByUser_Id(userId)
+        Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
         return ProfileResponse.builder()
                 .name(profile.getName())
@@ -55,7 +55,7 @@ public class ProfileService {
 
     @Transactional
     public void edit(Long userId, ProfileEdit profileEdit) {
-        Profile profile = profileRepository.findByUser_Id(userId)
+        Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
         ProfileEditor.ProfileEditorBuilder editorBuilder = profile.toEditor();
         ProfileEditor profileEditor = editorBuilder
@@ -70,7 +70,7 @@ public class ProfileService {
 
     @Transactional
     public void saveImage(Long userId, MultipartFile file) {
-        Profile profile = profileRepository.findByUser_Id(userId)
+        Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
         try {
             String basicPath = System.getProperty("user.dir")+ "/files";
@@ -92,7 +92,7 @@ public class ProfileService {
     }
 
     public FileDto getImage(Long userId) {
-        Profile profile = profileRepository.findByUser_Id(userId)
+        Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
         return FileDto.builder()
                 .filePath("http://localhost:8080/image/"+profile.getProfileImagePath())

@@ -3,9 +3,9 @@ package com.hoop.api.controller;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.Unauthorized;
 import com.hoop.api.exception.UserNotFound;
-import com.hoop.api.request.sign.SignIn;
-import com.hoop.api.request.sign.SignUp;
-import com.hoop.api.request.sign.SocialSignUp;
+import com.hoop.api.request.auth.SignIn;
+import com.hoop.api.request.auth.SignUp;
+import com.hoop.api.request.auth.SocialSignUp;
 import com.hoop.api.response.TokenResponse;
 import com.hoop.api.service.auth.AuthService;
 import com.hoop.api.service.auth.JwtService;
@@ -13,8 +13,6 @@ import com.hoop.api.service.auth.KakaoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -49,16 +47,23 @@ public class AuthController {
      * @param
      */
     @PostMapping("/signup/social")
-    public ResponseEntity<String> signupByKakao(@RequestBody SocialSignUp socialSignUp) {
+    public @ResponseBody String signupBySocial(@RequestBody SocialSignUp socialSignUp) {
         //일단 카카오 로그인만 구현
         String category = socialSignUp.getCategory();
-        Long id = kakaoService.getKakaoIdByToken(socialSignUp.getAccessToken());
-        authService.signup(SignUp.builder()
-                .email(Long.toString(id))
-                .password(Long.toString(id))
-                .kakao(id)
-                .build());
-        return new ResponseEntity<>("카카오 회원가입 성공", HttpStatus.OK);
+        switch (category) {
+            case "KAKAO" :
+                Long id = kakaoService.getKakaoIdByToken(socialSignUp.getAccessToken());
+                authService.signup(SignUp.builder()
+                        .email(Long.toString(id))
+                        .password(Long.toString(id))
+                        .socialId(id)
+                        .build());
+                break;
+            default:
+                throw new Unauthorized();
+        }
+
+        return "KAKAO SIGNUP SUCCESS";
     }
 
     /**

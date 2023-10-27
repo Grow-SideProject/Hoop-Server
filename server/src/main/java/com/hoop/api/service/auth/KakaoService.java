@@ -88,7 +88,7 @@ public class KakaoService {
     }
 
     public Optional<User> getByKakao(Long kakao){
-        return userRepository.findByKakao(kakao);
+        return userRepository.findBySocialId(kakao);
     }
 
 

@@ -24,7 +24,7 @@ public class User {
 
     private LocalDateTime createdAt;
 
-    private Long kakao;
+    private Long socialId;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts;
@@ -32,12 +32,16 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Profile profile;
 
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<MatchingAttend> matchingAttends;
+
     @Builder
-    public User(String email, String password, long kakao) {
+    public User(String email, String password, Long socialId) {
         this.email = email;
         this.password = password;
         this.createdAt = LocalDateTime.now();
-        this.kakao = kakao;
+        this.socialId = socialId;
     }
 
 }

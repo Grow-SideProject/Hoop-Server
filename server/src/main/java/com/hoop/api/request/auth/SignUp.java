@@ -1,4 +1,4 @@
-package com.hoop.api.request.sign;
+package com.hoop.api.request.auth;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,5 +8,5 @@ import lombok.Data;
 public class SignUp {
     private String email;
     private String password;
-    private long kakao;
+    private Long socialId;
 }

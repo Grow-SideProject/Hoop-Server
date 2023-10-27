@@ -3,7 +3,7 @@ package com.hoop.api.service.auth;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsEmailException;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.sign.SignUp;
+import com.hoop.api.request.auth.SignUp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class AuthService {
         var user = User.builder()
                 .email(signup.getEmail())
                 .password(encryptedPassword)
-                .kakao(signup.getKakao())
+                .socialId(signup.getSocialId())
                 .build();
         userRepository.save(user);
     }

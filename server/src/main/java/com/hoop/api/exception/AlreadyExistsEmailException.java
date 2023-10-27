@@ -2,14 +2,14 @@ package com.hoop.api.exception;
 
 public class AlreadyExistsEmailException extends HoopException {
 
-    private static final String MESSAGE = "이미 가입된 이메일입니다.";
+    private static final String MESSAGE = "이미 가입된 사용자입니다.";
 
     public AlreadyExistsEmailException() {
         super(MESSAGE);
     }
 
     @Override
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return 400;
     }
 }
