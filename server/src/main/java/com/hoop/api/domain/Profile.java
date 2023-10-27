@@ -1,5 +1,6 @@
 package com.hoop.api.domain;
 
+import com.hoop.api.constant.Position;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,10 +19,10 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime createdAt;
-    private int height;
-    private int weight;
+    private Integer height;
+    private Integer weight;
     private String desc;
-    private List<String> positions;
+    private List<Position> positions;
     private String name;
 
     private String profileImage;
@@ -31,7 +32,7 @@ public class Profile {
     private User user;
 
     @Builder
-    public Profile(String name, int height, int weight, String desc, List<String> positions, User user) {
+    public Profile(String name, Integer height, Integer weight, String desc, List<Position> positions, User user) {
         this.name = name;
         this.height = height;
         this.weight = weight;

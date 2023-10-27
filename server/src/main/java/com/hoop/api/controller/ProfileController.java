@@ -14,21 +14,23 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/profile")
 public class ProfileController {
 
     private  final ProfileService profileService;
 
-    @GetMapping("/profile/{userId}")
-    public ProfileResponse get(@PathVariable Long userId) {
-        return profileService.get(userId);
-    }
-    @PatchMapping("/profile/{userId}")
-    public void edit(@PathVariable Long userId, @RequestBody ProfileEdit request) {
-        profileService.edit(userId, request);
-    }
-
-    @PostMapping("/profile/create")
+    @PostMapping("/create")
     public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileCreate request) {
         profileService.create(userPrincipal.getUserId(), request);
     }
+    @GetMapping()
+    public ProfileResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return profileService.get(userPrincipal.getUserId());
+    }
+    @PatchMapping("/edit")
+    public void edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
+        profileService.edit(userPrincipal.getUserId(), request);
+    }
+
+
 }

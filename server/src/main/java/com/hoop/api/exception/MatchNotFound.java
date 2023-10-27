@@ -3,11 +3,11 @@ package com.hoop.api.exception;
 /**
  * status -> 404
  */
-public class PostNotFound extends HoopException {
+public class MatchNotFound extends HoopException {
 
-    private static final String MESSAGE = "존재하지 않는 글입니다.";
+    private static final String MESSAGE = "존재하지 않는 매칭입니다.";
 
-    public PostNotFound() {
+    public MatchNotFound() {
         super(MESSAGE);
     }
 

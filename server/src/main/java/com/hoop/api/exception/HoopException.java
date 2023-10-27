@@ -18,7 +18,7 @@ public abstract class HoopException extends RuntimeException {
         super(message, cause);
     }
 
-    public abstract int getStatusCode();
+    public abstract Integer getStatusCode();
 
     public void addValidation(String fieldName, String message) {
         validation.put(fieldName, message);

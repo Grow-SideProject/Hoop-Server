@@ -35,7 +35,7 @@ public class ExceptionController {
     @ResponseBody
     @ExceptionHandler(HoopException.class)
     public ResponseEntity<ErrorResponse> HoopException(HoopException e) {
-        int statusCode = e.getStatusCode();
+        Integer statusCode = e.getStatusCode();
 
         ErrorResponse body = ErrorResponse.builder()
                 .code(String.valueOf(statusCode))

@@ -12,7 +12,7 @@ public class Unauthorized extends HoopException {
     }
 
     @Override
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return 401;
     }
 }

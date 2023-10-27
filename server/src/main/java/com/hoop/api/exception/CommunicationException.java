@@ -9,7 +9,7 @@ public class CommunicationException extends HoopException {
     }
 
     @Override
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return 405;
     }
 }
