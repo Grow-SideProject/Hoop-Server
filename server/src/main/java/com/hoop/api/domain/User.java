@@ -32,6 +32,10 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Profile profile;
 
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<MatchingAttend> matchingAttends;
+
     @Builder
     public User(String email, String password, long kakao) {
         this.email = email;

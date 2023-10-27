@@ -180,7 +180,7 @@ public class AuthControllerDocTest {
     }
 
     @Test
-    @DisplayName("(임시)글 단건 조회")
+    @DisplayName("POST(TEMP)")
     void tmp_test1() throws Exception {
         // given
         Post post = Post.builder()
@@ -202,7 +202,7 @@ public class AuthControllerDocTest {
     }
     @Test
     @HoopMockUser
-    @DisplayName("(임시)글 등록")
+    @DisplayName("POST CREATE(TEMP)")
     void tmp_test2() throws Exception {
         // given
         PostCreate request = PostCreate.builder()
