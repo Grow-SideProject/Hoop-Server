@@ -42,7 +42,10 @@ class ProfileControllerTest {
 
     @AfterEach
     void clean() {
+
         userRepository.deleteAll();
+        profileRepository.deleteAll();
+
     }
 
     @Test

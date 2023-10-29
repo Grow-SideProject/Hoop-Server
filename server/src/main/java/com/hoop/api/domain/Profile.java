@@ -21,7 +21,9 @@ public class Profile {
     private LocalDateTime createdAt;
     private Integer height;
     private Integer weight;
+    @Column(name = "description")
     private String desc;
+
     private List<Position> positions;
     private String name;
 

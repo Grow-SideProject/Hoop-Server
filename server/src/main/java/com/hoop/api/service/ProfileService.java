@@ -12,6 +12,7 @@ import com.hoop.api.request.profile.ProfileEdit;
 import com.hoop.api.response.ProfileResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,9 @@ public class ProfileService {
 
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
+
+    private final Environment env;
+
 
     public ProfileResponse get(Long userId) {
         Profile profile = profileRepository.findByUserId(userId)
@@ -73,7 +77,7 @@ public class ProfileService {
         Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
         try {
-            String basicPath = System.getProperty("user.dir")+ "/files";
+            String basicPath = System.getProperty("user.dir")+ "/resource/static/img";
             if (!new File(basicPath).exists()) {
                 new File(basicPath).mkdir();
             }
@@ -82,7 +86,7 @@ public class ProfileService {
                 new File(savePath).mkdir();
             }
             String filename = userId +"_"+ file.getOriginalFilename();
-            String filePath = savePath + "\\" + filename;
+            String filePath =  "/profile/" + filename;
             file.transferTo(new File(filePath));
             profile.setProfileImagePath(filePath);
             profileRepository.save(profile);
@@ -94,8 +98,10 @@ public class ProfileService {
     public FileDto getImage(Long userId) {
         Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
+        log.info(profile.getProfileImagePath());
+        env.getProperty("spring.base-url");
         return FileDto.builder()
-                .filePath("http://localhost:8080/image/"+profile.getProfileImagePath())
+                .filePath(env.getProperty("spring.base-url") +"/image/"+profile.getProfileImagePath())
                 .build();
     }
 }

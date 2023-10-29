@@ -19,6 +19,7 @@ spring:
         max-page-size: 2000
         default-page-size: 20
         one-indexed-parameters: true
+  base-url: https://surely-quality-robin.ngrok-free.app
   social:
     kakao:
       client_id: c821057d14c2438354f518b12064a435
@@ -28,8 +29,5 @@ spring:
         login: https://kauth.kakao.com/oauth/authorize
         token: https://kauth.kakao.com/oauth/token
         profile: https://kapi.kakao.com/v2/user/me
-
-  url:
-    base: http://localhost:8080
 hoop:
   jwt-key: "rTPmA9Sgk+Q1XwuJbG7E6xFFUhQpdi+al5iyPnRTK/Q="
