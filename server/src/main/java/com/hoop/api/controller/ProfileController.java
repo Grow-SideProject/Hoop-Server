@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/profile")
+@RequestMapping("/profile")
 public class ProfileController {
 
     private  final ProfileService profileService;
@@ -26,24 +27,4 @@ public class ProfileController {
     public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileCreate request) {
         profileService.create(userPrincipal.getUserId(), request);
     }
-
-    /* 프로필 이미지 업로드 기능 */
-    @PostMapping("/profile/image")
-    public void uploadCenter(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("file") MultipartFile file) {
-        Long userId = userPrincipal.getUserId();
-        profileService.saveImage(userId, file);
-        return ;
-    }
-
-
-    @GetMapping()
-    public ProfileResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return profileService.get(userPrincipal.getUserId());
-    }
-    @PatchMapping("/edit")
-    public void edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
-        profileService.edit(userPrincipal.getUserId(), request);
-    }
-
-
 }

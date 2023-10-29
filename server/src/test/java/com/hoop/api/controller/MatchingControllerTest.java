@@ -54,6 +54,7 @@ class MatchingControllerTest {
     void clean() {
         matchingRepository.deleteAll();
         matchingAttendRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -122,6 +123,12 @@ class MatchingControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
         assertEquals(1, matchingAttendRepository.count());
+        // expected
+        mockMvc.perform(get("/matching")
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
 }
