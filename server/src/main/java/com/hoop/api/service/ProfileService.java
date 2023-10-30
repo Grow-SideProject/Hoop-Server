@@ -12,6 +12,8 @@ import com.hoop.api.request.profile.ProfileEdit;
 import com.hoop.api.response.ProfileResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +28,9 @@ public class ProfileService {
 
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
+
+    private final Environment env;
+
 
     public ProfileResponse get(Long userId) {
         Profile profile = profileRepository.findByUserId(userId)
@@ -73,18 +78,19 @@ public class ProfileService {
         Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
         try {
-            String basicPath = System.getProperty("user.dir")+ "/files";
+            String basicPath = System.getProperty("user.dir") + "/src/main/resources/static";
             if (!new File(basicPath).exists()) {
                 new File(basicPath).mkdir();
             }
-            String savePath = basicPath+ "/profile";
+            String relPath = "/img/profile";
+            String savePath = basicPath + relPath;
             if (!new File(savePath).exists()) {
                 new File(savePath).mkdir();
             }
-            String filename = userId +"_"+ file.getOriginalFilename();
-            String filePath = savePath + "\\" + filename;
+            String filename = "/"+ userId +"_"+ file.getOriginalFilename();
+            String filePath = savePath + filename;
             file.transferTo(new File(filePath));
-            profile.setProfileImagePath(filePath);
+            profile.setProfileImagePath(relPath + filename);
             profileRepository.save(profile);
         } catch (Exception e) {
             throw new FileUploadException();
@@ -94,8 +100,10 @@ public class ProfileService {
     public FileDto getImage(Long userId) {
         Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
+        log.info(profile.getProfileImagePath());
+        env.getProperty("spring.base-url");
         return FileDto.builder()
-                .filePath("http://localhost:8080/image/"+profile.getProfileImagePath())
+                .filePath(env.getProperty("spring.base-url") + profile.getProfileImagePath())
                 .build();
     }
 }

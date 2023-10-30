@@ -105,5 +105,11 @@ public class AuthController {
         return token;
     }
 
+    @GetMapping(value="/login")
+    @ResponseBody
+    public String login() {
+        return "success";
+    }
+
 
 }
