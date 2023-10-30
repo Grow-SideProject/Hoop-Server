@@ -5,14 +5,17 @@ import com.hoop.api.request.FileDto;
 import com.hoop.api.request.profile.ProfileCreate;
 import com.hoop.api.request.profile.ProfileEdit;
 import com.hoop.api.response.ProfileResponse;
+import com.hoop.api.service.ImageService;
 import com.hoop.api.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 
 
 @Slf4j
@@ -22,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileController {
 
     private  final ProfileService profileService;
+    private  final ImageService imageService;
 
     @PostMapping("/create")
     public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileCreate request) {
@@ -41,15 +45,22 @@ public class ProfileController {
 
     /* 프로필 이미지 업로드 기능 */
     @PostMapping("/image")
-    public void uploadFiles(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("file") MultipartFile file) {
+    public void uploadImage(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("file") MultipartFile file) {
         Long userId = userPrincipal.getUserId();
-        profileService.saveImage(userId, file);
+        String path = imageService.saveImage(userId, "profile", file);
+        profileService.saveImage(userId, path);
     }
 
 
     @GetMapping("/image")
-    public FileDto getFiles(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        FileDto fileDto = profileService.getImage(userPrincipal.getUserId());
-        return fileDto;
+    public ResponseEntity<Resource> getImage(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        String relativePath = profileService.getImage(userPrincipal.getUserId());
+        Resource resource = imageService.getImage(relativePath);
+        if (resource == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/*")
+                .body(resource);
     }
 }

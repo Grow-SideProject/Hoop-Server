@@ -13,7 +13,6 @@ import com.hoop.api.response.ProfileResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,36 +73,17 @@ public class ProfileService {
     }
 
     @Transactional
-    public void saveImage(Long userId, MultipartFile file) {
+    public void saveImage(Long userId, String path) {
         Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
-        try {
-            String basicPath = System.getProperty("user.dir") + "/src/main/resources/static";
-            if (!new File(basicPath).exists()) {
-                new File(basicPath).mkdir();
-            }
-            String relPath = "/img/profile";
-            String savePath = basicPath + relPath;
-            if (!new File(savePath).exists()) {
-                new File(savePath).mkdir();
-            }
-            String filename = "/"+ userId +"_"+ file.getOriginalFilename();
-            String filePath = savePath + filename;
-            file.transferTo(new File(filePath));
-            profile.setProfileImagePath(relPath + filename);
-            profileRepository.save(profile);
-        } catch (Exception e) {
-            throw new FileUploadException();
-        }
+        profile.setProfileImagePath(path);
+        profileRepository.save(profile);
     }
 
-    public FileDto getImage(Long userId) {
+    public String getImage(Long userId) {
         Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
         log.info(profile.getProfileImagePath());
-        env.getProperty("spring.base-url");
-        return FileDto.builder()
-                .filePath(env.getProperty("spring.base-url") + profile.getProfileImagePath())
-                .build();
+        return profile.getProfileImagePath();
     }
 }
