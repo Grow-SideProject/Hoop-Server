@@ -46,14 +46,13 @@ public class ImageService {
         }
     }
 
-    public Resource getImage(String imagePath) {
+    public String getImage(String imagePath) {
         try {
             // 이미지 파일 경로를 지정합니다.
             String basicPath = System.getProperty("user.dir");
             Path absPath = Paths.get(basicPath + imagePath).toAbsolutePath().normalize();
-            Resource resource = new UrlResource(absPath.toUri());
-            return resource;
-        } catch ( IOException e) {
+            return absPath.toString();
+        } catch (Exception e) {
             return null;
         }
     }

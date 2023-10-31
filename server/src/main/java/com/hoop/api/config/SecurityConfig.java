@@ -1,7 +1,7 @@
 package com.hoop.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hoop.api.config.filter.JwtTokenAuthFilter;
+import com.hoop.api.config.filter.CustomUserPasswordFilter;
 import com.hoop.api.config.handler.Http401Handler;
 import com.hoop.api.config.handler.Http403Handler;
 import com.hoop.api.config.handler.LoginFailHandler;
@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(usernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customUserPasswordFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> {
                     e.accessDeniedHandler(new Http403Handler(objectMapper));
                     e.authenticationEntryPoint(new Http401Handler(objectMapper));
@@ -69,8 +69,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtTokenAuthFilter usernamePasswordAuthenticationFilter() {
-        JwtTokenAuthFilter filter = new JwtTokenAuthFilter("/auth/login", objectMapper, jwtService);
+    public CustomUserPasswordFilter customUserPasswordFilter() {
+        CustomUserPasswordFilter filter = new CustomUserPasswordFilter("/auth/login", objectMapper, jwtService);
         filter.setAuthenticationManager(authenticationManager());
         filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));

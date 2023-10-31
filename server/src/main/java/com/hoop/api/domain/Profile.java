@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +31,7 @@ public class Profile {
     private String profileImagePath;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @UniqueElements(message = "이미 프로필이 존재합니다.")
     @JoinColumn(name="user_id")
     private User user;
 

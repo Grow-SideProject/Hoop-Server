@@ -1,6 +1,8 @@
 package com.hoop.api.controller;
 
 import com.hoop.api.config.UserPrincipal;
+import com.hoop.api.constant.Position;
+import com.hoop.api.exception.FileNotFound;
 import com.hoop.api.request.FileDto;
 import com.hoop.api.request.profile.ProfileCreate;
 import com.hoop.api.request.profile.ProfileEdit;
@@ -50,17 +52,20 @@ public class ProfileController {
         String path = imageService.saveImage(userId, "profile", file);
         profileService.saveImage(userId, path);
     }
-
-
+    
     @GetMapping("/image")
-    public ResponseEntity<Resource> getImage(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public String getImage(@AuthenticationPrincipal UserPrincipal userPrincipal){
         String relativePath = profileService.getImage(userPrincipal.getUserId());
-        Resource resource = imageService.getImage(relativePath);
-        if (resource == null) {
-            return ResponseEntity.notFound().build();
+        if (relativePath == null) {
+            throw new FileNotFound();
         }
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "image/*")
-                .body(resource);
+        String imgPath = imageService.getImage(relativePath);
+        return imgPath;
+    }
+
+    @GetMapping("/positions")
+    public Position[]  getPosition(){
+        Position[] allPositions = Position.values();
+        return allPositions;
     }
 }

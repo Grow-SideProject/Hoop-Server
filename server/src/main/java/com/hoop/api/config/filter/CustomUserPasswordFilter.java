@@ -5,7 +5,6 @@ import com.hoop.api.service.auth.JwtService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Getter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -13,14 +12,14 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 
 import java.io.IOException;
 
-public class JwtTokenAuthFilter extends AbstractAuthenticationProcessingFilter {
+public class CustomUserPasswordFilter extends AbstractAuthenticationProcessingFilter {
 
     private ObjectMapper objectMapper;
 
     private  JwtService jwtService;
 
 
-    public JwtTokenAuthFilter(String loginUrl, ObjectMapper objectMapper, JwtService jwtService) {
+    public CustomUserPasswordFilter(String loginUrl, ObjectMapper objectMapper, JwtService jwtService) {
         super(loginUrl);
         this.objectMapper = objectMapper;
         this.jwtService = jwtService;

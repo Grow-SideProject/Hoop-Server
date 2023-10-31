@@ -10,6 +10,7 @@ public abstract class HoopException extends RuntimeException {
 
     public final Map<String, String> validation = new HashMap<>();
 
+
     public HoopException(String message) {
         super(message);
     }
