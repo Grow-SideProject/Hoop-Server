@@ -2,6 +2,7 @@ package com.hoop.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.filter.CustomUserPasswordFilter;
+import com.hoop.api.config.filter.JwtTokenAuthFilter;
 import com.hoop.api.config.handler.Http401Handler;
 import com.hoop.api.config.handler.Http403Handler;
 import com.hoop.api.config.handler.LoginFailHandler;
@@ -41,11 +42,14 @@ public class SecurityConfig {
     private final UserRepository userRepository;
 
     private final JwtService jwtService;
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
                 .requestMatchers("/favicon.ico")
                 .requestMatchers("/error")
+                .requestMatchers("/helloworld/**")
+                .requestMatchers("/auth/**")
                 .requestMatchers(toH2Console());
     }
 
@@ -53,17 +57,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(customUserPasswordFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenAuthFilter(jwtService, userDetailsService(userRepository)), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> {
                     e.accessDeniedHandler(new Http403Handler(objectMapper));
                     e.authenticationEntryPoint(new Http401Handler(objectMapper));
                 })
-                .rememberMe(rm -> rm.rememberMeParameter("remember")
-                        .alwaysRemember(false)
-                        .tokenValiditySeconds(2592000)
-                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
@@ -75,11 +76,6 @@ public class SecurityConfig {
         filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
-
-        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
-        rememberMeServices.setAlwaysRemember(true);
-        rememberMeServices.setValiditySeconds(3600 * 24 * 30);
-        filter.setRememberMeServices(rememberMeServices);
         return filter;
     }
 

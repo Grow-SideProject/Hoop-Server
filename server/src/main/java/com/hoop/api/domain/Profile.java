@@ -31,7 +31,6 @@ public class Profile {
     private String profileImagePath;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @UniqueElements(message = "이미 프로필이 존재합니다.")
     @JoinColumn(name="user_id")
     private User user;
 
