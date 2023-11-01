@@ -2,7 +2,9 @@ package com.hoop.api.service.auth;
 
 
 import com.hoop.api.config.AppConfig;
+import com.hoop.api.exception.HeaderInvalid;
 import com.hoop.api.exception.Unauthorized;
+import com.hoop.api.exception.tokenInvalid;
 import com.hoop.api.response.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -64,18 +66,26 @@ public class JwtService {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token == null || token == "" ) throw new Unauthorized();
-        return token;
+        try {
+            String token = request.getHeader("Authorization");
+            if (token == null || token == "" ) throw new HeaderInvalid();
+            return token;
+        } catch (Exception e) {
+            throw new Unauthorized();
+        }
     }
 
 
     public String getSubject(String token) {
-        Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(appConfig.getJwtKey())
-                .build()
-                .parseClaimsJws(token);
-        return claims.getBody().getSubject();
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(appConfig.getJwtKey())
+                    .build()
+                    .parseClaimsJws(token);
+            return claims.getBody().getSubject();
+        } catch (Exception e) {
+            throw new tokenInvalid();
+        }
     }
 
     public Long getAccessTokenExpiration(){
