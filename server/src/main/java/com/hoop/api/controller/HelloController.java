@@ -64,12 +64,7 @@ public class HelloController {
     @GetMapping("/temp-auth")
     public @ResponseBody TokenResponse signupBySocial() {
         //일단 카카오 로그인만 구현
-        Long id = 12345L;
-        authService.signup(SignUp.builder()
-                .email(Long.toString(id))
-                .password(Long.toString(id))
-                .socialId(id)
-                .build());
+        Long id = 99999L;
         String accessToken = jwtService.createAccessToken(Long.toString(id));
         String refreshToken = jwtService.createRefreshToken(Long.toString(id));
         return TokenResponse.builder()

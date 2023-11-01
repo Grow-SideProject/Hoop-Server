@@ -6,6 +6,7 @@ import com.hoop.api.exception.FileNotFound;
 import com.hoop.api.request.FileDto;
 import com.hoop.api.request.profile.ProfileCreate;
 import com.hoop.api.request.profile.ProfileEdit;
+import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.ProfileResponse;
 import com.hoop.api.service.ImageService;
 import com.hoop.api.service.ProfileService;
@@ -30,8 +31,9 @@ public class ProfileController {
     private  final ImageService imageService;
 
     @PostMapping("/create")
-    public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileCreate request) {
+    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileCreate request) {
         profileService.create(userPrincipal.getUserId(), request);
+        return new DefaultResponse();
     }
 
 
@@ -40,17 +42,19 @@ public class ProfileController {
         return profileService.get(userPrincipal.getUserId());
     }
     @PatchMapping("/edit")
-    public void edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
+    public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
         profileService.edit(userPrincipal.getUserId(), request);
+        return new DefaultResponse();
     }
 
 
     /* 프로필 이미지 업로드 기능 */
     @PostMapping("/image")
-    public void uploadImage(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("file") MultipartFile file) {
+    public DefaultResponse uploadImage(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("file") MultipartFile file) {
         Long userId = userPrincipal.getUserId();
         String path = imageService.saveImage(userId, "profile", file);
         profileService.saveImage(userId, path);
+        return new DefaultResponse();
     }
     
     @GetMapping("/image")

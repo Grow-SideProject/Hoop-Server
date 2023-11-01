@@ -6,6 +6,7 @@ import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.request.auth.SignIn;
 import com.hoop.api.request.auth.SignUp;
 import com.hoop.api.request.auth.SocialSignUp;
+import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.TokenResponse;
 import com.hoop.api.service.auth.AuthService;
 import com.hoop.api.service.auth.JwtService;
@@ -47,7 +48,7 @@ public class AuthController {
      * @param
      */
     @PostMapping("/signup/social")
-    public @ResponseBody String signupBySocial(@RequestBody SocialSignUp socialSignUp) {
+    public @ResponseBody DefaultResponse signupBySocial(@RequestBody SocialSignUp socialSignUp) {
         //일단 카카오 로그인만 구현
         String category = socialSignUp.getCategory();
         switch (category) {
@@ -62,8 +63,7 @@ public class AuthController {
             default:
                 throw new Unauthorized();
         }
-
-        return "KAKAO SIGNUP SUCCESS";
+        return new DefaultResponse();
     }
 
     /**

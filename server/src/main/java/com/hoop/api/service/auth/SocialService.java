@@ -8,6 +8,7 @@ import com.hoop.api.response.KakaoAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -40,6 +41,7 @@ public class SocialService {
         // Set http entity
         // RestTemplate으로 post 방식으로 key를 요청
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         ResponseEntity<String> response = restTemplate
                 .postForEntity(env.getProperty("spring.social.kakao.url.token"), request, String.class);
         if (response.getStatusCode() == HttpStatus.OK) {
