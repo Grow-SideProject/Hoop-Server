@@ -60,7 +60,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(customUserPasswordFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtTokenAuthFilter(jwtService, userDetailsService(userRepository)), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(new JwtTokenAuthFilter(jwtService, userDetailsService(userRepository)), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> {
                     e.accessDeniedHandler(new Http403Handler(objectMapper));
                     e.authenticationEntryPoint(new Http401Handler(objectMapper));

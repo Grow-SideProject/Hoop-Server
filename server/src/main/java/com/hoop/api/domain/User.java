@@ -22,6 +22,9 @@ public class User {
 
     private String password;
 
+
+    private String refreshToken; // 임시로 db에 저장
+
     private LocalDateTime createdAt;
 
     private Long socialId;
@@ -42,6 +45,10 @@ public class User {
         this.password = password;
         this.createdAt = LocalDateTime.now();
         this.socialId = socialId;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
 }

@@ -25,12 +25,7 @@ import java.io.IOException;
 public class JwtTokenAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-
-    private final WebAuthenticationDetailsSource authenticationDetailsSource = new WebAuthenticationDetailsSource();
     private final UserDetailsService userDetailsService;
-
-    private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
-
 
     // Jwt Provier 주입
 
@@ -39,13 +34,10 @@ public class JwtTokenAuthFilter extends OncePerRequestFilter {
         // 이 부분에서 요청에서 필요한 정보를 추출하고 사용자 인증을 시도합니다.
         String accessToken = jwtService.resolveToken(request);
         String subject = jwtService.getSubject(accessToken);
-        String username = subject;
-        String password = subject;
         try {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
+            UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
             // 비밀번호 검증 로직을 수행하고, 유효한 경우 사용자 인증 토큰을 생성합니다.
-            if (passwordIsValid(userDetails, password)) {
+            if (passwordIsValid(userDetails, subject)) {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

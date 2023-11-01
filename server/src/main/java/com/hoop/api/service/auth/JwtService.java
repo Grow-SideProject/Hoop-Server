@@ -3,6 +3,7 @@ package com.hoop.api.service.auth;
 
 import com.hoop.api.config.AppConfig;
 import com.hoop.api.exception.Unauthorized;
+import com.hoop.api.response.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -26,6 +27,18 @@ public class JwtService {
     @PostConstruct
     protected void init() {
         secretKey = Keys.hmacShaKeyFor(appConfig.getJwtKey());
+    }
+
+    public TokenResponse createTokenResponse(String subject) {
+        String accessToken = this.createAccessToken(subject);
+        String refreshToken = this.createRefreshToken(subject);
+        // Token Response 생성
+        return TokenResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .accessTokenExpirationTime(this.getAccessTokenExpiration())
+                .accessTokenExpirationTime(this.getRefreshTokenExpiration())
+                .build();
     }
 
     public String createAccessToken(String subject) {

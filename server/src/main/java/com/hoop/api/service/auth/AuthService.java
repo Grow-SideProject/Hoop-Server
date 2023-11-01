@@ -2,11 +2,13 @@ package com.hoop.api.service.auth;
 
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsEmailException;
+import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.auth.SignUp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -31,5 +33,10 @@ public class AuthService {
         userRepository.save(user);
     }
 
-
+    @Transactional
+    public void setRefreshTokenBySocialId(Long socialId, String token) {
+        User user = userRepository.findBySocialId(socialId).orElseThrow(UserNotFound::new);
+        user.setRefreshToken(token);
+        userRepository.save(user);
+    }
 }

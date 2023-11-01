@@ -6,7 +6,7 @@ import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.auth.SignIn;
 import com.hoop.api.request.auth.SignUp;
 import com.hoop.api.request.auth.SocialSignUp;
-import com.hoop.api.service.auth.KakaoService;
+import com.hoop.api.service.auth.SocialService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,10 @@ class AuthControllerTest {
     private UserRepository userRepository;
 
     @MockBean
-    private KakaoService kakaoService;
+    private SocialService socialService;
+
+    private SocialService authService;
+
 
     @BeforeEach
     void clean() {
@@ -71,7 +74,7 @@ class AuthControllerTest {
                 .accessToken("MOCKTOKEN")
                 .build();
 
-        when(kakaoService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12345L);
+        when(socialService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12345L);
 
         // expected
         mockMvc.perform(post("/auth/signup/social")
@@ -93,9 +96,7 @@ class AuthControllerTest {
                 .socialId(12345L)
                 .build();
         userRepository.saveAndFlush(user);
-        Optional<User> user2 = userRepository.findBySocialId(12345L);
-        when(kakaoService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12345L);
-        when(kakaoService.getByKakao(12345L)).thenReturn(user2);
+        when(socialService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12345L);
         SignIn signIn = SignIn.builder()
                 .accessToken("MOCKTOKEN")
                 .category("KAKAO")
@@ -110,7 +111,7 @@ class AuthControllerTest {
     @Test
     @DisplayName("SIGNIN FAIL")
     void signInFail() throws Exception {
-        when(kakaoService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12345L);
+        when(socialService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12345L);
         SignIn signIn = SignIn.builder()
                 .accessToken("MOCKTOKEN")
                 .category("KAKAO")
