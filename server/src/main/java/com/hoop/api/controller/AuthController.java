@@ -1,6 +1,7 @@
 package com.hoop.api.controller;
 
 import com.hoop.api.domain.User;
+import com.hoop.api.exception.CategoryNotFound;
 import com.hoop.api.exception.Unauthorized;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.request.auth.SignIn;
@@ -61,7 +62,7 @@ public class AuthController {
                         .build());
                 break;
             default:
-                throw new Unauthorized();
+                throw new CategoryNotFound();
         }
         return new DefaultResponse();
     }
@@ -80,7 +81,7 @@ public class AuthController {
                 socialId = socialService.getKakaoIdByToken(signIn.getAccessToken());
                 break;
             default:
-                throw new Unauthorized();
+                throw new CategoryNotFound();
         }
         TokenResponse tokenResponse = jwtService.createTokenResponse(Long.toString(socialId));
         authService.setRefreshTokenBySocialId(socialId,tokenResponse.getRefreshToken());
