@@ -32,11 +32,6 @@ public class AuthController {
     private final JwtService jwtService;
     private final SocialService socialService;
 
-    @Value("${spring.social.kakao.client_id}")
-    private String kakaoClientId;
-
-    @Value("${spring.social.kakao.redirect}")
-    private String kakaoRedirect;
 
     /**
      * 회원 가입
@@ -113,6 +108,5 @@ public class AuthController {
         TokenResponse tokenResponse = jwtService.reissue(tokenRequest);
         return tokenResponse;
     }
-
 
 }
