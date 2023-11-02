@@ -40,7 +40,6 @@ public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
-
     private final JwtService jwtService;
 
     @Bean

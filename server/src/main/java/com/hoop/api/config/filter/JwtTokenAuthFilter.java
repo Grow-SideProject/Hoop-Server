@@ -33,7 +33,6 @@ public class JwtTokenAuthFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
 
     // Jwt Provier 주입
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 이 부분에서 요청에서 필요한 정보를 추출하고 사용자 인증을 시도합니다.
@@ -41,23 +40,14 @@ public class JwtTokenAuthFilter extends OncePerRequestFilter {
         String subject = jwtService.getSubject(token);
         try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
+            if( userDetails == null ) throw new Unauthorized();
             // 비밀번호 검증 로직을 수행하고, 유효한 경우 사용자 인증 토큰을 생성합니다.
-            if (compareRefreshToken(token, subject)) {
-                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
         } catch (AuthenticationException authException) {
             // 사용자 인증에 실패한 경우 예외를 처리할 수 있습니다.
             throw new Unauthorized();
         }
-        filterChain.doFilter(request, response);
-    }
-
-    private boolean compareRefreshToken(String token, String subject) {
-        Optional<User> user = userRepository.findByEmail(subject);
-        if (user.isPresent()) {
-            return user.get().getRefreshToken().equals(token);
-        }
-        return false;
     }
 }

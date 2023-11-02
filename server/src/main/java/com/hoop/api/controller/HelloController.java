@@ -70,8 +70,8 @@ public class HelloController {
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .accessTokenExpirationTime(jwtService.getAccessTokenExpiration())
-                .refreshTokenExpirationTime(jwtService.getRefreshTokenExpiration())
+//                .accessTokenExpirationTime(jwtService.getAccessTokenExpiration())
+//                .refreshTokenExpirationTime(jwtService.getRefreshTokenExpiration())
                 .build();
     }
 }
