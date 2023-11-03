@@ -3,6 +3,8 @@ package com.hoop.api.controller;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.Unauthorized;
 import com.hoop.api.exception.UserNotFound;
+import com.hoop.api.exception.tokenInvalid;
+import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.auth.SignIn;
 import com.hoop.api.request.auth.SignUp;
 import com.hoop.api.request.auth.SocialSignUp;
@@ -27,6 +29,7 @@ public class HelloController {
     private static final String HELLO = "helloworld-nice to meet you";
     private final AuthService authService;
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
     @Setter
     @Getter
@@ -67,6 +70,15 @@ public class HelloController {
         Long id = 99999L;
         String accessToken = jwtService.createAccessToken(Long.toString(id));
         String refreshToken = jwtService.createRefreshToken(Long.toString(id));
+        Optional<User> user =userRepository.findBySocialId(id);
+        if (user.isEmpty())  authService.signup(SignUp.builder()
+                .email(Long.toString(id))
+                .password(Long.toString(id))
+                .socialId(id)
+                .build());
+        User user2 =user.get();
+        user2.setRefreshToken(refreshToken);
+        userRepository.save(user2);
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
