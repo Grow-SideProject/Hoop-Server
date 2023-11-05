@@ -47,22 +47,25 @@ public class AuthController {
      * @param
      */
     @PostMapping("/signup/social")
-    public @ResponseBody DefaultResponse signupBySocial(@RequestBody SocialSignUp socialSignUp) {
+    public @ResponseBody TokenResponse signupBySocial(@RequestBody SocialSignUp socialSignUp) {
         //일단 카카오 로그인만 구현
+        Long socialId;
         String category = socialSignUp.getCategory();
         switch (category) {
             case "KAKAO" :
-                Long id = socialService.getKakaoIdByToken(socialSignUp.getAccessToken());
+                socialId = socialService.getKakaoIdByToken(socialSignUp.getAccessToken());
                 authService.signup(SignUp.builder()
-                        .email(Long.toString(id))
-                        .password(Long.toString(id))
-                        .socialId(id)
+                        .email(Long.toString(socialId))
+                        .password(Long.toString(socialId))
+                        .socialId(socialId)
                         .build());
                 break;
             default:
                 throw new CategoryNotFound();
         }
-        return new DefaultResponse();
+        TokenResponse tokenResponse = jwtService.createTokenResponse(Long.toString(socialId));
+        authService.setRefreshTokenBySocialId(socialId,tokenResponse.getRefreshToken());
+        return tokenResponse;
     }
 
     /**

@@ -72,26 +72,17 @@ public class JwtService {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        try {
-            String token = request.getHeader("Authorization");
-            if (token == null || token.equals("")) throw new HeaderInvalid();
-            return token;
-        } catch (Exception e) {
-            throw new Unauthorized();
-        }
+        String token = request.getHeader("Authorization");
+        return token;
     }
 
 
     public String getSubject(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(appConfig.getJwtKey())
-                    .build()
-                    .parseClaimsJws(token);
-            return claims.getBody().getSubject();
-        } catch (Exception e) {
-            throw new tokenInvalid();
-        }
+        Jws<Claims> claims = Jwts.parserBuilder()
+                .setSigningKey(appConfig.getJwtKey())
+                .build()
+                .parseClaimsJws(token);
+        return claims.getBody().getSubject();
     }
 
     public Date getExpiration(String token) {
