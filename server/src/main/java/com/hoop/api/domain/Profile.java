@@ -19,6 +19,8 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String phoneNumber;
     private LocalDateTime createdAt;
     private Integer height;
     private Integer weight;
@@ -35,7 +37,8 @@ public class Profile {
     private User user;
 
     @Builder
-    public Profile(String name, Integer height, Integer weight, String desc, List<Position> positions, User user) {
+    public Profile(String phoneNumber, String name, Integer height, Integer weight, String desc, List<Position> positions, User user) {
+        this.phoneNumber = phoneNumber;
         this.name = name;
         this.height = height;
         this.weight = weight;
@@ -47,6 +50,7 @@ public class Profile {
 
     public ProfileEditor.ProfileEditorBuilder toEditor() {
         return ProfileEditor.builder()
+                .phoneNumber(phoneNumber)
                 .name(name)
                 .height(height)
                 .weight(weight)
@@ -55,6 +59,7 @@ public class Profile {
     }
 
     public void edit(ProfileEditor profileEditor) {
+        phoneNumber = profileEditor.getPhoneNumber();
         name = profileEditor.getName();
         height = profileEditor.getHeight();
         weight = profileEditor.getWeight();

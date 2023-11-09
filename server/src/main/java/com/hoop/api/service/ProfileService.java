@@ -35,6 +35,7 @@ public class ProfileService {
         Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
         return ProfileResponse.builder()
+                .phoneNumber(profile.getPhoneNumber())
                 .name(profile.getName())
                 .height(profile.getHeight())
                 .weight(profile.getWeight())
@@ -47,6 +48,7 @@ public class ProfileService {
         var user = userRepository.findById(userId)
                 .orElseThrow(UserNotFound::new);
         Profile profile = Profile.builder()
+                .phoneNumber(profileCreate.getPhoneNumber())
                 .name(profileCreate.getName())
                 .height(profileCreate.getHeight())
                 .weight(profileCreate.getWeight())
@@ -63,6 +65,7 @@ public class ProfileService {
                 .orElseThrow(UserNotFound::new);
         ProfileEditor.ProfileEditorBuilder editorBuilder = profile.toEditor();
         ProfileEditor profileEditor = editorBuilder
+                .phoneNumber(profileEdit.getPhoneNumber())
                 .name(profileEdit.getName())
                 .height(profileEdit.getHeight())
                 .weight(profileEdit.getWeight())

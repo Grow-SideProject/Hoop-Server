@@ -37,6 +37,7 @@ public class ProfileController {
     }
 
 
+
     @GetMapping()
     public ProfileResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return profileService.get(userPrincipal.getUserId());

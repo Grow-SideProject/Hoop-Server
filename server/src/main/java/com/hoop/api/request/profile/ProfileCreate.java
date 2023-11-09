@@ -9,6 +9,8 @@ import java.util.List;
 
 @Data
 public class ProfileCreate {
+
+    private String phoneNumber;
     private Integer height;
     private Integer weight;
     private String desc;
@@ -17,7 +19,8 @@ public class ProfileCreate {
 
 
     @Builder
-    public ProfileCreate(String name, Integer height, Integer weight, String desc, List<Position> positions) {
+    public ProfileCreate(String phoneNumber, String name, Integer height, Integer weight, String desc, List<Position> positions) {
+        this.phoneNumber = phoneNumber;
         this.name = name;
         this.height = height;
         this.weight = weight;

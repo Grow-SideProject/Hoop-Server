@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 public class ProfileResponse {
 
+    private String phoneNumber;
     private String name;
     private Integer height;
     private Integer weight;
@@ -21,7 +22,8 @@ public class ProfileResponse {
     private List<Position> positions;
 
     @Builder
-    public ProfileResponse(String name, Integer height, Integer weight, String desc, List<Position> positions) {
+    public ProfileResponse(String phoneNumber, String name, Integer height, Integer weight, String desc, List<Position> positions) {
+        this.phoneNumber = phoneNumber;
         this.name = name;
         this.height = height;
         this.weight = weight;

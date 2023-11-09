@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 public class ProfileEditor {
 
+    private final String phoneNumber;
     private final String name;
     private final Integer height;
     private final Integer weight;
@@ -18,7 +19,8 @@ public class ProfileEditor {
     private List<Position> positions;
 
     @Builder
-    public ProfileEditor(String name, Integer height, Integer weight, String desc, List<Position> positions) {
+    public ProfileEditor(String phoneNumber, String name, Integer height, Integer weight, String desc, List<Position> positions) {
+        this.phoneNumber = phoneNumber;
         this.name = name;
         this.height = height;
         this.weight = weight;
