@@ -14,7 +14,9 @@ import com.hoop.api.request.matching.MatchingAttendRequest;
 import com.hoop.api.request.matching.MatchingCreate;
 import com.hoop.api.request.profile.ProfileCreate;
 import com.hoop.api.request.profile.ProfileEdit;
+import com.hoop.api.service.auth.JwtService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,21 @@ class MatchingControllerTest {
 
     @Autowired
     private MatchingRepository matchingAttendRepository;
+    @Autowired
+    private JwtService jwtService;
+    private String accessToken;
+
+    @BeforeEach
+    void setup() {
+        userRepository.deleteAll();
+        User user = User.builder()
+                .email("99999")
+                .password("99999")
+                .socialId(99999L)
+                .build();
+        userRepository.save(user);
+        accessToken = jwtService.createAccessToken("99999");
+    }
     @AfterEach
     void clean() {
         matchingRepository.deleteAll();
@@ -78,6 +95,7 @@ class MatchingControllerTest {
         String json = objectMapper.writeValueAsString(matchingCreate);
         // expected
         mockMvc.perform(post("/matching/create")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
@@ -117,6 +135,7 @@ class MatchingControllerTest {
         String json = objectMapper.writeValueAsString(matchingAttendRequest);
         // expected
         mockMvc.perform(post("/matching/attend")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
@@ -125,6 +144,7 @@ class MatchingControllerTest {
         assertEquals(1, matchingAttendRepository.count());
         // expected
         mockMvc.perform(get("/matching")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())

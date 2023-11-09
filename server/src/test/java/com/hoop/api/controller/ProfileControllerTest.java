@@ -9,7 +9,9 @@ import com.hoop.api.repository.ProfileRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.profile.ProfileCreate;
 import com.hoop.api.request.profile.ProfileEdit;
+import com.hoop.api.service.auth.JwtService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,21 @@ class ProfileControllerTest {
     @Autowired
     private ProfileRepository profileRepository;
 
+    @Autowired
+    private JwtService jwtService;
+    private String accessToken;
+
+    @BeforeEach
+    void setup() {
+        userRepository.deleteAll();
+        User user = User.builder()
+                .email("99999")
+                .password("99999")
+                .socialId(99999L)
+                .build();
+        userRepository.save(user);
+        accessToken = jwtService.createAccessToken("99999");
+    }
     @AfterEach
     void clean() {
 
@@ -63,6 +80,7 @@ class ProfileControllerTest {
 
         // expected
         mockMvc.perform(post("/profile/create")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileCreate))
                 )
@@ -84,6 +102,7 @@ class ProfileControllerTest {
                 .positions(myList)
                 .build();
         mockMvc.perform(post("/profile/create")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileCreate))
                 )
@@ -92,7 +111,9 @@ class ProfileControllerTest {
 
         // expected
         mockMvc.perform(get("/profile")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON))
+
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -110,6 +131,7 @@ class ProfileControllerTest {
                 .positions(myList)
                 .build();
         mockMvc.perform(post("/profile/create")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileCreate))
                 )
@@ -127,6 +149,7 @@ class ProfileControllerTest {
 
         // expected
         mockMvc.perform(patch("/profile/edit")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileEdit)))
                 .andExpect(status().isOk())
