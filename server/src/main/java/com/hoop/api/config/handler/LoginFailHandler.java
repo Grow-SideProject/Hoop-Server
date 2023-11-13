@@ -28,7 +28,7 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code("400")
-                .message("아이디 혹은 비밀번호가 올바르지 않습니다.")
+                .message("토큰이 올바르지 않습니다.")
                 .build();
 
         response.setContentType(APPLICATION_JSON_VALUE);

@@ -1,12 +1,10 @@
 package com.hoop.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hoop.api.config.filter.CustomUserPasswordFilter;
 import com.hoop.api.config.filter.JwtTokenAuthFilter;
 import com.hoop.api.config.handler.Http401Handler;
 import com.hoop.api.config.handler.Http403Handler;
 import com.hoop.api.config.handler.LoginFailHandler;
-import com.hoop.api.config.handler.LoginSuccessHandler;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.service.auth.JwtService;
@@ -58,24 +56,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(customUserPasswordFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtTokenAuthFilter(jwtService, userDetailsService(userRepository), userRepository), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenAuthFilter(jwtService, userDetailsService(userRepository), userRepository, new LoginFailHandler(objectMapper)), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> {
                     e.accessDeniedHandler(new Http403Handler(objectMapper));
                     e.authenticationEntryPoint(new Http401Handler(objectMapper));
                 })
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
-    }
-
-    @Bean
-    public CustomUserPasswordFilter customUserPasswordFilter() {
-        CustomUserPasswordFilter filter = new CustomUserPasswordFilter("/auth/login", objectMapper, jwtService);
-        filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
-        filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
-        filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
-        return filter;
     }
 
     @Bean

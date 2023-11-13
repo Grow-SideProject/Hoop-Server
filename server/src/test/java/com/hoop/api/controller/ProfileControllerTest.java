@@ -79,7 +79,7 @@ class ProfileControllerTest {
                 .build();
 
         // expected
-        mockMvc.perform(post("/profile/create")
+        mockMvc.perform(post("/profile")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileCreate))
@@ -101,7 +101,7 @@ class ProfileControllerTest {
                 .desc("강한 타입")
                 .positions(myList)
                 .build();
-        mockMvc.perform(post("/profile/create")
+        mockMvc.perform(post("/profile")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileCreate))
@@ -130,7 +130,7 @@ class ProfileControllerTest {
                 .desc("강한 타입")
                 .positions(myList)
                 .build();
-        mockMvc.perform(post("/profile/create")
+        mockMvc.perform(post("/profile")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileCreate))
@@ -148,7 +148,7 @@ class ProfileControllerTest {
                 .build();
 
         // expected
-        mockMvc.perform(patch("/profile/edit")
+        mockMvc.perform(patch("/profile")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileEdit)))

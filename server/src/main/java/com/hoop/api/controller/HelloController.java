@@ -1,13 +1,8 @@
 package com.hoop.api.controller;
 
 import com.hoop.api.domain.User;
-import com.hoop.api.exception.Unauthorized;
-import com.hoop.api.exception.UserNotFound;
-import com.hoop.api.exception.tokenInvalid;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.auth.SignIn;
 import com.hoop.api.request.auth.SignUp;
-import com.hoop.api.request.auth.SocialSignUp;
 import com.hoop.api.response.TokenResponse;
 import com.hoop.api.service.auth.AuthService;
 import com.hoop.api.service.auth.JwtService;
@@ -15,7 +10,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;

@@ -3,9 +3,8 @@ package com.hoop.api.service.auth;
 
 import com.hoop.api.config.AppConfig;
 import com.hoop.api.domain.User;
-import com.hoop.api.exception.HeaderInvalid;
-import com.hoop.api.exception.Unauthorized;
-import com.hoop.api.exception.tokenInvalid;
+import com.hoop.api.exception.TokenInvalid;
+import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.auth.TokenRequest;
 import com.hoop.api.response.TokenResponse;
@@ -86,15 +85,12 @@ public class JwtService {
     }
 
     public Date getExpiration(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(appConfig.getJwtKey())
-                    .build()
-                    .parseClaimsJws(token);
-            return claims.getBody().getExpiration();
-        } catch (Exception e) {
-            throw new tokenInvalid();
-        }
+        Jws<Claims> claims = Jwts.parserBuilder()
+                .setSigningKey(appConfig.getJwtKey())
+                .build()
+                .parseClaimsJws(token);
+        return claims.getBody().getExpiration();
+
     }
 
     /**
@@ -109,7 +105,7 @@ public class JwtService {
         Date now = new Date();
         String refreshToken = tokenRequest.getRefreshToken();
         String subject = this.getSubject(refreshToken);
-        User user =userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new tokenInvalid());
+        User user =userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new UserNotFound());
         /*
          refresh Token이 valid한다면 access token을 발급한다.
          */

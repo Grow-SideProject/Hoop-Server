@@ -30,7 +30,7 @@ public class ProfileController {
     private  final ProfileService profileService;
     private  final ImageService imageService;
 
-    @PostMapping("/create")
+    @PostMapping()
     public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileCreate request) {
         profileService.create(userPrincipal.getUserId(), request);
         return new DefaultResponse();
@@ -42,7 +42,7 @@ public class ProfileController {
     public ProfileResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return profileService.get(userPrincipal.getUserId());
     }
-    @PatchMapping("/edit")
+    @PatchMapping()
     public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
         profileService.edit(userPrincipal.getUserId(), request);
         return new DefaultResponse();
