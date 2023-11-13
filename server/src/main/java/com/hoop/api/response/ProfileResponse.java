@@ -1,5 +1,6 @@
 package com.hoop.api.response;
 
+import com.hoop.api.constant.Position;
 import com.hoop.api.domain.Post;
 import lombok.Builder;
 import lombok.Data;
@@ -13,14 +14,16 @@ import java.util.List;
 @Data
 public class ProfileResponse {
 
+    private String phoneNumber;
     private String name;
-    private int height;
-    private int weight;
+    private Integer height;
+    private Integer weight;
     private String desc;
-    private List<String> positions;
+    private List<Position> positions;
 
     @Builder
-    public ProfileResponse(String name, int height, int weight, String desc, List<String> positions) {
+    public ProfileResponse(String phoneNumber, String name, Integer height, Integer weight, String desc, List<Position> positions) {
+        this.phoneNumber = phoneNumber;
         this.name = name;
         this.height = height;
         this.weight = weight;

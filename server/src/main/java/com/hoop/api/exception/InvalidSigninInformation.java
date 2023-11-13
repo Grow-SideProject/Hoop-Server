@@ -9,7 +9,7 @@ public class InvalidSigninInformation extends HoopException {
     }
 
     @Override
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return 400;
     }
 }

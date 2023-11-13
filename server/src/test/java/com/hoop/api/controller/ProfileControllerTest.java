@@ -1,27 +1,23 @@
 package com.hoop.api.controller;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
-import com.hoop.api.domain.Post;
+import com.hoop.api.config.UserPrincipal;
+import com.hoop.api.constant.Position;
 import com.hoop.api.domain.Profile;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.ProfileRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.repository.post.PostRepository;
-import com.hoop.api.request.post.PostCreate;
-import com.hoop.api.request.post.PostEdit;
 import com.hoop.api.request.profile.ProfileCreate;
 import com.hoop.api.request.profile.ProfileEdit;
+import com.hoop.api.service.auth.JwtService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,9 +42,27 @@ class ProfileControllerTest {
     @Autowired
     private ProfileRepository profileRepository;
 
+    @Autowired
+    private JwtService jwtService;
+    private String accessToken;
+
+    @BeforeEach
+    void setup() {
+        userRepository.deleteAll();
+        User user = User.builder()
+                .email("99999")
+                .password("99999")
+                .socialId(99999L)
+                .build();
+        userRepository.save(user);
+        accessToken = jwtService.createAccessToken("99999");
+    }
     @AfterEach
     void clean() {
+
         userRepository.deleteAll();
+        profileRepository.deleteAll();
+
     }
 
     @Test
@@ -56,7 +70,7 @@ class ProfileControllerTest {
     @DisplayName("CREATE PROFILE")
     void test1() throws Exception {
         // given
-        List<String> myList = Arrays.asList("포인트가드", "센터");
+        List<Position> myList = Arrays.asList(Position.CENTER, Position.POWER_FORWARD);
         ProfileCreate profileCreate = ProfileCreate.builder()
                 .height(180)
                 .weight(70)
@@ -65,7 +79,8 @@ class ProfileControllerTest {
                 .build();
 
         // expected
-        mockMvc.perform(post("/profile/create")
+        mockMvc.perform(post("/profile")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileCreate))
                 )
@@ -75,56 +90,55 @@ class ProfileControllerTest {
     }
 
     @Test
+    @HoopMockUser
     @DisplayName("GET PROFILE")
     void test2() throws Exception {
         // given
-        User user = User.builder()
-                .email("temp@gmail.com")
-                .password("1234")
-                .build();
-        userRepository.save(user);
-        List<String> myList = Arrays.asList("포인트가드", "센터");
-
-        Profile profile = Profile.builder()
+        List<Position> myList = Arrays.asList(Position.CENTER, Position.POWER_FORWARD);
+        ProfileCreate profileCreate = ProfileCreate.builder()
                 .height(180)
                 .weight(70)
                 .desc("강한 타입")
                 .positions(myList)
-                .user(user)
                 .build();
-        profileRepository.save(profile);
+        mockMvc.perform(post("/profile")
+                        .header("Authorization",accessToken)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(profileCreate))
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
 
         // expected
-        mockMvc.perform(get("/profile/{userId}", user.getId())
+        mockMvc.perform(get("/profile")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON))
+
                 .andExpect(status().isOk())
                 .andDo(print());
     }
-
 
     @Test
     @HoopMockUser
     @DisplayName("EDIT PROFILE")
     void test3() throws Exception {
         // given
-        User user = User.builder()
-                .email("temp@gmail.com")
-                .password("1234")
-                .build();
-        userRepository.save(user);
-        List<String> myList = Arrays.asList("포인트가드", "센터");
-
-        Profile profile = Profile.builder()
+        List<Position> myList = Arrays.asList(Position.CENTER, Position.POWER_FORWARD);
+        ProfileCreate profileCreate = ProfileCreate.builder()
                 .height(180)
                 .weight(70)
-                .name("닉네임")
                 .desc("강한 타입")
                 .positions(myList)
-                .user(user)
                 .build();
-        profileRepository.save(profile);
+        mockMvc.perform(post("/profile")
+                        .header("Authorization",accessToken)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(profileCreate))
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
 
-        myList = Arrays.asList("파워포워드", "센터");
+        myList = Arrays.asList(Position.SMALL_FORWARD, Position.POWER_FORWARD);
 
         ProfileEdit profileEdit = ProfileEdit.builder()
                 .height(200)
@@ -134,12 +148,15 @@ class ProfileControllerTest {
                 .build();
 
         // expected
-        mockMvc.perform(patch("/profile/{userId}", user.getId())
+        mockMvc.perform(patch("/profile")
+                        .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileEdit)))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
+
 
 }
 

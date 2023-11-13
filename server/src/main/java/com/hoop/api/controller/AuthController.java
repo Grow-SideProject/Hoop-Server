@@ -1,23 +1,17 @@
 package com.hoop.api.controller;
 
-import com.hoop.api.domain.User;
-import com.hoop.api.exception.Unauthorized;
-import com.hoop.api.exception.UserNotFound;
-import com.hoop.api.request.sign.SignIn;
-import com.hoop.api.request.sign.SignUp;
-import com.hoop.api.request.sign.SocialSignUp;
+import com.hoop.api.exception.CategoryNotFound;
+import com.hoop.api.request.auth.SignIn;
+import com.hoop.api.request.auth.SignUp;
+import com.hoop.api.request.auth.SocialSignUp;
+import com.hoop.api.request.auth.TokenRequest;
 import com.hoop.api.response.TokenResponse;
 import com.hoop.api.service.auth.AuthService;
 import com.hoop.api.service.auth.JwtService;
-import com.hoop.api.service.auth.KakaoService;
+import com.hoop.api.service.auth.SocialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -27,13 +21,8 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtService jwtService;
-    private final KakaoService kakaoService;
+    private final SocialService socialService;
 
-    @Value("${spring.social.kakao.client_id}")
-    private String kakaoClientId;
-
-    @Value("${spring.social.kakao.redirect}")
-    private String kakaoRedirect;
 
     /**
      * 회원 가입
@@ -49,16 +38,25 @@ public class AuthController {
      * @param
      */
     @PostMapping("/signup/social")
-    public ResponseEntity<String> signupByKakao(@RequestBody SocialSignUp socialSignUp) {
+    public @ResponseBody TokenResponse signupBySocial(@RequestBody SocialSignUp socialSignUp) {
         //일단 카카오 로그인만 구현
+        Long socialId;
         String category = socialSignUp.getCategory();
-        Long id = kakaoService.getKakaoIdByToken(socialSignUp.getAccessToken());
-        authService.signup(SignUp.builder()
-                .email(Long.toString(id))
-                .password(Long.toString(id))
-                .kakao(id)
-                .build());
-        return new ResponseEntity<>("카카오 회원가입 성공", HttpStatus.OK);
+        switch (category) {
+            case "KAKAO" :
+                socialId = socialService.getKakaoIdByToken(socialSignUp.getAccessToken());
+                authService.signup(SignUp.builder()
+                        .email(Long.toString(socialId))
+                        .password(Long.toString(socialId))
+                        .socialId(socialId)
+                        .build());
+                break;
+            default:
+                throw new CategoryNotFound();
+        }
+        TokenResponse tokenResponse = jwtService.createTokenResponse(Long.toString(socialId));
+        authService.setRefreshTokenBySocialId(socialId,tokenResponse.getRefreshToken());
+        return tokenResponse;
     }
 
     /**
@@ -69,36 +67,40 @@ public class AuthController {
     @PostMapping(value = "/signin")
     public @ResponseBody TokenResponse signIn (@RequestBody SignIn signIn) {
         String category = signIn.getCategory();
-        Long id;
+        Long socialId;
         switch (category) {
             case "KAKAO" :
-                id = kakaoService.getKakaoIdByToken(signIn.getAccessToken());
-                Optional<User> user= kakaoService.getByKakao(id);
-                if (user.isEmpty()){
-                    throw new UserNotFound();
-                }
+                socialId = socialService.getKakaoIdByToken(signIn.getAccessToken());
                 break;
             default:
-                throw new Unauthorized();
+                throw new CategoryNotFound();
         }
-        String accessToken = jwtService.createAccessToken(Long.toString(id));
-        String refreshToken = jwtService.createRefreshToken(Long.toString(id));
-        return TokenResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .accessTokenExpirationTime(jwtService.getAccessTokenExpiration())
-                .refreshTokenExpirationTime(jwtService.getRefreshTokenExpiration())
-                .build();
+        TokenResponse tokenResponse = jwtService.createTokenResponse(Long.toString(socialId));
+        authService.setRefreshTokenBySocialId(socialId,tokenResponse.getRefreshToken());
+        return tokenResponse;
     }
 
     @GetMapping(value="kakao")
     @ResponseBody
     public String getKakaoAccess(String code) {
         log.info("code = {}",code);
-        String token = kakaoService.getKakaoTokenInfo(code).getAccess_token();
+        String token = socialService.getKakaoTokenInfo(code).getAccess_token();
         log.info("token = {}",token);
         return token;
     }
 
+    @GetMapping(value="/login")
+    @ResponseBody
+    public String login() {
+        return "success";
+    }
+
+
+    @PostMapping(value="/reissue")
+    @ResponseBody
+    private TokenResponse reissue(@RequestBody TokenRequest tokenRequest) {
+        TokenResponse tokenResponse = jwtService.reissue(tokenRequest);
+        return tokenResponse;
+    }
 
 }

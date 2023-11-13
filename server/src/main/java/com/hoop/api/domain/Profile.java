@@ -1,10 +1,12 @@
 package com.hoop.api.domain;
 
+import com.hoop.api.constant.Position;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,21 +19,26 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String phoneNumber;
     private LocalDateTime createdAt;
-    private int height;
-    private int weight;
+    private Integer height;
+    private Integer weight;
+    @Column(name = "description")
     private String desc;
-    private List<String> positions;
+
+    private List<Position> positions;
     private String name;
 
-    private String profileImage;
+    private String profileImagePath;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
 
     @Builder
-    public Profile(String name, int height, int weight, String desc, List<String> positions, User user) {
+    public Profile(String phoneNumber, String name, Integer height, Integer weight, String desc, List<Position> positions, User user) {
+        this.phoneNumber = phoneNumber;
         this.name = name;
         this.height = height;
         this.weight = weight;
@@ -43,6 +50,7 @@ public class Profile {
 
     public ProfileEditor.ProfileEditorBuilder toEditor() {
         return ProfileEditor.builder()
+                .phoneNumber(phoneNumber)
                 .name(name)
                 .height(height)
                 .weight(weight)
@@ -51,11 +59,15 @@ public class Profile {
     }
 
     public void edit(ProfileEditor profileEditor) {
+        phoneNumber = profileEditor.getPhoneNumber();
         name = profileEditor.getName();
         height = profileEditor.getHeight();
         weight = profileEditor.getWeight();
         desc = profileEditor.getDesc();
         positions = profileEditor.getPositions();
+    }
+    public void setProfileImagePath(String path) {
+        this.profileImagePath = path;
     }
 
 }
