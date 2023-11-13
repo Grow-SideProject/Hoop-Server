@@ -18,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -70,12 +73,14 @@ class ProfileControllerTest {
     @DisplayName("CREATE PROFILE")
     void test1() throws Exception {
         // given
-        List<Position> myList = Arrays.asList(Position.CENTER, Position.POWER_FORWARD);
         ProfileCreate profileCreate = ProfileCreate.builder()
+                .nickName("닉네임이요")
+                .birth("2000-01-01")
+                .phoneNumber("010-1234-5678")
                 .height(180)
                 .weight(70)
                 .desc("강한 타입")
-                .positions(myList)
+                .position(Position.CENTER)
                 .build();
 
         // expected
@@ -94,12 +99,13 @@ class ProfileControllerTest {
     @DisplayName("GET PROFILE")
     void test2() throws Exception {
         // given
-        List<Position> myList = Arrays.asList(Position.CENTER, Position.POWER_FORWARD);
         ProfileCreate profileCreate = ProfileCreate.builder()
+                .nickName("닉네임이요")
+                .phoneNumber("010-1234-5678")
                 .height(180)
                 .weight(70)
                 .desc("강한 타입")
-                .positions(myList)
+                .position(Position.CENTER)
                 .build();
         mockMvc.perform(post("/profile")
                         .header("Authorization",accessToken)
@@ -123,12 +129,13 @@ class ProfileControllerTest {
     @DisplayName("EDIT PROFILE")
     void test3() throws Exception {
         // given
-        List<Position> myList = Arrays.asList(Position.CENTER, Position.POWER_FORWARD);
         ProfileCreate profileCreate = ProfileCreate.builder()
+                .nickName("닉네임이요")
+                .phoneNumber("010-1234-5678")
                 .height(180)
                 .weight(70)
                 .desc("강한 타입")
-                .positions(myList)
+                .position(Position.CENTER)
                 .build();
         mockMvc.perform(post("/profile")
                         .header("Authorization",accessToken)
@@ -138,13 +145,11 @@ class ProfileControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        myList = Arrays.asList(Position.SMALL_FORWARD, Position.POWER_FORWARD);
-
         ProfileEdit profileEdit = ProfileEdit.builder()
                 .height(200)
                 .weight(100)
                 .desc("매우 강한 타입")
-                .positions(myList)
+                .position(Position.POWER_FORWARD)
                 .build();
 
         // expected

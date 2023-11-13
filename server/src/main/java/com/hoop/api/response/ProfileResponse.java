@@ -1,5 +1,6 @@
 package com.hoop.api.response;
 
+import com.hoop.api.constant.Level;
 import com.hoop.api.constant.Position;
 import com.hoop.api.domain.Post;
 import lombok.Builder;
@@ -15,19 +16,22 @@ import java.util.List;
 public class ProfileResponse {
 
     private String phoneNumber;
-    private String name;
+    private String nickName;
     private Integer height;
     private Integer weight;
     private String desc;
-    private List<Position> positions;
+    private String position;
+    private Level level;
 
     @Builder
-    public ProfileResponse(String phoneNumber, String name, Integer height, Integer weight, String desc, List<Position> positions) {
+    public ProfileResponse(String phoneNumber, String nickName, Integer height, Integer weight,
+                           String desc, Position position, Level level) {
         this.phoneNumber = phoneNumber;
-        this.name = name;
+        this.nickName = nickName;
         this.height = height;
         this.weight = weight;
         this.desc = desc;
-        this.positions = positions;
+        this.position = position.getValue();
+        this.level = level;
     }
 }

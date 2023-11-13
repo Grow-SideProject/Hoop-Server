@@ -20,6 +20,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+
 
 @Slf4j
 @RestController
@@ -69,8 +71,11 @@ public class ProfileController {
     }
 
     @GetMapping("/positions")
-    public Position[]  getPosition(){
-        Position[] allPositions = Position.values();
-        return allPositions;
+    public HashMap<Integer, String>  getPosition(){
+        HashMap<Integer, String> response = new HashMap<Integer, String>();
+        for (Position position : Position.values()) {
+            response.put(position.ordinal(), position.getValue());
+        }
+        return response;
     }
 }

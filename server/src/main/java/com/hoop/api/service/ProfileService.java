@@ -2,11 +2,10 @@ package com.hoop.api.service;
 
 import com.hoop.api.domain.Profile;
 import com.hoop.api.domain.ProfileEditor;
-import com.hoop.api.exception.FileUploadException;
+import com.hoop.api.exception.ProfileException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.repository.ProfileRepository;
-import com.hoop.api.request.FileDto;
 import com.hoop.api.request.profile.ProfileCreate;
 import com.hoop.api.request.profile.ProfileEdit;
 import com.hoop.api.response.ProfileResponse;
@@ -15,9 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 
 @Slf4j
 @Service
@@ -36,27 +32,35 @@ public class ProfileService {
                 .orElseThrow(UserNotFound::new);
         return ProfileResponse.builder()
                 .phoneNumber(profile.getPhoneNumber())
-                .name(profile.getName())
+                .nickName(profile.getNickName())
                 .height(profile.getHeight())
                 .weight(profile.getWeight())
                 .desc(profile.getDesc())
-                .positions(profile.getPositions())
+                .position(profile.getPosition())
+                .level(profile.getLevel())
                 .build();
     }
 
     public void create(Long userId, ProfileCreate profileCreate) {
-        var user = userRepository.findById(userId)
-                .orElseThrow(UserNotFound::new);
-        Profile profile = Profile.builder()
-                .phoneNumber(profileCreate.getPhoneNumber())
-                .name(profileCreate.getName())
-                .height(profileCreate.getHeight())
-                .weight(profileCreate.getWeight())
-                .desc(profileCreate.getDesc())
-                .positions(profileCreate.getPositions())
-                .user(user)
-                .build();
-        profileRepository.save(profile);
+        try {
+            var user = userRepository.findById(userId)
+                    .orElseThrow(UserNotFound::new);
+            Profile profile = Profile.builder()
+                    .phoneNumber(profileCreate.getPhoneNumber())
+                    .nickName(profileCreate.getNickName())
+                    .birth(profileCreate.getBirth())
+                    .height(profileCreate.getHeight())
+                    .weight(profileCreate.getWeight())
+                    .desc(profileCreate.getDesc())
+                    .position(profileCreate.getPosition())
+                    .level(profileCreate.getLevel())
+                    .user(user)
+                    .build();
+            profileRepository.save(profile);
+        } catch (Exception e) {
+            throw new ProfileException();
+        }
+
     }
 
     @Transactional
@@ -66,11 +70,13 @@ public class ProfileService {
         ProfileEditor.ProfileEditorBuilder editorBuilder = profile.toEditor();
         ProfileEditor profileEditor = editorBuilder
                 .phoneNumber(profileEdit.getPhoneNumber())
-                .name(profileEdit.getName())
+                .birth(profileEdit.getBirth())
+                .nickName(profileEdit.getNickName())
                 .height(profileEdit.getHeight())
                 .weight(profileEdit.getWeight())
                 .desc(profileEdit.getDesc())
-                .positions(profileEdit.getPositions())
+                .position(profileEdit.getPosition())
+                .level(profileEdit.getLevel())
                 .build();
         profile.edit(profileEditor);
     }
