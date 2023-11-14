@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JwtTokenAuthFilter(jwtService, userDetailsService(userRepository), userRepository, new LoginFailHandler(objectMapper)), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenAuthFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> {
                     e.accessDeniedHandler(new Http403Handler(objectMapper));
                     e.authenticationEntryPoint(new Http401Handler(objectMapper));
@@ -64,13 +64,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
-
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService(userRepository));
-        provider.setPasswordEncoder(passwordEncoder());
-        return new ProviderManager(provider);
+    public JwtTokenAuthFilter jwtTokenAuthFilter() {
+        JwtTokenAuthFilter jwtTokenAuthFilter = new JwtTokenAuthFilter(jwtService, userDetailsService(userRepository), new LoginFailHandler(objectMapper));
+        return jwtTokenAuthFilter;
     }
 
     @Bean
