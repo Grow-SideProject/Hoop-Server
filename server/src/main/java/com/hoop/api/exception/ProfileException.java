@@ -8,6 +8,9 @@ public class ProfileException extends HoopException {
         super(MESSAGE);
     }
 
+    public ProfileException(String message) {
+        super(message);
+    }
     @Override
     public Integer getStatusCode() {
         return 400;

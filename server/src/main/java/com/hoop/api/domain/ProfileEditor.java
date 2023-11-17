@@ -1,13 +1,11 @@
 package com.hoop.api.domain;
 
+import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Level;
-import com.hoop.api.constant.Position;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
+import com.hoop.api.constant.PlayStyle;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Getter
@@ -15,24 +13,25 @@ public class ProfileEditor {
 
     private final String phoneNumber;
     private final String nickName;
-    private final Integer height;
-    private final Integer weight;
+    private final String gender;
+    private final String address;
     private final String desc;
-    private Position position;
+    private PlayStyle playStyle;
     private String birth;
     private Level level;
+    private List<Ability> abilities;
 
     @Builder
-    public ProfileEditor(String phoneNumber, String nickName, Integer height, Integer weight,
-                         String desc, Position position, String birth, Level level) {
+    public ProfileEditor(String phoneNumber, String nickName, String gender, String address,
+                         String desc, PlayStyle playStyle, String birth, Level level, List<Ability> abilities) {
         this.phoneNumber = phoneNumber;
         this.nickName = nickName;
-        this.height = height;
-        this.weight = weight;
+        this.gender = gender;
+        this.address = address;
         this.desc = desc;
-        this.position = position;
+        this.playStyle = playStyle;
         this.birth = birth;
         this.level = level;
-
+        this.abilities = abilities;
     }
 }

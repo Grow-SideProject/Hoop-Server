@@ -1,37 +1,38 @@
 package com.hoop.api.request.profile;
 
+import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Level;
-import com.hoop.api.constant.Position;
+import com.hoop.api.constant.PlayStyle;
 import lombok.Builder;
 import lombok.Data;
 
-
-import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Data
 public class ProfileCreate {
 
     private String phoneNumber;
-    private Integer height;
-    private Integer weight;
+    private String gender;
+    private String address;
     private String desc;
-    private Position position;
+    private PlayStyle playStyle;
     private String nickName;
     private String birth;
     private Level level;
-
+    private List<Ability> abilities;
 
 
     @Builder
-    public ProfileCreate(String phoneNumber, String nickName, Integer height, Integer weight,
-                         String desc, Position position, String birth, Level level) {
+    public ProfileCreate(String phoneNumber, String nickName, String gender, String address,
+                         String desc, PlayStyle playStyle, String birth, Level level, List<Ability> abilities) {
         this.phoneNumber = phoneNumber;
         this.nickName = nickName;
-        this.height = height;
-        this.weight = weight;
+        this.gender = gender;
+        this.address = address;
         this.desc = desc;
-        this.position = position;
+        this.playStyle = playStyle;
         this.birth = birth;
         this.level = level;
+        this.abilities = abilities;
     }
 }

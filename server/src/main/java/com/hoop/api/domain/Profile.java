@@ -1,15 +1,14 @@
 package com.hoop.api.domain;
 
+import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Level;
-import com.hoop.api.constant.Position;
+import com.hoop.api.constant.PlayStyle;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,22 +20,19 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(unique = true)
     private String nickName;
-
     @Column(unique = true)
     private String phoneNumber;
-
     private String birth;
-
-    private LocalDateTime createdAt;
-    private Integer height;
-    private Integer weight;
+    
+    private String gender;
+    private String address;
     @Column(name = "description")
     private String desc;
 
-    private Position position;
+    private List<Ability> abilities;
+    private PlayStyle playStyle;
     private Level level;
 
     private String profileImagePath;
@@ -44,43 +40,47 @@ public class Profile {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
+    private LocalDateTime createdAt;
 
     @Builder
-    public Profile(String phoneNumber, String nickName, Integer height, Integer weight, String desc, String birth,
-                   Position position, Level level, User user) {
+    public Profile(String phoneNumber, String nickName, String gender, String address, String desc, String birth,
+                   PlayStyle playStyle, Level level, User user, List<Ability> abilities) {
         this.phoneNumber = phoneNumber;
         this.nickName = nickName;
-        this.height = height;
-        this.weight = weight;
+        this.gender = gender;
+        this.address = address;
         this.desc = desc;
-        this.position = position;
+        this.playStyle = playStyle;
         this.createdAt = LocalDateTime.now();
         this.user = user;
         this.birth = birth;
         this.level = level;
+        this.abilities = abilities;
     }
 
     public ProfileEditor.ProfileEditorBuilder toEditor() {
         return ProfileEditor.builder()
                 .phoneNumber(phoneNumber)
                 .nickName(nickName)
-                .height(height)
-                .weight(weight)
+                .gender(gender)
+                .address(address)
                 .desc(desc)
-                .position(position)
+                .playStyle(playStyle)
                 .birth(birth)
-                .level(level);
+                .level(level)
+                .abilities(abilities);
     }
 
     public void edit(ProfileEditor profileEditor) {
         phoneNumber = profileEditor.getPhoneNumber();
         nickName = profileEditor.getNickName();
-        height = profileEditor.getHeight();
-        weight = profileEditor.getWeight();
+        gender = profileEditor.getGender();
+        address = profileEditor.getAddress();
         desc = profileEditor.getDesc();
-        position = profileEditor.getPosition();
+        playStyle = profileEditor.getPlayStyle();
         birth = profileEditor.getBirth();
         level = profileEditor.getLevel();
+        abilities = profileEditor.getAbilities();
     }
     public void setProfileImagePath(String path) {
         this.profileImagePath = path;

@@ -1,9 +1,7 @@
 package com.hoop.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
-import com.hoop.api.config.UserPrincipal;
-import com.hoop.api.constant.Position;
-import com.hoop.api.domain.Profile;
+import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.ProfileRepository;
 import com.hoop.api.repository.UserRepository;
@@ -19,10 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -77,10 +71,10 @@ class ProfileControllerTest {
                 .nickName("닉네임이요")
                 .birth("2000-01-01")
                 .phoneNumber("010-1234-5678")
-                .height(180)
-                .weight(70)
+                .gender("남")
+                .address("마포구")
                 .desc("강한 타입")
-                .position(Position.CENTER)
+                .playStyle(PlayStyle.DEFENSIVE)
                 .build();
 
         // expected
@@ -102,10 +96,10 @@ class ProfileControllerTest {
         ProfileCreate profileCreate = ProfileCreate.builder()
                 .nickName("닉네임이요")
                 .phoneNumber("010-1234-5678")
-                .height(180)
-                .weight(70)
+                .gender("남")
+                .address("마포구")
                 .desc("강한 타입")
-                .position(Position.CENTER)
+                .playStyle(PlayStyle.DEFENSIVE)
                 .build();
         mockMvc.perform(post("/profile")
                         .header("Authorization",accessToken)
@@ -132,10 +126,10 @@ class ProfileControllerTest {
         ProfileCreate profileCreate = ProfileCreate.builder()
                 .nickName("닉네임이요")
                 .phoneNumber("010-1234-5678")
-                .height(180)
-                .weight(70)
+                .gender("남")
+                .address("마포구")
                 .desc("강한 타입")
-                .position(Position.CENTER)
+                .playStyle(PlayStyle.DEFENSIVE)
                 .build();
         mockMvc.perform(post("/profile")
                         .header("Authorization",accessToken)
@@ -146,10 +140,10 @@ class ProfileControllerTest {
                 .andDo(print());
 
         ProfileEdit profileEdit = ProfileEdit.builder()
-                .height(200)
-                .weight(100)
+                .gender("여")
+                .address("은평구")
                 .desc("매우 강한 타입")
-                .position(Position.POWER_FORWARD)
+                .playStyle(PlayStyle.BALANCE)
                 .build();
 
         // expected

@@ -1,9 +1,10 @@
 package com.hoop.api.controller;
 
 import com.hoop.api.config.UserPrincipal;
-import com.hoop.api.constant.Position;
+import com.hoop.api.constant.Ability;
+import com.hoop.api.constant.Level;
+import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.exception.FileNotFound;
-import com.hoop.api.request.FileDto;
 import com.hoop.api.request.profile.ProfileCreate;
 import com.hoop.api.request.profile.ProfileEdit;
 import com.hoop.api.response.DefaultResponse;
@@ -12,10 +13,6 @@ import com.hoop.api.service.ImageService;
 import com.hoop.api.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,11 +67,29 @@ public class ProfileController {
         return imgPath;
     }
 
-    @GetMapping("/positions")
-    public HashMap<Integer, String>  getPosition(){
+    @GetMapping("/playStyles")
+    public HashMap<Integer, String>  getPlayStyle(){
         HashMap<Integer, String> response = new HashMap<Integer, String>();
-        for (Position position : Position.values()) {
-            response.put(position.ordinal(), position.getValue());
+        for (PlayStyle playStyle : PlayStyle.values()) {
+            response.put(playStyle.ordinal(), playStyle.getValue());
+        }
+        return response;
+    }
+
+    @GetMapping("/abilities")
+    public HashMap<Integer, String> getAbilities(){
+        HashMap<Integer, String> response = new HashMap<Integer, String>();
+        for (Ability ability : Ability.values()) {
+            response.put(ability.ordinal(), ability.getValue());
+        }
+        return response;
+    }
+
+    @GetMapping("/levels")
+    public HashMap<Integer, String> getLevels(){
+        HashMap<Integer, String> response = new HashMap<Integer, String>();
+        for (Level level : Level.values()) {
+            response.put(level.ordinal(), level.getValue());
         }
         return response;
     }

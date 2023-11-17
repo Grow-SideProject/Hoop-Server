@@ -1,5 +1,6 @@
 package com.hoop.api.service;
 
+import com.hoop.api.constant.Ability;
 import com.hoop.api.domain.Profile;
 import com.hoop.api.domain.ProfileEditor;
 import com.hoop.api.exception.ProfileException;
@@ -33,11 +34,12 @@ public class ProfileService {
         return ProfileResponse.builder()
                 .phoneNumber(profile.getPhoneNumber())
                 .nickName(profile.getNickName())
-                .height(profile.getHeight())
-                .weight(profile.getWeight())
+                .gender(profile.getGender())
+                .address(profile.getAddress())
                 .desc(profile.getDesc())
-                .position(profile.getPosition())
+                .playStyle(profile.getPlayStyle())
                 .level(profile.getLevel())
+                .abilities(profile.getAbilities())
                 .build();
     }
 
@@ -45,16 +47,18 @@ public class ProfileService {
         try {
             var user = userRepository.findById(userId)
                     .orElseThrow(UserNotFound::new);
+            if(profileCreate.getAbilities() != null && profileCreate.getAbilities().size() > Ability.MAX_COUNT) throw new ProfileException("능력치는 3개 이하로 설정해주세요.");
             Profile profile = Profile.builder()
                     .phoneNumber(profileCreate.getPhoneNumber())
                     .nickName(profileCreate.getNickName())
                     .birth(profileCreate.getBirth())
-                    .height(profileCreate.getHeight())
-                    .weight(profileCreate.getWeight())
+                    .gender(profileCreate.getGender())
+                    .address(profileCreate.getAddress())
                     .desc(profileCreate.getDesc())
-                    .position(profileCreate.getPosition())
+                    .playStyle(profileCreate.getPlayStyle())
                     .level(profileCreate.getLevel())
                     .user(user)
+                    .abilities(profileCreate.getAbilities())
                     .build();
             profileRepository.save(profile);
         } catch (Exception e) {
@@ -67,16 +71,18 @@ public class ProfileService {
     public void edit(Long userId, ProfileEdit profileEdit) {
         Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(UserNotFound::new);
+        if(profileEdit.getAbilities() != null && profileEdit.getAbilities().size() > Ability.MAX_COUNT) throw new ProfileException("능력치는 3개 이하로 설정해주세요.");
         ProfileEditor.ProfileEditorBuilder editorBuilder = profile.toEditor();
         ProfileEditor profileEditor = editorBuilder
                 .phoneNumber(profileEdit.getPhoneNumber())
                 .birth(profileEdit.getBirth())
                 .nickName(profileEdit.getNickName())
-                .height(profileEdit.getHeight())
-                .weight(profileEdit.getWeight())
+                .gender(profileEdit.getGender())
+                .address(profileEdit.getAddress())
                 .desc(profileEdit.getDesc())
-                .position(profileEdit.getPosition())
+                .playStyle(profileEdit.getPlayStyle())
                 .level(profileEdit.getLevel())
+                .abilities(profileEdit.getAbilities())
                 .build();
         profile.edit(profileEditor);
     }

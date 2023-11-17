@@ -1,19 +1,13 @@
 package com.hoop.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
-import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.constant.GameCategory;
-import com.hoop.api.constant.Position;
 import com.hoop.api.domain.Matching;
-import com.hoop.api.domain.Profile;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.MatchingRepository;
-import com.hoop.api.repository.ProfileRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.matching.MatchingAttendRequest;
 import com.hoop.api.request.matching.MatchingCreate;
-import com.hoop.api.request.profile.ProfileCreate;
-import com.hoop.api.request.profile.ProfileEdit;
 import com.hoop.api.service.auth.JwtService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,8 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
