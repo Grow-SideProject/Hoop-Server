@@ -5,12 +5,11 @@ import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.exception.FileNotFound;
-import com.hoop.api.request.profile.ProfileCreate;
-import com.hoop.api.request.profile.ProfileEdit;
+import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.ProfileResponse;
 import com.hoop.api.service.ImageService;
-import com.hoop.api.service.ProfileService;
+import com.hoop.api.service.user.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,18 +28,17 @@ public class ProfileController {
     private  final ProfileService profileService;
     private  final ImageService imageService;
 
-    @PostMapping()
-    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileCreate request) {
-        profileService.create(userPrincipal.getUserId(), request);
-        return new DefaultResponse();
-    }
-
-
-
     @GetMapping()
     public ProfileResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return profileService.get(userPrincipal.getUserId());
     }
+
+    @PostMapping()
+    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
+        profileService.create(userPrincipal.getUserId(), request);
+        return new DefaultResponse();
+    }
+
     @PatchMapping()
     public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
         profileService.edit(userPrincipal.getUserId(), request);
@@ -93,4 +91,6 @@ public class ProfileController {
         }
         return response;
     }
+
+
 }

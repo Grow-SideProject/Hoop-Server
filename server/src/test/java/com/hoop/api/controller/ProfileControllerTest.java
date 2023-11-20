@@ -3,11 +3,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
 import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.domain.User;
-import com.hoop.api.repository.ProfileRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.profile.ProfileCreate;
-import com.hoop.api.request.profile.ProfileEdit;
-import com.hoop.api.service.auth.JwtService;
+import com.hoop.api.request.user.ProfileEdit;
+import com.hoop.api.service.user.JwtService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,9 +35,6 @@ class ProfileControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    private ProfileRepository profileRepository;
-
-    @Autowired
     private JwtService jwtService;
     private String accessToken;
 
@@ -56,10 +51,7 @@ class ProfileControllerTest {
     }
     @AfterEach
     void clean() {
-
         userRepository.deleteAll();
-        profileRepository.deleteAll();
-
     }
 
     @Test
@@ -67,7 +59,7 @@ class ProfileControllerTest {
     @DisplayName("CREATE PROFILE")
     void test1() throws Exception {
         // given
-        ProfileCreate profileCreate = ProfileCreate.builder()
+        ProfileEdit profileCreate = ProfileEdit.builder()
                 .nickName("닉네임이요")
                 .birth("2000-01-01")
                 .phoneNumber("010-1234-5678")
@@ -85,7 +77,6 @@ class ProfileControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
-        assertEquals(1, profileRepository.count());
     }
 
     @Test
@@ -93,7 +84,7 @@ class ProfileControllerTest {
     @DisplayName("GET PROFILE")
     void test2() throws Exception {
         // given
-        ProfileCreate profileCreate = ProfileCreate.builder()
+        ProfileEdit profileCreate = ProfileEdit.builder()
                 .nickName("닉네임이요")
                 .phoneNumber("010-1234-5678")
                 .gender("남")
@@ -101,7 +92,7 @@ class ProfileControllerTest {
                 .desc("강한 타입")
                 .playStyle(PlayStyle.DEFENSIVE)
                 .build();
-        mockMvc.perform(post("/profile")
+        mockMvc.perform(patch("/profile")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileCreate))
@@ -123,7 +114,7 @@ class ProfileControllerTest {
     @DisplayName("EDIT PROFILE")
     void test3() throws Exception {
         // given
-        ProfileCreate profileCreate = ProfileCreate.builder()
+        ProfileEdit profileCreate = ProfileEdit.builder()
                 .nickName("닉네임이요")
                 .phoneNumber("010-1234-5678")
                 .gender("남")

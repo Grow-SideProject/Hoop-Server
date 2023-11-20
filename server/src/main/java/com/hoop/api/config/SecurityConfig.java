@@ -7,14 +7,11 @@ import com.hoop.api.config.handler.Http403Handler;
 import com.hoop.api.config.handler.LoginFailHandler;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.service.auth.JwtService;
+import com.hoop.api.service.user.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -25,8 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 

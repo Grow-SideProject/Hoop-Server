@@ -1,12 +1,11 @@
-package com.hoop.api.service.auth;
+package com.hoop.api.service.user;
 
 
 import com.hoop.api.config.AppConfig;
 import com.hoop.api.domain.User;
-import com.hoop.api.exception.TokenInvalid;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.auth.TokenRequest;
+import com.hoop.api.request.user.TokenRequest;
 import com.hoop.api.response.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

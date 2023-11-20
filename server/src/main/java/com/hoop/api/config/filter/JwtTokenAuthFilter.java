@@ -1,8 +1,7 @@
 package com.hoop.api.config.filter;
 
 import com.hoop.api.exception.TokenInvalid;
-import com.hoop.api.repository.UserRepository;
-import com.hoop.api.service.auth.JwtService;
+import com.hoop.api.service.user.JwtService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

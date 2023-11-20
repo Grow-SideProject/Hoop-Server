@@ -1,4 +1,4 @@
-package com.hoop.api.request.profile;
+package com.hoop.api.request.user;
 
 import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Level;
@@ -9,22 +9,21 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ProfileCreate {
-
+public class ProfileEdit {
     private String phoneNumber;
+    private String nickName;
     private String gender;
     private String address;
     private String desc;
     private PlayStyle playStyle;
-    private String nickName;
     private String birth;
     private Level level;
     private List<Ability> abilities;
 
 
     @Builder
-    public ProfileCreate(String phoneNumber, String nickName, String gender, String address,
-                         String desc, PlayStyle playStyle, String birth, Level level, List<Ability> abilities) {
+    public ProfileEdit(String phoneNumber, String nickName, String gender, String address,
+                       String desc, PlayStyle playStyle, String birth, Level level, List<Ability> abilities) {
         this.phoneNumber = phoneNumber;
         this.nickName = nickName;
         this.gender = gender;

@@ -8,7 +8,7 @@ import com.hoop.api.repository.MatchingRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.matching.MatchingAttendRequest;
 import com.hoop.api.request.matching.MatchingCreate;
-import com.hoop.api.service.auth.JwtService;
+import com.hoop.api.service.user.JwtService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
