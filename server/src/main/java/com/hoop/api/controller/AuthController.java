@@ -1,14 +1,14 @@
 package com.hoop.api.controller;
 
 import com.hoop.api.exception.CategoryNotFound;
-import com.hoop.api.request.auth.SignIn;
-import com.hoop.api.request.auth.SignUp;
-import com.hoop.api.request.auth.SocialSignUp;
-import com.hoop.api.request.auth.TokenRequest;
+import com.hoop.api.request.user.SignIn;
+import com.hoop.api.request.user.SignUp;
+import com.hoop.api.request.user.SocialSignUp;
+import com.hoop.api.request.user.TokenRequest;
 import com.hoop.api.response.TokenResponse;
-import com.hoop.api.service.auth.AuthService;
-import com.hoop.api.service.auth.JwtService;
-import com.hoop.api.service.auth.SocialService;
+import com.hoop.api.service.user.AuthService;
+import com.hoop.api.service.user.JwtService;
+import com.hoop.api.service.user.SocialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

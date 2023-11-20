@@ -1,14 +1,10 @@
 package com.hoop.api.request.matching;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.hoop.api.constant.GameCategory;
-import com.hoop.api.constant.Position;
 import com.hoop.api.domain.Matching;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Data

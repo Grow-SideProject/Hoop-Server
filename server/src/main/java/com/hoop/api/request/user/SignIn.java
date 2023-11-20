@@ -1,4 +1,4 @@
-package com.hoop.api.request.auth;
+package com.hoop.api.request.user;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

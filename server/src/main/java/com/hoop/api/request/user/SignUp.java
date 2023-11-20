@@ -1,4 +1,4 @@
-package com.hoop.api.request.auth;
+package com.hoop.api.request.user;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,29 +1,29 @@
-package com.hoop.api.domain;
+package com.hoop.api.request.user;
 
 import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-public class ProfileEditor {
-
-    private final String phoneNumber;
-    private final String nickName;
-    private final String gender;
-    private final String address;
-    private final String desc;
+@Data
+public class ProfileEdit {
+    private String phoneNumber;
+    private String nickName;
+    private String gender;
+    private String address;
+    private String desc;
     private PlayStyle playStyle;
     private String birth;
     private Level level;
     private List<Ability> abilities;
 
+
     @Builder
-    public ProfileEditor(String phoneNumber, String nickName, String gender, String address,
-                         String desc, PlayStyle playStyle, String birth, Level level, List<Ability> abilities) {
+    public ProfileEdit(String phoneNumber, String nickName, String gender, String address,
+                       String desc, PlayStyle playStyle, String birth, Level level, List<Ability> abilities) {
         this.phoneNumber = phoneNumber;
         this.nickName = nickName;
         this.gender = gender;

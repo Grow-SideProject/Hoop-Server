@@ -1,8 +1,7 @@
 package com.hoop.api.config.filter;
 
 import com.hoop.api.exception.TokenInvalid;
-import com.hoop.api.repository.UserRepository;
-import com.hoop.api.service.auth.JwtService;
+import com.hoop.api.service.user.JwtService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,15 +20,13 @@ public class JwtTokenAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final UserRepository userRepository;
     private final AuthenticationFailureHandler authenticationFailureHandler;
 
     // Jwt Provier 주입
     // 생성자에 AuthenticationFailureHandler 추가
-    public JwtTokenAuthFilter(JwtService jwtService, UserDetailsService userDetailsService, UserRepository userRepository, AuthenticationFailureHandler authenticationFailureHandler) {
+    public JwtTokenAuthFilter(JwtService jwtService, UserDetailsService userDetailsService, AuthenticationFailureHandler authenticationFailureHandler) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
-        this.userRepository = userRepository;
         this.authenticationFailureHandler = authenticationFailureHandler;
     }
 

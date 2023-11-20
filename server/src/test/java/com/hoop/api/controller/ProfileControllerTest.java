@@ -1,15 +1,11 @@
 package com.hoop.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
-import com.hoop.api.config.UserPrincipal;
-import com.hoop.api.constant.Position;
-import com.hoop.api.domain.Profile;
+import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.domain.User;
-import com.hoop.api.repository.ProfileRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.profile.ProfileCreate;
-import com.hoop.api.request.profile.ProfileEdit;
-import com.hoop.api.service.auth.JwtService;
+import com.hoop.api.request.user.ProfileEdit;
+import com.hoop.api.service.user.JwtService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,8 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import java.util.Arrays;
-import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -40,9 +35,6 @@ class ProfileControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    private ProfileRepository profileRepository;
-
-    @Autowired
     private JwtService jwtService;
     private String accessToken;
 
@@ -59,10 +51,7 @@ class ProfileControllerTest {
     }
     @AfterEach
     void clean() {
-
         userRepository.deleteAll();
-        profileRepository.deleteAll();
-
     }
 
     @Test
@@ -70,12 +59,14 @@ class ProfileControllerTest {
     @DisplayName("CREATE PROFILE")
     void test1() throws Exception {
         // given
-        List<Position> myList = Arrays.asList(Position.CENTER, Position.POWER_FORWARD);
-        ProfileCreate profileCreate = ProfileCreate.builder()
-                .height(180)
-                .weight(70)
+        ProfileEdit profileCreate = ProfileEdit.builder()
+                .nickName("닉네임이요")
+                .birth("2000-01-01")
+                .phoneNumber("010-1234-5678")
+                .gender("남")
+                .address("마포구")
                 .desc("강한 타입")
-                .positions(myList)
+                .playStyle(PlayStyle.DEFENSIVE)
                 .build();
 
         // expected
@@ -86,7 +77,6 @@ class ProfileControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
-        assertEquals(1, profileRepository.count());
     }
 
     @Test
@@ -94,14 +84,15 @@ class ProfileControllerTest {
     @DisplayName("GET PROFILE")
     void test2() throws Exception {
         // given
-        List<Position> myList = Arrays.asList(Position.CENTER, Position.POWER_FORWARD);
-        ProfileCreate profileCreate = ProfileCreate.builder()
-                .height(180)
-                .weight(70)
+        ProfileEdit profileCreate = ProfileEdit.builder()
+                .nickName("닉네임이요")
+                .phoneNumber("010-1234-5678")
+                .gender("남")
+                .address("마포구")
                 .desc("강한 타입")
-                .positions(myList)
+                .playStyle(PlayStyle.DEFENSIVE)
                 .build();
-        mockMvc.perform(post("/profile")
+        mockMvc.perform(patch("/profile")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileCreate))
@@ -123,12 +114,13 @@ class ProfileControllerTest {
     @DisplayName("EDIT PROFILE")
     void test3() throws Exception {
         // given
-        List<Position> myList = Arrays.asList(Position.CENTER, Position.POWER_FORWARD);
-        ProfileCreate profileCreate = ProfileCreate.builder()
-                .height(180)
-                .weight(70)
+        ProfileEdit profileCreate = ProfileEdit.builder()
+                .nickName("닉네임이요")
+                .phoneNumber("010-1234-5678")
+                .gender("남")
+                .address("마포구")
                 .desc("강한 타입")
-                .positions(myList)
+                .playStyle(PlayStyle.DEFENSIVE)
                 .build();
         mockMvc.perform(post("/profile")
                         .header("Authorization",accessToken)
@@ -138,13 +130,11 @@ class ProfileControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        myList = Arrays.asList(Position.SMALL_FORWARD, Position.POWER_FORWARD);
-
         ProfileEdit profileEdit = ProfileEdit.builder()
-                .height(200)
-                .weight(100)
+                .gender("여")
+                .address("은평구")
                 .desc("매우 강한 타입")
-                .positions(myList)
+                .playStyle(PlayStyle.BALANCE)
                 .build();
 
         // expected

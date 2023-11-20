@@ -3,10 +3,10 @@ package com.hoop.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.auth.SignIn;
-import com.hoop.api.request.auth.SignUp;
-import com.hoop.api.request.auth.SocialSignUp;
-import com.hoop.api.service.auth.SocialService;
+import com.hoop.api.request.user.SignIn;
+import com.hoop.api.request.user.SignUp;
+import com.hoop.api.request.user.SocialSignUp;
+import com.hoop.api.service.user.SocialService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +15,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;

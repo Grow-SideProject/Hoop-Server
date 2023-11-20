@@ -1,6 +1,5 @@
-package com.hoop.api.service.auth;
+package com.hoop.api.service.user;
 import com.google.gson.Gson;
-import com.hoop.api.domain.User;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.response.KakaoProfile;
 import com.hoop.api.exception.CommunicationException;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service

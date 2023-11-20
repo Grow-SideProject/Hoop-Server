@@ -1,24 +1,22 @@
 package com.hoop.api.controller;
 
 import com.hoop.api.config.UserPrincipal;
-import com.hoop.api.constant.Position;
+import com.hoop.api.constant.Ability;
+import com.hoop.api.constant.Level;
+import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.exception.FileNotFound;
-import com.hoop.api.request.FileDto;
-import com.hoop.api.request.profile.ProfileCreate;
-import com.hoop.api.request.profile.ProfileEdit;
+import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.ProfileResponse;
 import com.hoop.api.service.ImageService;
-import com.hoop.api.service.ProfileService;
+import com.hoop.api.service.user.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
 
 
 @Slf4j
@@ -30,18 +28,17 @@ public class ProfileController {
     private  final ProfileService profileService;
     private  final ImageService imageService;
 
-    @PostMapping()
-    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileCreate request) {
-        profileService.create(userPrincipal.getUserId(), request);
-        return new DefaultResponse();
-    }
-
-
-
     @GetMapping()
     public ProfileResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return profileService.get(userPrincipal.getUserId());
     }
+
+    @PostMapping()
+    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
+        profileService.create(userPrincipal.getUserId(), request);
+        return new DefaultResponse();
+    }
+
     @PatchMapping()
     public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
         profileService.edit(userPrincipal.getUserId(), request);
@@ -68,9 +65,32 @@ public class ProfileController {
         return imgPath;
     }
 
-    @GetMapping("/positions")
-    public Position[]  getPosition(){
-        Position[] allPositions = Position.values();
-        return allPositions;
+    @GetMapping("/playStyles")
+    public HashMap<Integer, String>  getPlayStyle(){
+        HashMap<Integer, String> response = new HashMap<Integer, String>();
+        for (PlayStyle playStyle : PlayStyle.values()) {
+            response.put(playStyle.ordinal(), playStyle.getValue());
+        }
+        return response;
     }
+
+    @GetMapping("/abilities")
+    public HashMap<Integer, String> getAbilities(){
+        HashMap<Integer, String> response = new HashMap<Integer, String>();
+        for (Ability ability : Ability.values()) {
+            response.put(ability.ordinal(), ability.getValue());
+        }
+        return response;
+    }
+
+    @GetMapping("/levels")
+    public HashMap<Integer, String> getLevels(){
+        HashMap<Integer, String> response = new HashMap<Integer, String>();
+        for (Level level : Level.values()) {
+            response.put(level.ordinal(), level.getValue());
+        }
+        return response;
+    }
+
+
 }

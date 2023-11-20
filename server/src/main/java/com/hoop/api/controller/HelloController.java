@@ -2,10 +2,10 @@ package com.hoop.api.controller;
 
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.auth.SignUp;
+import com.hoop.api.request.user.SignUp;
 import com.hoop.api.response.TokenResponse;
-import com.hoop.api.service.auth.AuthService;
-import com.hoop.api.service.auth.JwtService;
+import com.hoop.api.service.user.AuthService;
+import com.hoop.api.service.user.JwtService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

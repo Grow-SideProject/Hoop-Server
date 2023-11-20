@@ -1,11 +1,12 @@
 package com.hoop.api.response;
 
-import com.hoop.api.constant.Position;
-import com.hoop.api.domain.Post;
+import com.hoop.api.constant.Ability;
+import com.hoop.api.constant.Level;
+import com.hoop.api.constant.PlayStyle;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,19 +16,28 @@ import java.util.List;
 public class ProfileResponse {
 
     private String phoneNumber;
-    private String name;
-    private Integer height;
-    private Integer weight;
+    private String nickName;
+    private String gender;
+    private String address;
     private String desc;
-    private List<Position> positions;
+    private String playStyle;
+    private String level;
+    private List<String> abilities = new ArrayList<>();
 
     @Builder
-    public ProfileResponse(String phoneNumber, String name, Integer height, Integer weight, String desc, List<Position> positions) {
+    public ProfileResponse(String phoneNumber, String nickName, String gender, String address,
+                           String desc, PlayStyle playStyle, Level level, List<Ability> abilities) {
         this.phoneNumber = phoneNumber;
-        this.name = name;
-        this.height = height;
-        this.weight = weight;
+        this.nickName = nickName;
+        this.gender = gender;
+        this.address = address;
         this.desc = desc;
-        this.positions = positions;
+        if (playStyle != null ) this.playStyle = playStyle.getValue();
+        if (level != null ) this.level = level.getValue();
+        if (abilities!= null && !abilities.isEmpty()) {
+            for ( Ability ability : abilities ) {
+                this.abilities.add(ability.getValue());
+            }
+        }
     }
 }
