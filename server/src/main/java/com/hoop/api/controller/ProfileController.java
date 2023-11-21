@@ -12,6 +12,7 @@ import com.hoop.api.service.ImageService;
 import com.hoop.api.service.user.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,17 @@ public class ProfileController {
 
     private  final ProfileService profileService;
     private  final ImageService imageService;
+
+
+    @GetMapping("/valid-number")
+    public void validNumber(@RequestParam String phoneNumber) {
+        profileService.validateNumber(phoneNumber);
+    }
+
+    @GetMapping("/valid-name")
+    public void validName(@RequestParam String nickName) {
+       profileService.validateName(nickName);
+    }
 
     @GetMapping()
     public ProfileResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal) {

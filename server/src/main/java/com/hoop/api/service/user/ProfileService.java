@@ -3,6 +3,7 @@ package com.hoop.api.service.user;
 import com.hoop.api.constant.Ability;
 import com.hoop.api.domain.ProfileEditor;
 import com.hoop.api.domain.User;
+import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.ProfileException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -94,5 +97,20 @@ public class ProfileService {
                 .orElseThrow(UserNotFound::new);
         log.info(profile.getProfileImagePath());
         return profile.getProfileImagePath();
+    }
+
+    public void validateNumber(String phoneNumber) {
+        Optional<User> userOptional = userRepository.findByPhoneNumber(phoneNumber);
+        if (userOptional.isPresent()) {
+            throw  new AlreadyExistsUserException();
+        }
+
+    }
+
+    public void validateName(String phoneNumber) {
+        Optional<User> userOptional = userRepository.findByPhoneNumber(phoneNumber);
+        if (userOptional.isPresent()) {
+            throw  new AlreadyExistsUserException();
+        }
     }
 }

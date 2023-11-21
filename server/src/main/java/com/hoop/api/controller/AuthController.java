@@ -23,7 +23,6 @@ public class AuthController {
     private final JwtService jwtService;
     private final SocialService socialService;
 
-
     /**
      * 회원 가입
      * @param signup
@@ -80,27 +79,12 @@ public class AuthController {
         return tokenResponse;
     }
 
-    @GetMapping(value="kakao")
-    @ResponseBody
-    public String getKakaoAccess(String code) {
-        log.info("code = {}",code);
-        String token = socialService.getKakaoTokenInfo(code).getAccess_token();
-        log.info("token = {}",token);
-        return token;
-    }
-
-    @GetMapping(value="/login")
-    @ResponseBody
-    public String login() {
-        return "success";
-    }
-
-
     @PostMapping(value="/reissue")
     @ResponseBody
     private TokenResponse reissue(@RequestBody TokenRequest tokenRequest) {
         TokenResponse tokenResponse = jwtService.reissue(tokenRequest);
         return tokenResponse;
     }
+
 
 }

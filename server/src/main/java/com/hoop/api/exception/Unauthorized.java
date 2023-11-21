@@ -10,6 +10,9 @@ public class Unauthorized extends HoopException {
     public Unauthorized() {
         super(MESSAGE);
     }
+    public Unauthorized(String message) {
+        super(message);
+    }
 
     @Override
     public Integer getStatusCode() {
