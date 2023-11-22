@@ -7,6 +7,7 @@ import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.ProfileException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
+import com.hoop.api.request.user.PhoneRequest;
 import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.ProfileResponse;
 import lombok.RequiredArgsConstructor;
@@ -112,5 +113,13 @@ public class ProfileService {
         if (userOptional.isPresent()) {
             throw  new AlreadyExistsUserException();
         }
+    }
+
+    @Transactional
+    public void savePhoneNumber(Long userId, PhoneRequest phoneRequest) {
+        if (phoneRequest.getSmsNumber() == null) throw new ProfileException("인증번호가 잘못되었습니다");
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+        user.setPhoneNumber(phoneRequest.getPhoneNumber());
+        userRepository.save(user);
     }
 }

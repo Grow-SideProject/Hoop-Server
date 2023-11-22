@@ -5,6 +5,8 @@ import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.exception.FileNotFound;
+import com.hoop.api.exception.ProfileException;
+import com.hoop.api.request.user.PhoneRequest;
 import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.ProfileResponse;
@@ -30,14 +32,21 @@ public class ProfileController {
     private  final ImageService imageService;
 
 
-    @GetMapping("/valid-number")
-    public void validNumber(@RequestParam String phoneNumber) {
+    @GetMapping("/phone-validation")
+    public DefaultResponse validNumber(@RequestParam String phoneNumber) {
         profileService.validateNumber(phoneNumber);
+        //TODO 난수 생성 후 -> 메세지 전송 로직 추가
+        return new DefaultResponse();
     }
-
-    @GetMapping("/valid-name")
-    public void validName(@RequestParam String nickName) {
+    @PostMapping("/phone")
+    public DefaultResponse verifyNumber(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody PhoneRequest phoneRequest) {
+        profileService.savePhoneNumber(userPrincipal.getUserId(), phoneRequest);
+        return new DefaultResponse();
+    }
+    @GetMapping("/name-validation")
+    public DefaultResponse validName(@RequestParam String nickName) {
        profileService.validateName(nickName);
+       return new DefaultResponse();
     }
 
     @GetMapping()
@@ -46,12 +55,6 @@ public class ProfileController {
     }
 
     @PostMapping()
-    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
-        profileService.create(userPrincipal.getUserId(), request);
-        return new DefaultResponse();
-    }
-
-    @PatchMapping()
     public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
         profileService.edit(userPrincipal.getUserId(), request);
         return new DefaultResponse();
@@ -77,29 +80,29 @@ public class ProfileController {
         return imgPath;
     }
 
-    @GetMapping("/playStyles")
-    public HashMap<Integer, String>  getPlayStyle(){
-        HashMap<Integer, String> response = new HashMap<Integer, String>();
+    @GetMapping("/play-styles")
+    public HashMap<String, String>  getPlayStyle(){
+        HashMap<String, String> response = new HashMap<String, String>();
         for (PlayStyle playStyle : PlayStyle.values()) {
-            response.put(playStyle.ordinal(), playStyle.getValue());
+            response.put(playStyle.name(), playStyle.getValue());
         }
         return response;
     }
 
     @GetMapping("/abilities")
-    public HashMap<Integer, String> getAbilities(){
-        HashMap<Integer, String> response = new HashMap<Integer, String>();
+    public HashMap<String, String> getAbilities(){
+        HashMap<String, String> response = new HashMap<String, String>();
         for (Ability ability : Ability.values()) {
-            response.put(ability.ordinal(), ability.getValue());
+            response.put(ability.name(), ability.getValue());
         }
         return response;
     }
 
     @GetMapping("/levels")
-    public HashMap<Integer, String> getLevels(){
-        HashMap<Integer, String> response = new HashMap<Integer, String>();
+    public HashMap<String, String> getLevels(){
+        HashMap<String, String> response = new HashMap<String, String>();
         for (Level level : Level.values()) {
-            response.put(level.ordinal(), level.getValue());
+            response.put(level.name(), level.getValue());
         }
         return response;
     }

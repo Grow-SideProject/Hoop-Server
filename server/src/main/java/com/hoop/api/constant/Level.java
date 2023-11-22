@@ -2,10 +2,10 @@ package com.hoop.api.constant;
 
 public enum Level {
 
-    NEWBIE("입문자"),
-    LEVEL_LOW("초보"),
-    LEVEL_INTER("중수"),
-    LEVEL_HIGH("고수");
+    BEGINNER("입문자"),
+    ROOKIE("초보"),
+    INTERMEDIATE("중수"),
+    MASTER("고수");
 
 
     private final String value;
