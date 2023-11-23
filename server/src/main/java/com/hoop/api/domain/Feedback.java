@@ -22,17 +22,20 @@ public class Feedback {
     private String content;
 
     @OneToOne
-    @JoinColumn
     private User user;
 
     @OneToOne
-    @JoinColumn
     private User target;
 
+    @ManyToOne
+    private Game game;
+
     @Builder
-    public Feedback(User user, User target, String content, int score) {
+    public Feedback(User user, User target, Game game, String content, int score) {
         this.user = user;
         this.target = target;
+        this.game = game;
         this.content = content;
         this.score = score;
-    }}
+    }
+}

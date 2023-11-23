@@ -6,6 +6,7 @@ import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.exception.FileNotFound;
 import com.hoop.api.exception.ProfileException;
+import com.hoop.api.request.user.FeedbackRequest;
 import com.hoop.api.request.user.PhoneRequest;
 import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.DefaultResponse;
@@ -38,16 +39,17 @@ public class ProfileController {
         //TODO 난수 생성 후 -> 메세지 전송 로직 추가
         return new DefaultResponse();
     }
+    @GetMapping("/name-validation")
+    public DefaultResponse validName(@RequestParam String nickName) {
+        profileService.validateName(nickName);
+        return new DefaultResponse();
+    }
     @PostMapping("/phone")
     public DefaultResponse verifyNumber(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody PhoneRequest phoneRequest) {
         profileService.savePhoneNumber(userPrincipal.getUserId(), phoneRequest);
         return new DefaultResponse();
     }
-    @GetMapping("/name-validation")
-    public DefaultResponse validName(@RequestParam String nickName) {
-       profileService.validateName(nickName);
-       return new DefaultResponse();
-    }
+
 
     @GetMapping()
     public ProfileResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal) {
@@ -107,5 +109,9 @@ public class ProfileController {
         return response;
     }
 
-
+    @PostMapping("/feedback")
+    public DefaultResponse feedback(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody FeedbackRequest request) {
+        profileService.createFeedback(userPrincipal.getUserId(), request);
+        return new DefaultResponse();
+    }
 }

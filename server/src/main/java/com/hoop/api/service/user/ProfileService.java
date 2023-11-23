@@ -1,12 +1,18 @@
 package com.hoop.api.service.user;
 
 import com.hoop.api.constant.Ability;
+import com.hoop.api.domain.Feedback;
+import com.hoop.api.domain.Game;
 import com.hoop.api.domain.ProfileEditor;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.ProfileException;
 import com.hoop.api.exception.UserNotFound;
+import com.hoop.api.exception.GameNotFound;
+import com.hoop.api.repository.FeedbackRepository;
+import com.hoop.api.repository.GameRepository;
 import com.hoop.api.repository.UserRepository;
+import com.hoop.api.request.user.FeedbackRequest;
 import com.hoop.api.request.user.PhoneRequest;
 import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.ProfileResponse;
@@ -25,7 +31,8 @@ public class ProfileService {
 
 
     private final UserRepository userRepository;
-
+    private final GameRepository gameRepository;
+    private final FeedbackRepository feedbackRepository;
     private final Environment env;
 
 
@@ -121,5 +128,20 @@ public class ProfileService {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         user.setPhoneNumber(phoneRequest.getPhoneNumber());
         userRepository.save(user);
+    }
+
+    public void createFeedback(Long userId, FeedbackRequest feedbackRequest) {
+        if ( userId == feedbackRequest.getTargetId()) throw new ProfileException("자기 자신에게 피드백을 남길 수 없습니다.");
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+        User target = userRepository.findById(feedbackRequest.getTargetId()).orElseThrow(UserNotFound::new);
+        Game game = gameRepository.findById(feedbackRequest.getGameId()).orElseThrow(GameNotFound::new);
+        Feedback feedback = Feedback.builder()
+                .user(user)
+                .target(target)
+                .game(game)
+                .content(feedbackRequest.getContent())
+                .score(feedbackRequest.getScore())
+                .build();
+        feedbackRepository.save(feedback);
     }
 }
