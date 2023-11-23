@@ -1,7 +1,5 @@
 package com.hoop.api.domain;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.hoop.api.constant.GameCategory;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,16 +26,19 @@ public class Game {
     private String address; // 코트 주소 (추후 분리 예정)
     private GameCategory gameCategory; // 게임 종류
 
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private Integer duration;
+
+
+    private LocalDateTime gameStartTime;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
-    private List<GameAttend> gameAttends;
+    private List<GameAttendant> gameAttendants;
 
     @Builder
     public Game(Long id, String title, String contents, LocalDateTime createdAt, Integer maxAttend,
-                    String courtName, String address, GameCategory gameCategory, LocalDateTime startTime,
-                    LocalDateTime endTime, List<GameAttend> gameAttends) {
+                    String courtName, String address, GameCategory gameCategory, String startTime,
+                    Integer duration, List<GameAttendant> gameAttendants) {
         this.id = id;
         this.title = title;
         this.contents = contents;
@@ -47,14 +48,7 @@ public class Game {
         this.address = address;
         this.gameCategory = gameCategory;
         this.startTime = startTime;
-        this.endTime = endTime;
-        this.gameAttends = new ArrayList<>();
-    }
-
-    public void addGameAttend(GameAttend gameAttend) {
-        this.gameAttends.add(gameAttend);
-    }
-    public void popGameAttend(GameAttend gameAttend) {
-        this.gameAttends.remove(gameAttend);
+        this.duration = duration;
+        this.gameAttendants = new ArrayList<>();
     }
 }

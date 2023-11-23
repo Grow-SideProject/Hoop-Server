@@ -25,19 +25,19 @@ public class GameController {
         return "temp";
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameCreate gameCreate) {
         gameService.create(userPrincipal.getUserId(), gameCreate);
     }
 
-    @PostMapping("/attend")
-    public void attendGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameAttend gameAttend) {
-        gameService.attendGame(userPrincipal.getUserId(), gameAttend);
+    @GetMapping("/attend")
+    public void attendGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam boolean ballFlag) {
+        gameService.attendGame(userPrincipal.getUserId(), gameId, ballFlag);
     }
 
-    @DeleteMapping("/exit")
-    public void exitGame(@AuthenticationPrincipal UserPrincipal userPrincipal, Long GameId) {
-        gameService.exitGame(userPrincipal.getUserId(), GameId);
+    @GetMapping("/exit")
+    public void exitGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId) {
+        gameService.exitGame(userPrincipal.getUserId(), gameId);
     }
 
 }
