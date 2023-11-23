@@ -5,8 +5,8 @@ public enum Level {
     BEGINNER("입문자"),
     ROOKIE("초보"),
     INTERMEDIATE("중수"),
-    MASTER("고수");
-
+    SEMIPRO("세미프로"),
+    PRO("프로");
 
     private final String value;
 
