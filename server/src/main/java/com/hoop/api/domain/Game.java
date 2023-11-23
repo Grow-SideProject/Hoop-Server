@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Matching {
+public class Game {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +31,13 @@ public class Matching {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "matching")
-    private List<MatchingAttend> matchingAttends;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    private List<GameAttend> gameAttends;
 
     @Builder
-    public Matching(Long id, String title, String contents, LocalDateTime createdAt, Integer maxAttend,
+    public Game(Long id, String title, String contents, LocalDateTime createdAt, Integer maxAttend,
                     String courtName, String address, GameCategory gameCategory, LocalDateTime startTime,
-                    LocalDateTime endTime, List<MatchingAttend> matchingAttends) {
+                    LocalDateTime endTime, List<GameAttend> gameAttends) {
         this.id = id;
         this.title = title;
         this.contents = contents;
@@ -48,13 +48,13 @@ public class Matching {
         this.gameCategory = gameCategory;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.matchingAttends = new ArrayList<>();
+        this.gameAttends = new ArrayList<>();
     }
 
-    public void addMatchingAttend(MatchingAttend matchingAttend) {
-        this.matchingAttends.add(matchingAttend);
+    public void addGameAttend(GameAttend gameAttend) {
+        this.gameAttends.add(gameAttend);
     }
-    public void popMatchingAttend(MatchingAttend matchingAttend) {
-        this.matchingAttends.remove(matchingAttend);
+    public void popGameAttend(GameAttend gameAttend) {
+        this.gameAttends.remove(gameAttend);
     }
 }

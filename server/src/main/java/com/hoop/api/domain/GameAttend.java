@@ -16,7 +16,8 @@ import java.util.List;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class MatchingAttend {
+public class GameAttend {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,31 +30,18 @@ public class MatchingAttend {
     @NotNull
     @ManyToOne
     @JoinColumn
-    private Matching matching; //복합키 ID
-
-    private Boolean IsBallFlag;
+    private Game game; //복합키 ID
+    private Boolean isBallFlag;
     private Boolean isHost;
-
     private LocalDateTime createdAt;
 
-
     // 생성자, getter 및 setter 등의 메서드 추가
-
     @Builder
-    public MatchingAttend(User user, Matching matching, Boolean isHost, Boolean IsBallFlag) {
+    public GameAttend(User user, Game game, Boolean isHost, Boolean isBallFlag) {
         this.user = user;
-        this.matching = matching;
+        this.game = game;
         this.createdAt = LocalDateTime.now();
         this.isHost = isHost;
-        this.IsBallFlag = IsBallFlag;
+        this.isBallFlag = isBallFlag;
     }
-
 }
-
-
-
-
-
-
-
-

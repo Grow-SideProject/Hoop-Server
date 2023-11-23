@@ -1,7 +1,7 @@
-package com.hoop.api.request.matching;
+package com.hoop.api.request.game;
 
 import com.hoop.api.constant.GameCategory;
-import com.hoop.api.domain.Matching;
+import com.hoop.api.domain.Game;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 //@ToString
-public class MatchingCreate {
+public class GameCreate {
     private String title; // 모집 공고명
     private String contents; // 모집 내용
     private String courtName; //코트명
@@ -23,7 +23,7 @@ public class MatchingCreate {
     private Integer maxAttend; // 최대 인원
 
     @Builder
-    public MatchingCreate(String title, String contents, String courtName, String address, GameCategory gameCategory, LocalDateTime startTime, LocalDateTime endTime, Boolean isBallFlag, Integer maxAttend) {
+    public GameCreate(String title, String contents, String courtName, String address, GameCategory gameCategory, LocalDateTime startTime, LocalDateTime endTime, Boolean isBallFlag, Integer maxAttend) {
         this.title = title;
         this.contents = contents;
         this.courtName = courtName;
@@ -35,8 +35,8 @@ public class MatchingCreate {
         this.maxAttend = maxAttend;
     }
 
-    public Matching toMatching() {
-return Matching.builder()
+    public Game toGame() {
+return Game.builder()
                 .title(title)
                 .contents(contents)
                 .courtName(courtName)
