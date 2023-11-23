@@ -1,7 +1,7 @@
 package com.hoop.api.service.user;
 
 import com.hoop.api.domain.User;
-import com.hoop.api.exception.AlreadyExistsEmailException;
+import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.user.SignUp;
@@ -22,7 +22,7 @@ public class AuthService {
     public void signup(SignUp signup) {
         Optional<User> userOptional = userRepository.findByEmail(signup.getEmail());
         if (userOptional.isPresent()) {
-            throw new AlreadyExistsEmailException();
+            throw new AlreadyExistsUserException();
         }
         String encryptedPassword = passwordEncoder.encode(signup.getPassword());
         var user = User.builder()

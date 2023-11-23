@@ -8,6 +8,10 @@ public class CommunicationException extends HoopException {
         super(MESSAGE);
     }
 
+    public CommunicationException(String message) {
+        super(message);
+    }
+
     @Override
     public Integer getStatusCode() {
         return 405;

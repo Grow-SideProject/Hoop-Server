@@ -1,7 +1,6 @@
 package com.hoop.api.service;
 
 
-import com.hoop.api.domain.Profile;
 import com.hoop.api.exception.FileUploadException;
 import com.hoop.api.exception.UserNotFound;
 import lombok.RequiredArgsConstructor;

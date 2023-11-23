@@ -99,5 +99,6 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber;}
 
 }

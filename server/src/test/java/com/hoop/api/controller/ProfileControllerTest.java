@@ -92,7 +92,7 @@ class ProfileControllerTest {
                 .desc("강한 타입")
                 .playStyle(PlayStyle.DEFENSIVE)
                 .build();
-        mockMvc.perform(patch("/profile")
+        mockMvc.perform(post("/profile")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileCreate))
@@ -138,7 +138,7 @@ class ProfileControllerTest {
                 .build();
 
         // expected
-        mockMvc.perform(patch("/profile")
+        mockMvc.perform(post("/profile")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profileEdit)))

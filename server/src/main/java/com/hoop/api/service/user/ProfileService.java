@@ -3,9 +3,11 @@ package com.hoop.api.service.user;
 import com.hoop.api.constant.Ability;
 import com.hoop.api.domain.ProfileEditor;
 import com.hoop.api.domain.User;
+import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.ProfileException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
+import com.hoop.api.request.user.PhoneRequest;
 import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.ProfileResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -94,5 +98,28 @@ public class ProfileService {
                 .orElseThrow(UserNotFound::new);
         log.info(profile.getProfileImagePath());
         return profile.getProfileImagePath();
+    }
+
+    public void validateNumber(String phoneNumber) {
+        Optional<User> userOptional = userRepository.findByPhoneNumber(phoneNumber);
+        if (userOptional.isPresent()) {
+            throw  new AlreadyExistsUserException();
+        }
+
+    }
+
+    public void validateName(String phoneNumber) {
+        Optional<User> userOptional = userRepository.findByPhoneNumber(phoneNumber);
+        if (userOptional.isPresent()) {
+            throw  new AlreadyExistsUserException();
+        }
+    }
+
+    @Transactional
+    public void savePhoneNumber(Long userId, PhoneRequest phoneRequest) {
+        if (phoneRequest.getSmsNumber() == null) throw new ProfileException("인증번호가 잘못되었습니다");
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+        user.setPhoneNumber(phoneRequest.getPhoneNumber());
+        userRepository.save(user);
     }
 }
