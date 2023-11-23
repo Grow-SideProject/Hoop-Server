@@ -2,12 +2,14 @@ package com.hoop.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
 import com.hoop.api.constant.GameCategory;
-import com.hoop.api.domain.Matching;
+import com.hoop.api.domain.Game;
+import com.hoop.api.domain.GameAttendant;
 import com.hoop.api.domain.User;
-import com.hoop.api.repository.MatchingRepository;
+import com.hoop.api.repository.GameAttendantRepository;
+import com.hoop.api.repository.GameRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.matching.MatchingAttendRequest;
-import com.hoop.api.request.matching.MatchingCreate;
+import com.hoop.api.request.game.GameAttend;
+import com.hoop.api.request.game.GameCreate;
 import com.hoop.api.service.user.JwtService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class MatchingControllerTest {
+class GameControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -41,10 +43,10 @@ class MatchingControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    private MatchingRepository matchingRepository;
+    private GameRepository gameRepository;
 
     @Autowired
-    private MatchingRepository matchingAttendRepository;
+    private GameAttendantRepository gameAttendantRepository;
     @Autowired
     private JwtService jwtService;
     private String accessToken;
@@ -62,81 +64,80 @@ class MatchingControllerTest {
     }
     @AfterEach
     void clean() {
-        matchingRepository.deleteAll();
-        matchingAttendRepository.deleteAll();
+        gameAttendantRepository.deleteAll();
+        gameRepository.deleteAll();
         userRepository.deleteAll();
     }
 
     @Test
     @HoopMockUser
-    @DisplayName("CREATE MATCHING")
+    @DisplayName("CREATE GAME")
     void test1() throws Exception {
         // given
-        MatchingCreate matchingCreate = MatchingCreate.
+        GameCreate gameCreate = GameCreate.
                 builder()
                 .title("같이 농구합시다 3대3")
                 .contents("고수만 오셈")
                 .address("마포구 서교동 12-1")
-                .startTime(LocalDateTime.parse("2021-10-10T10:00:00"))
-                .endTime(LocalDateTime.parse("2021-10-10T12:00:00"))
+                .startTime("2021-10-10T10:00:00")
+                .duration(120)
                 .courtName("창천체육관")
                 .maxAttend(Integer.valueOf(6))
                 .gameCategory(GameCategory.THREE_ON_THREE)
                 .isBallFlag(Boolean.TRUE)
                 .build();
 
-        String json = objectMapper.writeValueAsString(matchingCreate);
+        String json = objectMapper.writeValueAsString(gameCreate);
         // expected
-        mockMvc.perform(post("/matching/create")
+        mockMvc.perform(post("/game")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
-        assertEquals(1, matchingRepository.count());
-        assertEquals(1, matchingAttendRepository.count());
+        assertEquals(1, gameRepository.count());
+        assertEquals(1, gameAttendantRepository.count());
     }
 
     @Test
     @HoopMockUser
-    @DisplayName("GET MATCHING")
+    @DisplayName("ATTEND GAME")
     void test2() throws Exception {
         // given
-        Matching matching = Matching
+        Game game = Game
                 .builder()
                 .title("같이 농구합시다 3대3")
                 .contents("고수만 오셈")
                 .address("마포구 서교동 12-1")
-                .startTime(LocalDateTime.parse("2021-10-10T10:00:00"))
-                .endTime(LocalDateTime.parse("2021-10-10T12:00:00"))
+                .startTime("2021-10-10T10:00:00")
+                .duration(120)
                 .courtName("창천체육관")
                 .maxAttend(Integer.valueOf(6))
                 .gameCategory(GameCategory.THREE_ON_THREE)
-                .matchingAttends(new ArrayList<>())
+                .gameAttendants(new ArrayList<>())
                 .build();
 
-        matchingRepository.save(matching);
+        gameRepository.save(game);
 
-        MatchingAttendRequest matchingAttendRequest = MatchingAttendRequest.
+        GameAttend gameAttend = GameAttend.
                 builder()
-                .matching(matching)
-                .isHost(Boolean.FALSE)
+                .gameId(game.getId())
                 .isBallFlag(Boolean.TRUE)
                 .build();
 
-        String json = objectMapper.writeValueAsString(matchingAttendRequest);
+        String json = objectMapper.writeValueAsString(gameAttend);
         // expected
-        mockMvc.perform(post("/matching/attend")
+        mockMvc.perform(post("/game/attend")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
-        assertEquals(1, matchingAttendRepository.count());
+        assertEquals(1, gameAttendantRepository.count());
         // expected
-        mockMvc.perform(get("/matching")
+        mockMvc.perform(get("/game")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
                 )
@@ -144,14 +145,48 @@ class MatchingControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    @HoopMockUser
+    @DisplayName("EXIT GAME")
+    void test3() throws Exception {
+        // given
+        Game game = Game
+                .builder()
+                .title("같이 농구합시다 3대3")
+                .contents("고수만 오셈")
+                .address("마포구 서교동 12-1")
+                .startTime("2021-10-10T10:00:00")
+                .duration(120)
+                .courtName("창천체육관")
+                .maxAttend(Integer.valueOf(6))
+                .gameCategory(GameCategory.THREE_ON_THREE)
+                .gameAttendants(new ArrayList<>())
+                .build();
+        gameRepository.save(game);
+
+        GameAttend gameAttend = GameAttend.
+                builder()
+                .gameId(game.getId())
+                .isBallFlag(Boolean.TRUE)
+                .build();
+        String json = objectMapper.writeValueAsString(gameAttend);
+        // expected
+        mockMvc.perform(post("/game/attend")
+                        .header("Authorization",accessToken)
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+        // expected
+        mockMvc.perform(get("/game/exit")
+                        .header("Authorization",accessToken)
+                        .param("gameId", game.getId().toString())
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+        assertEquals(false, gameAttendantRepository.findAll().get(0).getAttend());
+
+    }
+
 }
-
-
-
-
-
-
-
-
-
-

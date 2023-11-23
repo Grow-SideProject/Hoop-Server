@@ -74,7 +74,7 @@ public class User {
 
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<MatchingAttend> matchingAttends;
+    private List<GameAttendant> gameAttends;
 
     @Builder
     public User(String email, String password, Long socialId, String phoneNumber, String nickName, String gender, String address, String desc, String birth,
