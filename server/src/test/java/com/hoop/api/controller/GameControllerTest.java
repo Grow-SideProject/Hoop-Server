@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -120,18 +121,15 @@ class GameControllerTest {
 
         gameRepository.save(game);
 
-        GameAttend gameAttend = GameAttend.
-                builder()
-                .gameId(game.getId())
-                .isBallFlag(Boolean.TRUE)
-                .build();
 
-        String json = objectMapper.writeValueAsString(gameAttend);
+//        String json = objectMapper.writeValueAsString(gameAttend);
+
         // expected
-        mockMvc.perform(post("/game/attend")
+        mockMvc.perform(get("/game/attend")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
-                        .content(json)
+                        .queryParam("gameId", game.getId().toString())
+                        .queryParam("ballFlag", String.valueOf(true))
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -164,17 +162,12 @@ class GameControllerTest {
                 .build();
         gameRepository.save(game);
 
-        GameAttend gameAttend = GameAttend.
-                builder()
-                .gameId(game.getId())
-                .isBallFlag(Boolean.TRUE)
-                .build();
-        String json = objectMapper.writeValueAsString(gameAttend);
         // expected
-        mockMvc.perform(post("/game/attend")
+        mockMvc.perform(get("/game/attend")
                         .header("Authorization",accessToken)
                         .contentType(APPLICATION_JSON)
-                        .content(json)
+                        .queryParam("gameId", game.getId().toString())
+                        .queryParam("ballFlag", String.valueOf(true))
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
