@@ -78,7 +78,7 @@ class GameControllerTest {
         GameCreate gameCreate = GameCreate.
                 builder()
                 .title("같이 농구합시다 3대3")
-                .contents("고수만 오셈")
+                .content("고수만 오셈")
                 .address("마포구 서교동 12-1")
                 .startTime("2021-10-10T10:00:00")
                 .duration(120)
@@ -109,7 +109,7 @@ class GameControllerTest {
         Game game = Game
                 .builder()
                 .title("같이 농구합시다 3대3")
-                .contents("고수만 오셈")
+                .content("고수만 오셈")
                 .address("마포구 서교동 12-1")
                 .startTime("2021-10-10T10:00:00")
                 .duration(120)
@@ -151,7 +151,7 @@ class GameControllerTest {
         Game game = Game
                 .builder()
                 .title("같이 농구합시다 3대3")
-                .contents("고수만 오셈")
+                .content("고수만 오셈")
                 .address("마포구 서교동 12-1")
                 .startTime("2021-10-10T10:00:00")
                 .duration(120)

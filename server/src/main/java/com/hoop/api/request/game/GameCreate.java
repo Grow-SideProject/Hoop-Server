@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 //@ToString
 public class GameCreate {
     private String title; // 모집 공고명
-    private String contents; // 모집 내용
+    private String content; // 모집 내용
     private String courtName; //코트명
     private String address; // 코트 주소 (추후 분리 예정)
     private GameCategory gameCategory; // 게임 종류
@@ -23,9 +23,9 @@ public class GameCreate {
     private Integer maxAttend; // 최대 인원
 
     @Builder
-    public GameCreate(String title, String contents, String courtName, String address, GameCategory gameCategory, String startTime, Integer duration, Boolean isBallFlag, Integer maxAttend) {
+    public GameCreate(String title, String content, String courtName, String address, GameCategory gameCategory, String startTime, Integer duration, Boolean isBallFlag, Integer maxAttend) {
         this.title = title;
-        this.contents = contents;
+        this.content = content;
         this.courtName = courtName;
         this.address = address;
         this.gameCategory = gameCategory;
@@ -38,7 +38,7 @@ public class GameCreate {
     public Game toGame() {
         return Game.builder()
                         .title(title)
-                        .contents(contents)
+                        .content(content)
                         .courtName(courtName)
                         .address(address)
                         .gameCategory(gameCategory)

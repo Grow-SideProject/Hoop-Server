@@ -10,7 +10,6 @@ import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.GameAttendantRepository;
 import com.hoop.api.repository.GameRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.game.GameAttend;
 import com.hoop.api.request.game.GameCreate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -19,7 +19,7 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title; // 모집 공고명
-    private String contents; // 모집 내용
+    private String content; // 모집 내용
     private LocalDateTime createdAt;
     private Integer maxAttend; // 최대 인원
     private String courtName; //코트명
@@ -36,12 +36,12 @@ public class Game {
     private List<GameAttendant> gameAttendants;
 
     @Builder
-    public Game(Long id, String title, String contents, LocalDateTime createdAt, Integer maxAttend,
+    public Game(Long id, String title, String content, LocalDateTime createdAt, Integer maxAttend,
                     String courtName, String address, GameCategory gameCategory, String startTime,
                     Integer duration, List<GameAttendant> gameAttendants) {
         this.id = id;
         this.title = title;
-        this.contents = contents;
+        this.content = content;
         this.createdAt = createdAt;
         this.maxAttend = maxAttend;
         this.courtName = courtName;
