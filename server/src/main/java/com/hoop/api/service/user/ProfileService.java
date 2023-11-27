@@ -10,7 +10,7 @@ import com.hoop.api.exception.ProfileException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.exception.GameNotFound;
 import com.hoop.api.repository.FeedbackRepository;
-import com.hoop.api.repository.GameRepository;
+import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.user.FeedbackRequest;
 import com.hoop.api.request.user.PhoneRequest;

@@ -8,7 +8,7 @@ import com.hoop.api.exception.AlreadyExistsGameAttendException;
 import com.hoop.api.exception.GameNotFound;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.GameAttendantRepository;
-import com.hoop.api.repository.GameRepository;
+import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.game.GameCreate;
 import jakarta.transaction.Transactional;
@@ -22,6 +22,12 @@ public class GameService {
     private final GameRepository gameRepository;
     private final GameAttendantRepository gameAttendantRepository;
     private final UserRepository userRepository;
+
+//    public List<GameResponse> getList(GameSearch postSearch) {
+//        return gameRepository.getList(postSearch).stream()
+//                .map(GameResponse::new)
+//                .collect(Collectors.toList());
+//    }
 
     @Transactional
     public void create(Long userId, GameCreate gameCreate) {

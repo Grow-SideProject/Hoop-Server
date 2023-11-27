@@ -3,12 +3,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.domain.Game;
-import com.hoop.api.domain.GameAttendant;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.GameAttendantRepository;
-import com.hoop.api.repository.GameRepository;
+import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.game.GameAttend;
 import com.hoop.api.request.game.GameCreate;
 import com.hoop.api.service.user.JwtService;
 import org.junit.jupiter.api.AfterEach;
@@ -19,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.MultiValueMap;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
