@@ -2,9 +2,9 @@ package com.hoop.api.constant;
 
 public enum PlayStyle {
 
-    AGGRESSIVE("공격적인"),
+    AGGRESSIVE("공격적"),
     BALANCE("밸런스"),
-    DEFENSIVE("방어적인");
+    DEFENSIVE("방어적");
 
     private final String value;
 

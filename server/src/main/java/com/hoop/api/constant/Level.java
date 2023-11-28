@@ -2,7 +2,7 @@ package com.hoop.api.constant;
 
 public enum Level {
 
-    BEGINNER("입문자"),
+    BEGINNER("비기너"),
     ROOKIE("초보"),
     INTERMEDIATE("중수"),
     SEMIPRO("세미프로"),
