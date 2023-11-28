@@ -10,31 +10,43 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Entity
+@Table(
+        indexes = {
+                @Index(name = "IDX_COMMENT_POST_ID", columnList = "post_id")
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment {
+public class PostComment {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String author;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(nullable = false)
     private String content;
 
+    @ManyToOne
+    @JoinColumn
+    private Post post;
 
     @ManyToOne
     @JoinColumn
     private Game game;
     @Builder
-    public Comment(String author, String content) {
+    public PostComment(String author, String password, String content) {
         this.author = author;
+        this.password = password;
         this.content = content;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-        this.game.getComments().add(this);
+    public void setPost(Post post) {
+        this.post = post;
     }
+
 }

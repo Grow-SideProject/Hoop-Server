@@ -35,6 +35,9 @@ public class Game {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<GameAttendant> gameAttendants;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    private List<Comment> comments;
+
     @Builder
     public Game(Long id, String title, String content, LocalDateTime createdAt, Integer maxAttend,
                     String courtName, String address, GameCategory gameCategory, String startTime,

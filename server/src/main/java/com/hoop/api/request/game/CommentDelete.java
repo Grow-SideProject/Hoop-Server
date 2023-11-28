@@ -1,8 +1,8 @@
-package com.hoop.api.request.comment;
+package com.hoop.api.request.game;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class CommentDelete {
 
     private String password;
@@ -10,7 +10,6 @@ public class CommentDelete {
     public CommentDelete() {
 
     }
-
     public CommentDelete(String password) {
         this.password = password;
     }

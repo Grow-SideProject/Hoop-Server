@@ -27,7 +27,7 @@ public class Post {
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.LAZY)
-    private List<Comment> comments;
+    private List<PostComment> postComments;
 
     @Builder
     public Post(String title, String content, User user) {
@@ -51,9 +51,9 @@ public class Post {
         return this.user.getId();
     }
 
-    public void addComment(Comment comment) {
-        comment.setPost(this);
-        this.comments.add(comment);
+    public void addComment(PostComment postComment) {
+        postComment.setPost(this);
+        this.postComments.add(postComment);
     }
 }
 
