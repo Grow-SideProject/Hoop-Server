@@ -1,5 +1,7 @@
 package com.hoop.api.controller;
 
+import com.hoop.api.domain.User;
+import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.CategoryNotFound;
 import com.hoop.api.request.user.SignIn;
 import com.hoop.api.request.user.SignUp;
@@ -12,6 +14,9 @@ import com.hoop.api.service.user.SocialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -41,20 +46,26 @@ public class AuthController {
         //일단 카카오 로그인만 구현
         Long socialId;
         String category = socialSignUp.getCategory();
+        UUID one = UUID.randomUUID();
+        Optional<User> user;
+        TokenResponse tokenResponse = jwtService.createTokenResponse(one.toString());
         switch (category) {
             case "KAKAO" :
                 socialId = socialService.getKakaoIdByToken(socialSignUp.getAccessToken());
+                user = authService.getUserBySocialId(socialId);
+                if (user.isPresent()) {
+                    throw new AlreadyExistsUserException();
+                }
                 authService.signup(SignUp.builder()
-                        .email(Long.toString(socialId))
-                        .password(Long.toString(socialId))
+                        .email(one.toString())
+                        .password(one.toString())
                         .socialId(socialId)
+                        .refreshToken(tokenResponse.getRefreshToken())
                         .build());
                 break;
             default:
                 throw new CategoryNotFound();
         }
-        TokenResponse tokenResponse = jwtService.createTokenResponse(Long.toString(socialId));
-        authService.setRefreshTokenBySocialId(socialId,tokenResponse.getRefreshToken());
         return tokenResponse;
     }
 

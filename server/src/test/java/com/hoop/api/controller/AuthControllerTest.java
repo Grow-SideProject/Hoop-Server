@@ -39,6 +39,7 @@ class AuthControllerTest {
     @MockBean
     private SocialService socialService;
 
+
     private SocialService authService;
 
 

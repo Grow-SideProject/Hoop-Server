@@ -29,6 +29,7 @@ public class AuthService {
                 .email(signup.getEmail())
                 .password(encryptedPassword)
                 .socialId(signup.getSocialId())
+                .refreshToken(signup.getRefreshToken())
                 .build();
         userRepository.save(user);
     }
@@ -39,4 +40,10 @@ public class AuthService {
         user.setRefreshToken(token);
         userRepository.save(user);
     }
+
+
+    public Optional<User> getUserBySocialId(Long socialId) {
+        return userRepository.findBySocialId(socialId);
+    }
+
 }

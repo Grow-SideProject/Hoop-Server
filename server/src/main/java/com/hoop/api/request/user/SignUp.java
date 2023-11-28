@@ -9,4 +9,5 @@ public class SignUp {
     private String email;
     private String password;
     private Long socialId;
+    private String refreshToken;
 }

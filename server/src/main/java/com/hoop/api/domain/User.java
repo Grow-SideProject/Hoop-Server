@@ -78,7 +78,7 @@ public class User {
 
     @Builder
     public User(String email, String password, Long socialId, String phoneNumber, String nickName, String gender, String address, String desc, String birth,
-                   PlayStyle playStyle, Level level, User user, List<Ability> abilities) {
+                   PlayStyle playStyle, Level level, User user, List<Ability> abilities, String refreshToken) {
         this.email = email;
         this.password = password;
         this.socialId = socialId;
