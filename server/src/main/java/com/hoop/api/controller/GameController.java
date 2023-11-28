@@ -3,13 +3,16 @@ package com.hoop.api.controller;
 
 import com.hoop.api.config.UserPrincipal;
 
-import com.hoop.api.request.game.GameAttend;
 import com.hoop.api.request.game.GameCreate;
-import com.hoop.api.service.GameService;
+import com.hoop.api.request.game.GameSearch;
+import com.hoop.api.response.GameResponse;
+import com.hoop.api.service.game.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -21,8 +24,8 @@ public class GameController {
 
 
     @GetMapping()
-    public String get() {
-        return "temp";
+    public List<GameResponse> get(@AuthenticationPrincipal UserPrincipal userPrincipal, @ModelAttribute GameSearch gameSearch) {
+        return gameService.getList(gameSearch);
     }
 
     @PostMapping()

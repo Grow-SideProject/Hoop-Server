@@ -133,6 +133,8 @@ class GameControllerTest {
         // expected
         mockMvc.perform(get("/game")
                         .header("Authorization",accessToken)
+                        .queryParam("page", String.valueOf(1))
+                        .queryParam("size", String.valueOf(10))
                         .contentType(APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())

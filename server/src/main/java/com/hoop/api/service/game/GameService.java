@@ -1,4 +1,4 @@
-package com.hoop.api.service;
+package com.hoop.api.service.game;
 
 import com.hoop.api.domain.Game;
 
@@ -11,9 +11,14 @@ import com.hoop.api.repository.GameAttendantRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.game.GameCreate;
+import com.hoop.api.request.game.GameSearch;
+import com.hoop.api.response.GameResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +28,11 @@ public class GameService {
     private final GameAttendantRepository gameAttendantRepository;
     private final UserRepository userRepository;
 
-//    public List<GameResponse> getList(GameSearch postSearch) {
-//        return gameRepository.getList(postSearch).stream()
-//                .map(GameResponse::new)
-//                .collect(Collectors.toList());
-//    }
+    public List<GameResponse> getList(GameSearch gameSearch) {
+        return gameRepository.getList(gameSearch).stream()
+                .map(GameResponse::new)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public void create(Long userId, GameCreate gameCreate) {
