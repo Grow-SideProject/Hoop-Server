@@ -1,17 +1,12 @@
 package com.hoop.api.service.game;
-
 import com.hoop.api.domain.Comment;
-import com.hoop.api.domain.PostComment;
 import com.hoop.api.domain.Game;
 import com.hoop.api.exception.CommentNotFound;
-import com.hoop.api.exception.InvalidPassword;
 import com.hoop.api.exception.GameNotFound;
 import com.hoop.api.repository.CommentRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.request.game.CommentCreate;
 import com.hoop.api.request.game.CommentDelete;
-import com.hoop.api.request.post.PostCommentCreate;
-import com.hoop.api.request.post.PostCommentDelete;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

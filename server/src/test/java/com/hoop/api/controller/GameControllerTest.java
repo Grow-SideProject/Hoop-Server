@@ -99,10 +99,40 @@ class GameControllerTest {
         assertEquals(1, gameAttendantRepository.count());
     }
 
+@Test
+    @HoopMockUser
+    @DisplayName("GET GAME")
+    void test2() throws Exception {
+        // given
+        Game game = Game
+                .builder()
+                .title("같이 농구합시다 3대3")
+                .content("고수만 오셈")
+                .address("마포구 서교동 12-1")
+                .startTime("2021-10-10T10:00:00")
+                .duration(120)
+                .courtName("창천체육관")
+                .maxAttend(Integer.valueOf(6))
+                .gameCategory(GameCategory.THREE_ON_THREE)
+                .gameAttendants(new ArrayList<>())
+                .build();
+
+        gameRepository.save(game);
+        // expected
+        mockMvc.perform(get("/game")
+                        .header("Authorization",accessToken)
+                        .queryParam("page", String.valueOf(1))
+                        .queryParam("size", String.valueOf(10))
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
     @Test
     @HoopMockUser
     @DisplayName("ATTEND GAME")
-    void test2() throws Exception {
+    void test3() throws Exception {
         // given
         Game game = Game
                 .builder()
@@ -143,7 +173,7 @@ class GameControllerTest {
     @Test
     @HoopMockUser
     @DisplayName("EXIT GAME")
-    void test3() throws Exception {
+    void test4() throws Exception {
         // given
         Game game = Game
                 .builder()
@@ -184,7 +214,7 @@ class GameControllerTest {
     @Test
     @HoopMockUser
     @DisplayName("CREATE COMMENT")
-    void test4() throws Exception {
+    void test5() throws Exception {
         // given
         GameCreate gameCreate = GameCreate.
                 builder()
