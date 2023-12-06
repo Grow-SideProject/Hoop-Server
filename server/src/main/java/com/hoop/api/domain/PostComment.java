@@ -35,9 +35,6 @@ public class PostComment {
     @JoinColumn
     private Post post;
 
-    @ManyToOne
-    @JoinColumn
-    private Game game;
     @Builder
     public PostComment(String author, String password, String content) {
         this.author = author;
