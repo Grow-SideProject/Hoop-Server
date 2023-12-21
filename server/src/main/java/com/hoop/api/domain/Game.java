@@ -1,6 +1,7 @@
 package com.hoop.api.domain;
 
 import com.hoop.api.constant.GameCategory;
+import com.hoop.api.constant.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,17 +21,20 @@ public class Game {
     private Long id;
     private String title; // 모집 공고명
     private String content; // 모집 내용
-    private LocalDateTime createdAt;
-    private Integer maxAttend; // 최대 인원
     private String courtName; //코트명
     private String address; // 코트 주소 (추후 분리 예정)
     private GameCategory gameCategory; // 게임 종류
 
     private String startTime;
     private Integer duration;
+    private LocalDateTime createdAt;
 
+    private Boolean isBallFlag;
 
-    private LocalDateTime gameStartTime;
+    private Integer maxAttend; // 최대 인원
+
+    private Gender gender; // 성별
+
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<GameAttendant> gameAttendants;
@@ -38,20 +42,22 @@ public class Game {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<Comment> comments;
 
+
     @Builder
-    public Game(Long id, String title, String content, LocalDateTime createdAt, Integer maxAttend,
-                    String courtName, String address, GameCategory gameCategory, String startTime,
-                    Integer duration, List<GameAttendant> gameAttendants) {
-        this.id = id;
+    public Game(String title, String content, Integer maxAttend, String courtName, String address,
+                String startTime, Integer duration, GameCategory gameCategory,Gender gender, Boolean isBallFlag) {
         this.title = title;
         this.content = content;
-        this.createdAt = createdAt;
-        this.maxAttend = maxAttend;
         this.courtName = courtName;
         this.address = address;
         this.gameCategory = gameCategory;
         this.startTime = startTime;
         this.duration = duration;
+        this.gender = gender;
+        this.maxAttend = maxAttend;
+        this.isBallFlag = isBallFlag;
+        this.createdAt = LocalDateTime.now();;
         this.gameAttendants = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 }

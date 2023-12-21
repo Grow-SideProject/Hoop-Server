@@ -22,9 +22,9 @@ public class CommentController {
 
     private final ProfileService profileService;
     @PostMapping("/game/{gameId}/comments")
-    public void write(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId, @RequestBody @Valid CommentCreate request) {;
-        if (request.getAuthor() == null ) request.setAuthor(profileService.get(userPrincipal.getUserId()).getNickName());
-        commentService.write(gameId, request);
+    public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId, @RequestBody @Valid CommentCreate request) {;
+        if (request.getNickName() == null ) request.setNickName(profileService.get(userPrincipal.getUserId()).getNickName());
+        commentService.create(gameId, request);
     }
 
 //    @PostMapping("/comments/{commentId}/delete")

@@ -1,6 +1,7 @@
 package com.hoop.api.request.game;
 
 import com.hoop.api.constant.GameCategory;
+import com.hoop.api.constant.Gender;
 import com.hoop.api.domain.Game;
 import lombok.*;
 
@@ -18,12 +19,16 @@ public class GameCreate {
     private String startTime;
     private Integer duration;
 
-
     private Boolean isBallFlag;
+
+    private Gender gender; // 성별
+
     private Integer maxAttend; // 최대 인원
 
     @Builder
-    public GameCreate(String title, String content, String courtName, String address, GameCategory gameCategory, String startTime, Integer duration, Boolean isBallFlag, Integer maxAttend) {
+    public GameCreate(String title, String content, String courtName, String address,
+                      GameCategory gameCategory, String startTime, Integer duration,
+                      Boolean isBallFlag, Integer maxAttend, Gender gender) {
         this.title = title;
         this.content = content;
         this.courtName = courtName;
@@ -33,18 +38,22 @@ public class GameCreate {
         this.duration = duration;
         this.isBallFlag = isBallFlag;
         this.maxAttend = maxAttend;
+        this.gender = gender;
+
     }
 
     public Game toGame() {
         return Game.builder()
-                        .title(title)
-                        .content(content)
-                        .courtName(courtName)
-                        .address(address)
-                        .gameCategory(gameCategory)
-                        .startTime(startTime)
-                        .duration(duration)
-                        .maxAttend(maxAttend)
-                        .build();
+                .title(title)
+                .content(content)
+                .courtName(courtName)
+                .address(address)
+                .gameCategory(gameCategory)
+                .startTime(startTime)
+                .duration(duration)
+                .isBallFlag(isBallFlag)
+                .gender(gender)
+                .maxAttend(maxAttend)
+                .build();
     }
 }

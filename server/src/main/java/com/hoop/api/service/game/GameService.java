@@ -28,6 +28,11 @@ public class GameService {
     private final GameAttendantRepository gameAttendantRepository;
     private final UserRepository userRepository;
 
+    public GameResponse get(Long gameId) {
+        Game game = gameRepository.findById(gameId).orElseThrow(() -> new GameNotFound());
+        return new GameResponse(game);
+    }
+
     public List<GameResponse> getList(GameSearch gameSearch) {
         return gameRepository.getList(gameSearch).stream()
                 .map(GameResponse::new)

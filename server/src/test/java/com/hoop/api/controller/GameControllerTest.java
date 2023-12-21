@@ -99,9 +99,9 @@ class GameControllerTest {
         assertEquals(1, gameAttendantRepository.count());
     }
 
-@Test
+    @Test
     @HoopMockUser
-    @DisplayName("GET GAME")
+    @DisplayName("GET GAME LIST")
     void test2() throws Exception {
         // given
         Game game = Game
@@ -114,7 +114,6 @@ class GameControllerTest {
                 .courtName("창천체육관")
                 .maxAttend(Integer.valueOf(6))
                 .gameCategory(GameCategory.THREE_ON_THREE)
-                .gameAttendants(new ArrayList<>())
                 .build();
 
         gameRepository.save(game);
@@ -144,7 +143,6 @@ class GameControllerTest {
                 .courtName("창천체육관")
                 .maxAttend(Integer.valueOf(6))
                 .gameCategory(GameCategory.THREE_ON_THREE)
-                .gameAttendants(new ArrayList<>())
                 .build();
 
         gameRepository.save(game);
@@ -185,7 +183,6 @@ class GameControllerTest {
                 .courtName("창천체육관")
                 .maxAttend(Integer.valueOf(6))
                 .gameCategory(GameCategory.THREE_ON_THREE)
-                .gameAttendants(new ArrayList<>())
                 .build();
         gameRepository.save(game);
 
@@ -244,7 +241,7 @@ class GameControllerTest {
         Long gameId = game.get(0).getId();
         CommentCreate commentCreate = CommentCreate
                 .builder()
-                .author("작성자")
+                .nickName("작성자")
                 .content("댓글입니다. 아아아아아 10글자 제한입니다.")
                 .build();
         json = objectMapper.writeValueAsString(commentCreate);

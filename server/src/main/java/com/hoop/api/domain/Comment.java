@@ -18,7 +18,7 @@ public class Comment {
     private Long id;
 
     @Column(nullable = false)
-    private String author;
+    private String nickName;
 
     @Column(nullable = false)
     private String content;
@@ -27,14 +27,20 @@ public class Comment {
     @ManyToOne
     @JoinColumn
     private Game game;
+
     @Builder
-    public Comment(String author, String content) {
-        this.author = author;
+    public Comment(String nickName, String content) {
+        this.nickName = nickName;
         this.content = content;
     }
 
     public void setGame(Game game) {
         this.game = game;
         this.game.getComments().add(this);
+    }
+
+    public void removeGame(Game game) {
+        this.game = game;
+        this.game.getComments().remove(this);
     }
 }

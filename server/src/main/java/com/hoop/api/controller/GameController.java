@@ -24,8 +24,13 @@ public class GameController {
 
 
     @GetMapping()
-    public List<GameResponse> get(@AuthenticationPrincipal UserPrincipal userPrincipal, @ModelAttribute GameSearch gameSearch) {
+    public List<GameResponse> getList(@AuthenticationPrincipal UserPrincipal userPrincipal, @ModelAttribute GameSearch gameSearch) {
         return gameService.getList(gameSearch);
+    }
+
+    @GetMapping("/{gameId}")
+    public GameResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId) {
+        return gameService.get(gameId);
     }
 
     @PostMapping()

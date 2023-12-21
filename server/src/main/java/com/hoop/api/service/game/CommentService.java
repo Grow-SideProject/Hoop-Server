@@ -21,12 +21,12 @@ public class CommentService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void write(Long gameId, CommentCreate request) {
+    public void create(Long gameId, CommentCreate request) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotFound::new);
 
         Comment comment = Comment.builder()
-                .author(request.getAuthor())
+                .nickName(request.getNickName())
                 .content(request.getContent())
                 .build();
         comment.setGame(game);

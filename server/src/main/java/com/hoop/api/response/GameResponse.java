@@ -1,6 +1,8 @@
 package com.hoop.api.response;
 
 import com.hoop.api.constant.GameCategory;
+import com.hoop.api.constant.Gender;
+import com.hoop.api.domain.Comment;
 import com.hoop.api.domain.Game;
 import com.hoop.api.domain.GameAttendant;
 import com.hoop.api.domain.Post;
@@ -29,27 +31,39 @@ public class GameResponse {
     private GameCategory gameCategory; // 게임 종류
     private String startTime;
     private Integer duration;
-    private LocalDateTime gameStartTime;
+
+    private Gender gender; // 성별
+
+    private Boolean isBallFlag; // 공 여부
     private List<GameAttendant> gameAttendants;
+
+    private List<Comment> comments;
+
     // 생성자 오버로딩
     public GameResponse(Game game) {
         this.id = game.getId();
         this.title = game.getTitle();
         this.content = game.getContent();
-        this.createdAt = game.getCreatedAt();
-        this.maxAttend = game.getMaxAttend();
         this.courtName = game.getCourtName();
         this.address = game.getAddress();
         this.gameCategory = game.getGameCategory();
         this.startTime = game.getStartTime();
         this.duration = game.getDuration();
-        this.gameAttendants = new ArrayList<>();
+        this.gender = game.getGender();
+        this.maxAttend = game.getMaxAttend();
+        this.isBallFlag = game.getIsBallFlag();
+        this.createdAt = game.getCreatedAt();
+        this.gameAttendants = game.getGameAttendants();
+        this.comments = game.getComments();
+
     }
 
     @Builder
-    public GameResponse(Long id, String title, String content, LocalDateTime createdAt, Integer maxAttend,
-                String courtName, String address, GameCategory gameCategory, String startTime,
-                Integer duration, List<GameAttendant> gameAttendants) {
+
+    public GameResponse(Long id, String title, String content, LocalDateTime createdAt,
+                        Integer maxAttend, String courtName, String address, GameCategory gameCategory,
+                        String startTime, Integer duration, Gender gender, Boolean isBallFlag,
+                        List<GameAttendant> gameAttendants, List<Comment> comments) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -60,6 +74,9 @@ public class GameResponse {
         this.gameCategory = gameCategory;
         this.startTime = startTime;
         this.duration = duration;
-        this.gameAttendants = new ArrayList<>();
+        this.gender = gender;
+        this.isBallFlag = isBallFlag;
+        this.gameAttendants = gameAttendants;
+        this.comments = comments;
     }
 }
