@@ -37,6 +37,7 @@ public class Game {
     private Gender gender; // 성별
 
 
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<GameAttendant> gameAttendants;
 

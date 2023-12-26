@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
@@ -23,6 +25,7 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn
@@ -30,6 +33,7 @@ public class Comment {
 
     @Builder
     public Comment(String nickName, String content) {
+        this.createdAt = LocalDateTime.now();
         this.nickName = nickName;
         this.content = content;
     }

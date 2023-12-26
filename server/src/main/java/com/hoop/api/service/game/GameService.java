@@ -103,4 +103,6 @@ public class GameService {
                 .orElseThrow(GameNotFound::new);
         gameAttendant.removeGameAttend();
     }
+
+
 }
