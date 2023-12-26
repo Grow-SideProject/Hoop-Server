@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class Game {
     private String address; // 코트 주소 (추후 분리 예정)
     private GameCategory gameCategory; // 게임 종류
 
-    private String startTime;
+    private LocalDateTime startTime;
     private Integer duration;
     private LocalDateTime createdAt;
 
@@ -51,7 +52,7 @@ public class Game {
         this.courtName = courtName;
         this.address = address;
         this.gameCategory = gameCategory;
-        this.startTime = startTime;
+        this.startTime = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.duration = duration;
         this.gender = gender;
         this.maxAttend = maxAttend;

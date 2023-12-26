@@ -15,6 +15,8 @@ import com.hoop.api.request.game.GameSearch;
 import com.hoop.api.response.GameResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +31,7 @@ public class GameService {
     private final UserRepository userRepository;
 
     public GameResponse get(Long gameId) {
-        Game game = gameRepository.findById(gameId).orElseThrow(() -> new GameNotFound());
+        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
         return new GameResponse(game);
     }
 
@@ -39,9 +41,14 @@ public class GameService {
                 .collect(Collectors.toList());
     }
 
+    public Page<GameResponse> getPage(Pageable pageable) {
+        return gameRepository.findAll(pageable)
+                .map(GameResponse::new);
+    }
+
     @Transactional
     public void create(Long userId, GameCreate gameCreate) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFound());
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameCreate.toGame();
         GameAttendant gameAttendant = GameAttendant
                 .builder()
@@ -56,8 +63,8 @@ public class GameService {
     }
 
     public void attendGame(Long userId, Long gameId, boolean ballFlag) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFound());
-        Game game = gameRepository.findById(gameId).orElseThrow(() -> new GameNotFound());
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
         gameAttendantRepository.findByUserAndGame(user, game)
                 .ifPresent(gameAttendant -> {
                     throw new AlreadyExistsGameAttendException();
@@ -75,10 +82,10 @@ public class GameService {
 
     @Transactional
     public void exitGame(Long userId, Long gameId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFound());
-        Game game = gameRepository.findById(gameId).orElseThrow(() -> new GameNotFound());
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
         GameAttendant gameAttendant = gameAttendantRepository.findByUserAndGame(user, game)
-                    .orElseThrow(()-> new GameNotFound());
+                    .orElseThrow(GameNotFound::new);
         if (gameAttendant.getHost()) {
             // TODO: host가 나갔을 때 처리
             // isAttend = true인 값 중에서 id가 가장 빠른 거 가져오기
@@ -90,10 +97,10 @@ public class GameService {
 
     @Transactional
     public void removeGameAttend(Long userId, Long gameId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFound());
-        Game game = gameRepository.findById(gameId).orElseThrow(() -> new GameNotFound());
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
         GameAttendant gameAttendant = gameAttendantRepository.deleteOneByUserAndGame(user, game)
-                .orElseThrow(()-> new GameNotFound());
+                .orElseThrow(GameNotFound::new);
         gameAttendant.removeGameAttend();
     }
 }

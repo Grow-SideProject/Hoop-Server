@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 
 @Data
+@NoArgsConstructor
 //@ToString
 public class GameCreate {
     private String title; // 모집 공고명

@@ -47,7 +47,7 @@ public class GameResponse {
         this.courtName = game.getCourtName();
         this.address = game.getAddress();
         this.gameCategory = game.getGameCategory();
-        this.startTime = game.getStartTime();
+        this.startTime = game.getStartTime().toString();
         this.duration = game.getDuration();
         this.gender = game.getGender();
         this.maxAttend = game.getMaxAttend();

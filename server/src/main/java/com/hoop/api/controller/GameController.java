@@ -5,10 +5,15 @@ import com.hoop.api.config.UserPrincipal;
 
 import com.hoop.api.request.game.GameCreate;
 import com.hoop.api.request.game.GameSearch;
+import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.GameResponse;
 import com.hoop.api.service.game.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +29,10 @@ public class GameController {
 
 
     @GetMapping()
+    public Page<GameResponse> getPage(@AuthenticationPrincipal UserPrincipal userPrincipal, @PageableDefault(size=10, sort="createdAt", direction= Sort.Direction.DESC) Pageable pageable) {
+        return gameService.getPage(pageable);
+    }
+    @GetMapping("/list")
     public List<GameResponse> getList(@AuthenticationPrincipal UserPrincipal userPrincipal, @ModelAttribute GameSearch gameSearch) {
         return gameService.getList(gameSearch);
     }
@@ -34,8 +43,9 @@ public class GameController {
     }
 
     @PostMapping()
-    public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameCreate gameCreate) {
+    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameCreate gameCreate) {
         gameService.create(userPrincipal.getUserId(), gameCreate);
+        return new DefaultResponse();
     }
 
     @GetMapping("/attend")
