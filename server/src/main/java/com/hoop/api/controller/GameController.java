@@ -27,11 +27,6 @@ public class GameController {
 
     private final GameService gameService;
 
-
-    @GetMapping("/page")
-    public Page<GameResponse> getPage(@AuthenticationPrincipal UserPrincipal userPrincipal, @PageableDefault(size=10, sort="createdAt", direction= Sort.Direction.DESC) Pageable pageable) {
-        return gameService.getPage(pageable);
-    }
     @GetMapping()
     public List<GameResponse> getList(@AuthenticationPrincipal UserPrincipal userPrincipal, @ModelAttribute GameSearch gameSearch) {
         return gameService.getList(gameSearch);
@@ -58,4 +53,9 @@ public class GameController {
         gameService.exitGame(userPrincipal.getUserId(), gameId);
     }
 
+
+    @GetMapping("/page")
+    public Page<GameResponse> getPage(@AuthenticationPrincipal UserPrincipal userPrincipal, Pageable pageable) {
+        return gameService.getPage(pageable);
+    }
 }

@@ -2,10 +2,8 @@ package com.hoop.api.response;
 
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
-import com.hoop.api.domain.Comment;
-import com.hoop.api.domain.Game;
-import com.hoop.api.domain.GameAttendant;
-import com.hoop.api.domain.Post;
+import com.hoop.api.constant.Level;
+import com.hoop.api.domain.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 import lombok.Builder;
@@ -34,8 +32,11 @@ public class GameResponse {
 
     private Gender gender; // 성별
 
+    private List<Level> level = new ArrayList<>();
+
     private Boolean isBallFlag; // 공 여부
     private List<GameAttendant> gameAttendants;
+
 
     private List<Comment> comments;
 
@@ -53,17 +54,16 @@ public class GameResponse {
         this.maxAttend = game.getMaxAttend();
         this.isBallFlag = game.getIsBallFlag();
         this.createdAt = game.getCreatedAt();
-        this.gameAttendants = game.getGameAttendants();
         this.comments = game.getComments();
-
+        this.level = game.getLevel();
+        this.gameAttendants = game.getGameAttendants();
     }
 
     @Builder
-
     public GameResponse(Long id, String title, String content, LocalDateTime createdAt,
                         Integer maxAttend, String courtName, String address, GameCategory gameCategory,
                         String startTime, Integer duration, Gender gender, Boolean isBallFlag,
-                        List<GameAttendant> gameAttendants, List<Comment> comments) {
+                        List<Comment> comments, List<Level> level, List<GameAttendant> gameAttendants) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -76,7 +76,8 @@ public class GameResponse {
         this.duration = duration;
         this.gender = gender;
         this.isBallFlag = isBallFlag;
-        this.gameAttendants = gameAttendants;
         this.comments = comments;
+        this.level = level;
+        this.gameAttendants = gameAttendants;
     }
 }

@@ -2,10 +2,13 @@ package com.hoop.api.request.game;
 
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
+import com.hoop.api.constant.Level;
 import com.hoop.api.domain.Game;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -26,10 +29,12 @@ public class GameCreate {
 
     private Integer maxAttend; // 최대 인원
 
+    private List<Level> level = new ArrayList<>();
+
     @Builder
     public GameCreate(String title, String content, String courtName, String address,
                       GameCategory gameCategory, String startTime, Integer duration,
-                      Boolean isBallFlag, Integer maxAttend, Gender gender) {
+                      Boolean isBallFlag, Integer maxAttend, Gender gender, List<Level> level) {
         this.title = title;
         this.content = content;
         this.courtName = courtName;
@@ -40,6 +45,7 @@ public class GameCreate {
         this.isBallFlag = isBallFlag;
         this.maxAttend = maxAttend;
         this.gender = gender;
+        this.level = level;
 
     }
 
@@ -55,6 +61,7 @@ public class GameCreate {
                 .isBallFlag(isBallFlag)
                 .gender(gender)
                 .maxAttend(maxAttend)
+                .level(level)
                 .build();
     }
 }

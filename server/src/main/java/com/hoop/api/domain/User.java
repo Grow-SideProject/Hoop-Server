@@ -92,7 +92,6 @@ public class User {
         this.birth = birth;
         this.level = level;
         this.abilities = abilities;
-        this.createdAt = LocalDateTime.now();
     }
 
     public void setRefreshToken(String refreshToken) {

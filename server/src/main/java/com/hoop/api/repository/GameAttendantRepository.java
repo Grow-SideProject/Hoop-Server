@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface GameAttendantRepository extends JpaRepository<GameAttendant, Long> {
 
-    Optional<GameAttendant> deleteOneByUserAndGame(User user, Game game);
 
     Optional<GameAttendant> findByUserAndGame(User user, Game game);
 
+    Optional<GameAttendant> findByGameAndIsAttend(Game game, Boolean isAttend);
 
 }

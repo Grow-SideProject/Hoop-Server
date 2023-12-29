@@ -2,6 +2,7 @@ package com.hoop.api.domain;
 
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
+import com.hoop.api.constant.Level;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 @Data
@@ -36,18 +36,18 @@ public class Game {
 
     private Gender gender; // 성별
 
-
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
-    private List<GameAttendant> gameAttendants;
+    private List<Level> level = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<Comment> comments;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    private List<GameAttendant> gameAttendants;
 
     @Builder
     public Game(String title, String content, Integer maxAttend, String courtName, String address,
-                String startTime, Integer duration, GameCategory gameCategory,Gender gender, Boolean isBallFlag) {
+                String startTime, Integer duration, GameCategory gameCategory,Gender gender,
+                Boolean isBallFlag, List<Level> level) {
         this.title = title;
         this.content = content;
         this.courtName = courtName;
@@ -59,7 +59,8 @@ public class Game {
         this.maxAttend = maxAttend;
         this.isBallFlag = isBallFlag;
         this.createdAt = LocalDateTime.now();;
-        this.gameAttendants = new ArrayList<>();
         this.comments = new ArrayList<>();
+        this.level = level;
+        this.gameAttendants = new ArrayList<>();
     }
 }

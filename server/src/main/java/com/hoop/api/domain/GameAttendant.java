@@ -43,14 +43,8 @@ public class GameAttendant {
         this.isHost = isHost;
         this.isBallFlag = isBallFlag;
         this.isAttend = isAttend;
-        addGameAttend();
     }
-    public void addGameAttend() {
-        this.game.getGameAttendants().add(this);
-    }
-    public void removeGameAttend() {
-        this.game.getGameAttendants().remove(this);
-    }
+
 
     public void setBallFlag(Boolean ballFlag) {
         this.isBallFlag = ballFlag;
@@ -59,6 +53,10 @@ public class GameAttendant {
     public void setHost(Boolean host) {
         this.isHost = host;
     }
+
+    public void setAttend(Boolean attend) {
+        this.isAttend = attend;
+    }
     public Boolean getHost() {
         return this.isHost;
     }
@@ -66,10 +64,5 @@ public class GameAttendant {
     public Boolean getAttend() {
         return this.isAttend;
     }
-
-    public void setAttend(Boolean attend) {
-        this.isAttend = attend;
-    }
-
 
 }
