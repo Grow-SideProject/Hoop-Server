@@ -24,7 +24,7 @@ public class Game {
     private String content; // 모집 내용
     private String courtName; //코트명
     private String address; // 코트 주소 (추후 분리 예정)
-    private GameCategory gameCategory; // 게임 종류
+
 
     private LocalDateTime startTime;
     private Integer duration;
@@ -36,7 +36,9 @@ public class Game {
 
     private Gender gender; // 성별
 
-    private List<Level> level = new ArrayList<>();
+    private GameCategory gameCategory; // 게임 종류
+    @ElementCollection
+    private List<Level> levels = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<Comment> comments;
@@ -47,7 +49,7 @@ public class Game {
     @Builder
     public Game(String title, String content, Integer maxAttend, String courtName, String address,
                 String startTime, Integer duration, GameCategory gameCategory,Gender gender,
-                Boolean isBallFlag, List<Level> level) {
+                Boolean isBallFlag, List<Level> levels) {
         this.title = title;
         this.content = content;
         this.courtName = courtName;
@@ -60,7 +62,7 @@ public class Game {
         this.isBallFlag = isBallFlag;
         this.createdAt = LocalDateTime.now();;
         this.comments = new ArrayList<>();
-        this.level = level;
+        this.levels = levels;
         this.gameAttendants = new ArrayList<>();
     }
 }

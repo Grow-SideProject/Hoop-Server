@@ -13,6 +13,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,11 +35,9 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
                 .where(
                         inGameCategories(gameSearch.getGameCategories()),
                         eqGameGender(gameSearch.getGender()),
-                        inGameLevels(gameSearch.getLevels())
-
+                        inGameLevels(gameSearch.getLevels()),
+                        inStartTimes(gameSearch.getStartTimes())
                 )
-                // .join(game.gameAttendants, gameAttendant)
-                // .join(gameAttendant.user, user)
                 .limit(gameSearch.getSize())
                 .offset(gameSearch.getOffset())
                 .orderBy(orderSpecifiers)
@@ -56,11 +56,17 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
         return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
     }
 
-    private BooleanExpression inGameCategories(List<GameCategory> gameCategories) {
-        if (gameCategories == null ||gameCategories.isEmpty()) {
+
+    private BooleanBuilder inStartTimes(List<String> startTimes) {
+        if (startTimes == null || startTimes.isEmpty()) {
             return null;
         }
-        return game.gameCategory.in(gameCategories);
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        for (String startTime : startTimes) {
+            booleanBuilder.or(game.startTime.eq(LocalDateTime.parse(startTime,
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+        }
+        return booleanBuilder;
     }
 
     private BooleanExpression eqGameGender(Gender gender) {
@@ -68,13 +74,26 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
         return game.gender.eq(gender);
     }
 
+    // TODO
     private BooleanBuilder inGameLevels(List<Level> levels) {
         if (levels == null || levels.isEmpty()) {
             return null;
         }
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         for (Level level : levels) {
-            booleanBuilder.or(game.level.contains(level));
+            booleanBuilder.or(game.levels.contains(level));
+        }
+        return booleanBuilder;
+    }
+
+    // TODO
+    private BooleanBuilder inGameCategories(List<GameCategory> gameCategories) {
+        if (gameCategories == null || gameCategories.isEmpty()) {
+            return null;
+        }
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        for (GameCategory gameCategory : gameCategories) {
+            booleanBuilder.or(game.gameCategory.eq(gameCategory));
         }
         return booleanBuilder;
     }

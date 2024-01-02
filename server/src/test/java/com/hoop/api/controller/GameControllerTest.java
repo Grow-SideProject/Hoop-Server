@@ -2,6 +2,7 @@ package com.hoop.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
 import com.hoop.api.constant.GameCategory;
+import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.domain.Game;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.GameAttendantRepository;
@@ -9,6 +10,8 @@ import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.game.CommentCreate;
 import com.hoop.api.request.game.GameCreate;
+import com.hoop.api.request.game.GameSearch;
+import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.service.user.JwtService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -117,12 +120,17 @@ class GameControllerTest {
                 .build();
 
         gameRepository.save(game);
+
+        GameSearch gameSearch = GameSearch.builder()
+                .page(1)
+                .size(10)
+                .build();
+
         // expected
-        mockMvc.perform(get("/game")
+        mockMvc.perform(post("/game/list")
                         .header("Authorization",accessToken)
-                        .queryParam("page", String.valueOf(1))
-                        .queryParam("size", String.valueOf(10))
                         .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(gameSearch))
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -157,15 +165,6 @@ class GameControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
         assertEquals(1, gameAttendantRepository.count());
-        // expected
-        mockMvc.perform(get("/game")
-                        .header("Authorization",accessToken)
-                        .queryParam("page", String.valueOf(1))
-                        .queryParam("size", String.valueOf(10))
-                        .contentType(APPLICATION_JSON)
-                )
-                .andExpect(status().isOk())
-                .andDo(print());
     }
 
     @Test

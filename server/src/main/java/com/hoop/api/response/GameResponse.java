@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class GameResponse {
 
     private Gender gender; // 성별
 
-    private List<Level> level = new ArrayList<>();
+    private List<Level> levels = new ArrayList<>();
 
     private Boolean isBallFlag; // 공 여부
     private List<GameAttendant> gameAttendants;
@@ -48,14 +49,14 @@ public class GameResponse {
         this.courtName = game.getCourtName();
         this.address = game.getAddress();
         this.gameCategory = game.getGameCategory();
-        this.startTime = game.getStartTime().toString();
+        this.startTime = game.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.duration = game.getDuration();
         this.gender = game.getGender();
         this.maxAttend = game.getMaxAttend();
         this.isBallFlag = game.getIsBallFlag();
         this.createdAt = game.getCreatedAt();
         this.comments = game.getComments();
-        this.level = game.getLevel();
+        this.levels = game.getLevels();
         this.gameAttendants = game.getGameAttendants();
     }
 
@@ -63,7 +64,7 @@ public class GameResponse {
     public GameResponse(Long id, String title, String content, LocalDateTime createdAt,
                         Integer maxAttend, String courtName, String address, GameCategory gameCategory,
                         String startTime, Integer duration, Gender gender, Boolean isBallFlag,
-                        List<Comment> comments, List<Level> level, List<GameAttendant> gameAttendants) {
+                        List<Comment> comments, List<Level> levels, List<GameAttendant> gameAttendants) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -77,7 +78,7 @@ public class GameResponse {
         this.gender = gender;
         this.isBallFlag = isBallFlag;
         this.comments = comments;
-        this.level = level;
+        this.levels = levels;
         this.gameAttendants = gameAttendants;
     }
 }

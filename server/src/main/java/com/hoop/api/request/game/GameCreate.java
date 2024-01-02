@@ -21,6 +21,7 @@ public class GameCreate {
     private String address; // 코트 주소 (추후 분리 예정)
     private GameCategory gameCategory; // 게임 종류
     private String startTime;
+
     private Integer duration;
 
     private Boolean isBallFlag;
@@ -29,12 +30,12 @@ public class GameCreate {
 
     private Integer maxAttend; // 최대 인원
 
-    private List<Level> level = new ArrayList<>();
+    private List<Level> levels = new ArrayList<>();
 
     @Builder
     public GameCreate(String title, String content, String courtName, String address,
                       GameCategory gameCategory, String startTime, Integer duration,
-                      Boolean isBallFlag, Integer maxAttend, Gender gender, List<Level> level) {
+                      Boolean isBallFlag, Integer maxAttend, Gender gender, List<Level> levels) {
         this.title = title;
         this.content = content;
         this.courtName = courtName;
@@ -45,7 +46,7 @@ public class GameCreate {
         this.isBallFlag = isBallFlag;
         this.maxAttend = maxAttend;
         this.gender = gender;
-        this.level = level;
+        this.levels = levels;
 
     }
 
@@ -61,7 +62,7 @@ public class GameCreate {
                 .isBallFlag(isBallFlag)
                 .gender(gender)
                 .maxAttend(maxAttend)
-                .level(level)
+                .levels(levels)
                 .build();
     }
 }

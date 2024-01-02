@@ -27,8 +27,8 @@ public class GameController {
 
     private final GameService gameService;
 
-    @GetMapping()
-    public List<GameResponse> getList(@AuthenticationPrincipal UserPrincipal userPrincipal, @ModelAttribute GameSearch gameSearch) {
+    @PostMapping("/list")
+    public List<GameResponse> getList(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameSearch gameSearch) {
         return gameService.getList(gameSearch);
     }
 

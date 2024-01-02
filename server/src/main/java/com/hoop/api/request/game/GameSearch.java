@@ -26,11 +26,10 @@ public class GameSearch {
 
     @Builder.Default
     private String orderBy = "createdAt";
-
     private List<String> startTimes;
     private List<GameCategory> gameCategories;
-    private Gender gender;
     private List<Level> levels;
+    private Gender gender;
 
 
     public long getOffset() {
