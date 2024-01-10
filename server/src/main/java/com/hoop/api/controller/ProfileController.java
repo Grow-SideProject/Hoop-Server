@@ -74,12 +74,11 @@ public class ProfileController {
     
     @GetMapping("/image")
     public String getImage(@AuthenticationPrincipal UserPrincipal userPrincipal){
-        String relativePath = profileService.getImage(userPrincipal.getUserId());
-        if (relativePath == null) {
+        String path = profileService.getImage(userPrincipal.getUserId());
+        if (path == null) {
             throw new FileNotFound();
         }
-        String imgPath = imageService.getImage(relativePath);
-        return imgPath;
+        return path;
     }
 
     @GetMapping("/play-styles")

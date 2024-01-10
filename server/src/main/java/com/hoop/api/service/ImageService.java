@@ -1,11 +1,14 @@
 package com.hoop.api.service;
 
 
+import com.hoop.api.config.AppConfig;
 import com.hoop.api.exception.FileUploadException;
 import com.hoop.api.exception.UserNotFound;
+import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -24,36 +27,25 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public class ImageService {
 
+    private final ResourceLoader resourceLoader;
+
+
+
+    private final AppConfig appConfig;
     @Transactional
     public String saveImage(Long id, String category, MultipartFile file) {
         try {
-            String basicPath = System.getProperty("user.dir");
-            String relPath = "/images";
-            if (!new File(basicPath+relPath).exists()) {
-                new File(basicPath+relPath).mkdir();
-            }
-            relPath = relPath+ "/" + category;
-            if (!new File(basicPath+relPath).exists()) {
-                new File(basicPath+relPath).mkdir();
-            }
-            String filename = id +"_"+ file.getOriginalFilename();
-            String filePath =  basicPath + relPath + "/" + filename;
-            file.transferTo(new File(filePath));
-            return relPath + "/" + filename;
+            String basicPath = appConfig.getPath();
+            String profilePath = basicPath + "/profile";
+            if (!new File(profilePath).exists()) new File(profilePath).mkdir();
+            File directory = new File(profilePath);
+            String fileName =id +"_"+ file.getOriginalFilename();
+            Path filePath = Paths.get(directory.getAbsolutePath(), fileName);
+            file.transferTo(filePath);
+            return filePath.toString();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new FileUploadException();
         }
     }
-
-    public String getImage(String imagePath) {
-        try {
-            // 이미지 파일 경로를 지정합니다.
-            String basicPath = System.getProperty("user.dir");
-            Path absPath = Paths.get(basicPath + imagePath).toAbsolutePath().normalize();
-            return absPath.toString();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
 }
