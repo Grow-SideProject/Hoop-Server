@@ -58,6 +58,7 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
 
 
     private BooleanBuilder inStartTimes(List<String> startTimes) {
+
         if (startTimes == null || startTimes.isEmpty()) {
             return null;
         }
@@ -70,11 +71,10 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
     }
 
     private BooleanExpression eqGameGender(Gender gender) {
-        if (gender == null) return null;
+        if (gender == null || gender.equals(Gender.MIX)) return null;
         return game.gender.eq(gender);
     }
 
-    // TODO
     private BooleanBuilder inGameLevels(List<Level> levels) {
         if (levels == null || levels.isEmpty()) {
             return null;
@@ -86,7 +86,6 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
         return booleanBuilder;
     }
 
-    // TODO
     private BooleanBuilder inGameCategories(List<GameCategory> gameCategories) {
         if (gameCategories == null || gameCategories.isEmpty()) {
             return null;

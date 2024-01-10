@@ -86,7 +86,7 @@ public class GameService {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
         GameAttendant gameAttendant = gameAttendantRepository.findByUserAndGame(user, game)
                     .orElseThrow(GameNotFound::new);
-        if (gameAttendant.getHost()) {
+        if (gameAttendant.getIsHost()) {
             // TODO: host가 나갔을 때 처리
             // isAttend = true인 값 중에서 id가 가장 빠른 거 가져오기
             gameAttendantRepository.findByGameAndIsAttend(game, true)

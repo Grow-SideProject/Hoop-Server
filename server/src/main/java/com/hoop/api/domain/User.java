@@ -1,5 +1,7 @@
 package com.hoop.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
@@ -40,9 +42,12 @@ public class User {
     private Level level;
     private String profileImagePath;
 
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<GameAttendant> gameAttends;
+
 
     public ProfileEditor.ProfileEditorBuilder toEditor() {
         return ProfileEditor.builder()
@@ -73,8 +78,6 @@ public class User {
     }
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<GameAttendant> gameAttends;
 
     @Builder
     public User(String email, String password, Long socialId, String phoneNumber, String nickName, String gender, String address, String desc, String birth,

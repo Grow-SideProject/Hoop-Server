@@ -6,31 +6,36 @@ import com.hoop.api.constant.Level;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-@Getter
-@Builder
+@Data
+@NoArgsConstructor
 public class GameSearch {
 
     private static final Integer MAX_SIZE = 2000;
-
-    @Builder.Default
-    private Integer page = 1;
-
-    @Builder.Default
-    private Integer size = 10;
-
-    @Builder.Default
+    private Integer page;
+    private Integer size;
     private String orderBy = "createdAt";
     private List<String> startTimes;
     private List<GameCategory> gameCategories;
     private List<Level> levels;
     private Gender gender;
 
+    @Builder
+    public GameSearch(Integer page, Integer size, String orderBy, List<String> startTimes, List<GameCategory> gameCategories, List<Level> levels, Gender gender) {
+        this.page = page;
+        this.size = size;
+        this.orderBy = orderBy;
+        this.startTimes = startTimes;
+        this.gameCategories = gameCategories;
+        this.levels = levels;
+        this.gender = gender;
+    }
 
     public long getOffset() {
         return (long) (max(1, page) - 1) * min(size, MAX_SIZE);

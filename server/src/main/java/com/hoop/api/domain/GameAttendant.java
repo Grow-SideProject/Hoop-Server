@@ -1,9 +1,12 @@
 package com.hoop.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -12,7 +15,9 @@ import java.time.LocalDateTime;
  * 연관관계 클래스
  */
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class GameAttendant {
 
     @Id
@@ -57,12 +62,6 @@ public class GameAttendant {
     public void setAttend(Boolean attend) {
         this.isAttend = attend;
     }
-    public Boolean getHost() {
-        return this.isHost;
-    }
 
-    public Boolean getAttend() {
-        return this.isAttend;
-    }
 
 }
