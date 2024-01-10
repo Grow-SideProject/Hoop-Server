@@ -5,10 +5,12 @@ import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class ProfileEdit {
     private String phoneNumber;
     private String nickName;

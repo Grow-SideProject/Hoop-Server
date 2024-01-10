@@ -42,7 +42,7 @@ public class AuthController {
      * @param
      */
     @PostMapping("/signup/social")
-    public @ResponseBody TokenResponse signupBySocial(@RequestBody SocialSignUp socialSignUp) {
+    public TokenResponse signupBySocial(@RequestBody SocialSignUp socialSignUp) {
         //일단 카카오 로그인만 구현
         Long socialId;
         String category = socialSignUp.getCategory();
@@ -75,7 +75,7 @@ public class AuthController {
      * @return tokenResponse
      */
     @PostMapping(value = "/signin")
-    public @ResponseBody TokenResponse signIn (@RequestBody SignIn signIn) {
+    public TokenResponse signIn (@RequestBody SignIn signIn) {
         String category = signIn.getCategory();
         Long socialId;
         switch (category) {
@@ -91,7 +91,6 @@ public class AuthController {
     }
 
     @PostMapping(value="/reissue")
-    @ResponseBody
     private TokenResponse reissue(@RequestBody TokenRequest tokenRequest) {
         TokenResponse tokenResponse = jwtService.reissue(tokenRequest);
         return tokenResponse;

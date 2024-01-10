@@ -2,8 +2,10 @@ package com.hoop.api.request.user;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class PhoneRequest {
     private String phoneNumber;
     private String smsNumber;

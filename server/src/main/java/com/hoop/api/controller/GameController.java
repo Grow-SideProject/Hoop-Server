@@ -3,6 +3,8 @@ package com.hoop.api.controller;
 
 import com.hoop.api.config.UserPrincipal;
 
+import com.hoop.api.constant.Ability;
+import com.hoop.api.constant.GameCategory;
 import com.hoop.api.request.game.GameCreate;
 import com.hoop.api.request.game.GameSearch;
 import com.hoop.api.response.DefaultResponse;
@@ -17,6 +19,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -57,5 +60,15 @@ public class GameController {
     @GetMapping("/page")
     public Page<GameResponse> getPage(@AuthenticationPrincipal UserPrincipal userPrincipal, Pageable pageable) {
         return gameService.getPage(pageable);
+    }
+
+
+    @GetMapping("/catergories")
+    public HashMap<String, String> getCatergories(){
+        HashMap<String, String> response = new HashMap<String, String>();
+        for (GameCategory gameCategory : GameCategory.values()) {
+            response.put(gameCategory.name(), gameCategory.getValue());
+        }
+        return response;
     }
 }

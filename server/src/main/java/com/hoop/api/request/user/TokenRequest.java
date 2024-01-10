@@ -1,9 +1,9 @@
 package com.hoop.api.request.user;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Data
+@NoArgsConstructor
 public class TokenRequest {
     private String accessToken;
     private String refreshToken;

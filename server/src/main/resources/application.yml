@@ -11,7 +11,7 @@ spring:
 #    url: jdbc:mysql://localhost:3306/test
 #    username : root
 #    password: 1234
-    url: jdbc:h2:file:C:/data/test;NON_KEYWORDS=USER
+    url: jdbc:h2:file:/hoop/data/test;NON_KEYWORDS=USER
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -46,3 +46,4 @@ spring:
 
 hoop:
   jwt-key: "rTPmA9Sgk+Q1XwuJbG7E6xFFUhQpdi+al5iyPnRTK/Q="
+  path: /hoop
