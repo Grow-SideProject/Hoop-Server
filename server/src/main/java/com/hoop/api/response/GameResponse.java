@@ -1,5 +1,6 @@
 package com.hoop.api.response;
 
+import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
@@ -36,10 +37,11 @@ public class GameResponse {
     private List<Level> levels = new ArrayList<>();
 
     private Boolean isBallFlag; // 공 여부
+
     private List<GameAttendant> gameAttendants;
-
-
     private List<Comment> comments;
+
+    private Integer attendCount;
 
     // 생성자 오버로딩
     public GameResponse(Game game) {
@@ -55,9 +57,8 @@ public class GameResponse {
         this.maxAttend = game.getMaxAttend();
         this.isBallFlag = game.getIsBallFlag();
         this.createdAt = game.getCreatedAt();
-        this.comments = game.getComments();
         this.levels = game.getLevels();
-        this.gameAttendants = game.getGameAttendants();
+        this.attendCount = game.getGameAttendants().stream().filter(gameAttendant -> gameAttendant.getStatus().equals(AttendantStatus.APPROVE)).toList().size();
     }
 
     @Builder
@@ -77,8 +78,8 @@ public class GameResponse {
         this.duration = duration;
         this.gender = gender;
         this.isBallFlag = isBallFlag;
-        this.comments = comments;
         this.levels = levels;
-        this.gameAttendants = gameAttendants;
+        this.gameAttendants = gameAttendants.stream().filter(gameAttendant -> gameAttendant.getStatus().equals(AttendantStatus.APPROVE)).toList();
+        this.comments = comments;
     }
 }

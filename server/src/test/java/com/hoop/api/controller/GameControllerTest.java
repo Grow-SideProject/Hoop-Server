@@ -1,6 +1,7 @@
 package com.hoop.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
+import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.domain.Game;
@@ -201,7 +202,7 @@ class GameControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
-        assertEquals(false, gameAttendantRepository.findAll().get(0).getAttend());
+        assertEquals(AttendantStatus.EXIT, gameAttendantRepository.findAll().get(0).getStatus());
 
     }
 
@@ -240,7 +241,6 @@ class GameControllerTest {
         Long gameId = game.get(0).getId();
         CommentCreate commentCreate = CommentCreate
                 .builder()
-                .nickName("작성자")
                 .content("댓글입니다. 아아아아아 10글자 제한입니다.")
                 .build();
         json = objectMapper.writeValueAsString(commentCreate);

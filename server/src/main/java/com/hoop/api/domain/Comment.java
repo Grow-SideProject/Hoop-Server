@@ -1,6 +1,9 @@
 package com.hoop.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,14 +16,17 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String nickName;
+    @NotNull
+    @ManyToOne
+    @JoinColumn
+    private User user;
 
     @Column(nullable = false)
     private String content;
@@ -32,9 +38,9 @@ public class Comment {
     private Game game;
 
     @Builder
-    public Comment(String nickName, String content) {
+    public Comment(User user, String content) {
         this.createdAt = LocalDateTime.now();
-        this.nickName = nickName;
+        this.user = user;
         this.content = content;
     }
 

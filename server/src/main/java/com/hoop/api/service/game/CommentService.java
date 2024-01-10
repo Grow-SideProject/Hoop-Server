@@ -1,9 +1,13 @@
 package com.hoop.api.service.game;
 import com.hoop.api.domain.Comment;
 import com.hoop.api.domain.Game;
+import com.hoop.api.domain.User;
 import com.hoop.api.exception.CommentNotFound;
+
+import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.exception.GameNotFound;
 import com.hoop.api.repository.CommentRepository;
+import com.hoop.api.repository.UserRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.request.game.CommentCreate;
 import com.hoop.api.request.game.CommentDelete;
@@ -18,15 +22,17 @@ public class CommentService {
 
     private final GameRepository gameRepository;
     private final CommentRepository commentRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+
 
     @Transactional
-    public void create(Long gameId, CommentCreate request) {
+    public void create(Long userId, Long gameId, CommentCreate request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotFound::new);
-
         Comment comment = Comment.builder()
-                .nickName(request.getNickName())
+                .user(user)
                 .content(request.getContent())
                 .build();
         comment.setGame(game);

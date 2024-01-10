@@ -1,5 +1,6 @@
 package com.hoop.api.repository;
 
+import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.domain.Game;
 import com.hoop.api.domain.GameAttendant;
 import com.hoop.api.domain.User;
@@ -11,7 +12,7 @@ public interface GameAttendantRepository extends JpaRepository<GameAttendant, Lo
 
 
     Optional<GameAttendant> findByUserAndGame(User user, Game game);
-
-    Optional<GameAttendant> findByGameAndIsAttend(Game game, Boolean isAttend);
+    Optional<GameAttendant> findByUserIdAndGameId(Long userId, Long gameId);
+    Optional<GameAttendant> findByGameAndStatus(Game game, AttendantStatus status);
 
 }
