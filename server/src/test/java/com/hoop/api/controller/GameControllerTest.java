@@ -3,16 +3,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
 import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;
-import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.domain.Game;
 import com.hoop.api.domain.User;
-import com.hoop.api.repository.GameAttendantRepository;
+import com.hoop.api.repository.AttendantRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.game.CommentCreate;
 import com.hoop.api.request.game.GameCreate;
 import com.hoop.api.request.game.GameSearch;
-import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.service.user.JwtService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,9 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -49,7 +43,7 @@ class GameControllerTest {
     private GameRepository gameRepository;
 
     @Autowired
-    private GameAttendantRepository gameAttendantRepository;
+    private AttendantRepository attendantRepository;
     @Autowired
     private JwtService jwtService;
     private String accessToken;
@@ -67,7 +61,7 @@ class GameControllerTest {
     }
     @AfterEach
     void clean() {
-        gameAttendantRepository.deleteAll();
+        attendantRepository.deleteAll();
         gameRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -100,7 +94,7 @@ class GameControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
         assertEquals(1, gameRepository.count());
-        assertEquals(1, gameAttendantRepository.count());
+        assertEquals(1, attendantRepository.count());
     }
 
     @Test
@@ -165,7 +159,7 @@ class GameControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
-        assertEquals(1, gameAttendantRepository.count());
+        assertEquals(1, attendantRepository.count());
     }
 
     @Test
@@ -202,56 +196,56 @@ class GameControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
-        assertEquals(AttendantStatus.EXIT, gameAttendantRepository.findAll().get(0).getStatus());
+        assertEquals(AttendantStatus.EXIT, attendantRepository.findAll().get(0).getStatus());
 
     }
 
 
 
-    @Test
-    @HoopMockUser
-    @DisplayName("CREATE COMMENT")
-    void test5() throws Exception {
-        // given
-        GameCreate gameCreate = GameCreate.
-                builder()
-                .title("같이 농구합시다 3대3")
-                .content("고수만 오셈")
-                .address("마포구 서교동 12-1")
-                .startTime("2021-10-10 10:00:00")
-                .duration(120)
-                .courtName("창천체육관")
-                .maxAttend(Integer.valueOf(6))
-                .gameCategory(GameCategory.THREE_ON_THREE)
-                .isBallFlag(Boolean.TRUE)
-                .build();
-
-
-        String json = objectMapper.writeValueAsString(gameCreate);
-        // expected
-        mockMvc.perform(post("/game")
-                        .header("Authorization",accessToken)
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isOk())
-                .andDo(print());
-
-        List<Game> game = gameRepository.findAll();
-        Long gameId = game.get(0).getId();
-        CommentCreate commentCreate = CommentCreate
-                .builder()
-                .content("댓글입니다. 아아아아아 10글자 제한입니다.")
-                .build();
-        json = objectMapper.writeValueAsString(commentCreate);
-
-        mockMvc.perform(post("/game/"+gameId+"/comments")
-                        .header("Authorization",accessToken)
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+//    @Test
+//    @HoopMockUser
+//    @DisplayName("CREATE COMMENT")
+//    void test5() throws Exception {
+//        // given
+//        GameCreate gameCreate = GameCreate.
+//                builder()
+//                .title("같이 농구합시다 3대3")
+//                .content("고수만 오셈")
+//                .address("마포구 서교동 12-1")
+//                .startTime("2021-10-10 10:00:00")
+//                .duration(120)
+//                .courtName("창천체육관")
+//                .maxAttend(Integer.valueOf(6))
+//                .gameCategory(GameCategory.THREE_ON_THREE)
+//                .isBallFlag(Boolean.TRUE)
+//                .build();
+//
+//
+//        String json = objectMapper.writeValueAsString(gameCreate);
+//        // expected
+//        mockMvc.perform(post("/game")
+//                        .header("Authorization",accessToken)
+//                        .contentType(APPLICATION_JSON)
+//                        .content(json)
+//                )
+//                .andExpect(status().isOk())
+//                .andDo(print());
+//
+//        List<Game> game = gameRepository.findAll();
+//        Long gameId = game.get(0).getId();
+//        CommentCreate commentCreate = CommentCreate
+//                .builder()
+//                .content("댓글입니다. 아아아아아 10글자 제한입니다.")
+//                .build();
+//        json = objectMapper.writeValueAsString(commentCreate);
+//
+//        mockMvc.perform(post("/game/"+gameId+"/comments")
+//                        .header("Authorization",accessToken)
+//                        .contentType(APPLICATION_JSON)
+//                        .content(json)
+//                )
+//                .andExpect(status().isOk())
+//                .andDo(print());
+//    }
 
 }

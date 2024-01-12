@@ -1,7 +1,5 @@
 package com.hoop.api.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
@@ -46,7 +44,7 @@ public class User {
     private List<Post> posts;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<GameAttendant> gameAttends;
+    private List<Attendant> gameAttends;
 
 
     public ProfileEditor.ProfileEditorBuilder toEditor() {

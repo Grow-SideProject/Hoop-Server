@@ -3,6 +3,7 @@ package com.hoop.api.controller;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.CategoryNotFound;
+import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.request.user.SignIn;
 import com.hoop.api.request.user.SignUp;
 import com.hoop.api.request.user.SocialSignUp;
@@ -85,7 +86,8 @@ public class AuthController {
             default:
                 throw new CategoryNotFound();
         }
-        TokenResponse tokenResponse = jwtService.createTokenResponse(Long.toString(socialId));
+        User user = authService.getUserBySocialId(socialId).orElseThrow(UserNotFound::new);
+        TokenResponse tokenResponse = jwtService.createTokenResponse(user.getEmail());
         authService.setRefreshTokenBySocialId(socialId,tokenResponse.getRefreshToken());
         return tokenResponse;
     }

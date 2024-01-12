@@ -1,24 +1,23 @@
 package com.hoop.api.service.game;
 
 import com.hoop.api.constant.AttendantStatus;
+import com.hoop.api.domain.Attendant;
 import com.hoop.api.domain.Game;
 
-import com.hoop.api.domain.GameAttendant;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsGameAttendException;
 import com.hoop.api.exception.GameNotFound;
 import com.hoop.api.exception.UserNotFound;
-import com.hoop.api.repository.GameAttendantRepository;
+import com.hoop.api.repository.AttendantRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.game.GameCreate;
 import com.hoop.api.request.game.GameSearch;
-import com.hoop.api.response.GameAttendantResponse;
-import com.hoop.api.response.GameResponse;
+import com.hoop.api.response.AttendantResponse;
+import com.hoop.api.response.GameDetailResponse;
+import com.hoop.api.response.GameListResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -30,12 +29,12 @@ import java.util.stream.Collectors;
 public class GameService {
 
     private final GameRepository gameRepository;
-    private final GameAttendantRepository gameAttendantRepository;
+    private final AttendantRepository attendantRepository;
     private final UserRepository userRepository;
 
-    public GameResponse get(Long gameId) {
+    public GameDetailResponse get(Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        return GameResponse.builder()
+        return GameDetailResponse.builder()
                 .id(game.getId())
                 .title(game.getTitle())
                 .content(game.getContent())
@@ -50,26 +49,22 @@ public class GameService {
                 .createdAt(game.getCreatedAt())
                 .levels(game.getLevels())
                 .comments(game.getComments())
-                .gameAttendants(game.getGameAttendants())
+                .attendants(game.getAttendants())
                 .build();
     }
 
-    public List<GameResponse> getList(GameSearch gameSearch) {
+    public List<GameListResponse> getList(GameSearch gameSearch) {
         return gameRepository.getList(gameSearch).stream()
-                .map(GameResponse::new)
+                .map(GameListResponse::new)
                 .collect(Collectors.toList());
     }
 
-//    public Page<GameResponse> getPage(Pageable pageable) {
-//        return gameRepository.findAll(pageable)
-//                .map(GameResponse::new);
-//    }
 
     @Transactional
     public void create(Long userId, GameCreate gameCreate) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameCreate.toGame();
-        GameAttendant gameAttendant = GameAttendant
+        Attendant attendant = Attendant
                 .builder()
                 .game(game)
                 .user(user)
@@ -78,17 +73,17 @@ public class GameService {
                 .isBallFlag(gameCreate.getIsBallFlag())
                 .build();
         gameRepository.save(game);
-        gameAttendantRepository.save(gameAttendant);
+        attendantRepository.save(attendant);
     }
 
-    public GameAttendantResponse attendGame(Long userId, Long gameId, boolean ballFlag) {
+    public AttendantResponse attendGame(Long userId, Long gameId, boolean ballFlag) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        gameAttendantRepository.findByUserAndGame(user, game)
+        attendantRepository.findByUserAndGame(user, game)
                 .ifPresent(gameAttendant -> {
                     throw new AlreadyExistsGameAttendException();
         });
-        GameAttendant gameAttendant = GameAttendant
+        Attendant attendant = Attendant
                 .builder()
                 .user(user)
                 .game(game)
@@ -96,45 +91,45 @@ public class GameService {
                 .isHost(false)
                 .isBallFlag(ballFlag)
                 .build();
-        gameAttendantRepository.save(gameAttendant);
-        return new GameAttendantResponse(gameAttendant);
+        attendantRepository.save(attendant);
+        return new AttendantResponse(attendant);
     }
 
     @Transactional
-    public GameAttendantResponse exitGame(Long userId, Long gameId) {
+    public AttendantResponse exitGame(Long userId, Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        GameAttendant gameAttendant = gameAttendantRepository.findByUserIdAndGameId(userId, gameId)
+        Attendant gameAttendant = attendantRepository.findByUserIdAndGameId(userId, gameId)
                     .orElseThrow(GameNotFound::new);
-        for (GameAttendant attendant : game.getGameAttendants()) {
+        for (Attendant attendant : game.getAttendants()) {
             if (!attendant.getIsHost() && attendant.getStatus().equals(AttendantStatus.APPROVE) ) {
                 attendant.setHost(true);
-                gameAttendantRepository.save(attendant);
+                attendantRepository.save(attendant);
                 break;
             }
         }
         gameAttendant.setHost(false);
         gameAttendant.setAttend(AttendantStatus.EXIT);
-        gameAttendantRepository.save(gameAttendant);
-        return new GameAttendantResponse(gameAttendant);
+        attendantRepository.save(gameAttendant);
+        return new AttendantResponse(gameAttendant);
     }
 
     @Transactional
-    public GameAttendantResponse approveGame(Long hostId, Long gameId, Long userId) {
+    public AttendantResponse approveGame(Long hostId, Long gameId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        GameAttendant gameAttendant = gameAttendantRepository.findByUserAndGame(user, game).orElseThrow(GameNotFound::new);
-        gameAttendant.setAttend(AttendantStatus.APPROVE);
-        gameAttendantRepository.save(gameAttendant);
-        return new GameAttendantResponse(gameAttendant);
+        Attendant attendant = attendantRepository.findByUserAndGame(user, game).orElseThrow(GameNotFound::new);
+        attendant.setAttend(AttendantStatus.APPROVE);
+        attendantRepository.save(attendant);
+        return new AttendantResponse(attendant);
     }
     @Transactional
-    public GameAttendantResponse rejectGame(Long hostId, Long gameId, Long userId) {
+    public AttendantResponse rejectGame(Long hostId, Long gameId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        GameAttendant gameAttendant = gameAttendantRepository.findByUserAndGame(user, game).orElseThrow(GameNotFound::new);
-        gameAttendant.setAttend(AttendantStatus.REJECT);
-        gameAttendantRepository.save(gameAttendant);
-        return new GameAttendantResponse(gameAttendant);
+        Attendant attendant = attendantRepository.findByUserAndGame(user, game).orElseThrow(GameNotFound::new);
+        attendant.setAttend(AttendantStatus.REJECT);
+        attendantRepository.save(attendant);
+        return new AttendantResponse(attendant);
     }
 
 
@@ -142,8 +137,8 @@ public class GameService {
     public void removeGameAttend(Long userId, Long gameId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        GameAttendant gameAttendant = gameAttendantRepository.findByUserAndGame(user, game)
+        Attendant attendant = attendantRepository.findByUserAndGame(user, game)
                 .orElseThrow(GameNotFound::new);
-        gameAttendantRepository.delete(gameAttendant);
+        attendantRepository.delete(attendant);
     }
 }

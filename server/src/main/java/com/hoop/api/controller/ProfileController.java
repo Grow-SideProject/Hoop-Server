@@ -5,7 +5,6 @@ import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.exception.FileNotFound;
-import com.hoop.api.exception.ProfileException;
 import com.hoop.api.request.user.FeedbackRequest;
 import com.hoop.api.request.user.PhoneRequest;
 import com.hoop.api.request.user.ProfileEdit;
@@ -15,7 +14,6 @@ import com.hoop.api.service.ImageService;
 import com.hoop.api.service.user.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,17 +66,17 @@ public class ProfileController {
     public DefaultResponse uploadImage(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("file") MultipartFile file) {
         Long userId = userPrincipal.getUserId();
         String path = imageService.saveImage(userId, "profile", file);
-        profileService.saveImage(userId, path);
+        profileService.saveImage(userId, imageService.getImagePath(path));
         return new DefaultResponse();
     }
     
     @GetMapping("/image")
     public String getImage(@AuthenticationPrincipal UserPrincipal userPrincipal){
-        String path = profileService.getImage(userPrincipal.getUserId());
-        if (path == null) {
+        String profileImagePath = profileService.getProfileImagePath(userPrincipal.getUserId());
+        if (profileImagePath == null) {
             throw new FileNotFound();
         }
-        return path;
+        return profileImagePath;
     }
 
     @GetMapping("/play-styles")

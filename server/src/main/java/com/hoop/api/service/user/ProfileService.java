@@ -18,7 +18,6 @@ import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.ProfileResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +32,6 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
     private final FeedbackRepository feedbackRepository;
-    private final Environment env;
 
 
     public ProfileResponse get(Long userId) {
@@ -100,10 +98,9 @@ public class ProfileService {
         userRepository.save(profile);
     }
 
-    public String getImage(Long userId) {
+    public String getProfileImagePath(Long userId) {
         User profile = userRepository.findById(userId)
                 .orElseThrow(UserNotFound::new);
-        log.info(profile.getProfileImagePath());
         return profile.getProfileImagePath();
     }
 
@@ -116,7 +113,7 @@ public class ProfileService {
     }
 
     public void validateName(String phoneNumber) {
-        Optional<User> userOptional = userRepository.findByPhoneNumber(phoneNumber);
+        Optional<User> userOptional = userRepository.findByNickName(phoneNumber);
         if (userOptional.isPresent()) {
             throw  new AlreadyExistsUserException();
         }

@@ -1,5 +1,7 @@
 package com.hoop.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
@@ -15,6 +17,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Game {
 
     @Id
@@ -44,7 +47,7 @@ public class Game {
     private List<Comment> comments;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
-    private List<GameAttendant> gameAttendants;
+    private List<Attendant> attendants;
 
     @Builder
     public Game(String title, String content, Integer maxAttend, String courtName, String address,
@@ -63,6 +66,6 @@ public class Game {
         this.createdAt = LocalDateTime.now();;
         this.comments = new ArrayList<>();
         this.levels = levels;
-        this.gameAttendants = new ArrayList<>();
+        this.attendants = new ArrayList<>();
     }
 }

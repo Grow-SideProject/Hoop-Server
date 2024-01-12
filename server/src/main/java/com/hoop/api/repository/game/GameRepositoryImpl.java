@@ -4,7 +4,6 @@ import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
 import com.hoop.api.domain.Game;
-import com.hoop.api.domain.QGameAttendant;
 import com.hoop.api.request.game.GameSearch;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
@@ -20,8 +19,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.hoop.api.domain.QGame.game;
-import static com.hoop.api.domain.QGameAttendant.gameAttendant;
-import static com.hoop.api.domain.QUser.user;
 
 @RequiredArgsConstructor
 public class GameRepositoryImpl implements GameRepositoryCustom {

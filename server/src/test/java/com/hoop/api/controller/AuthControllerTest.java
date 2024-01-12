@@ -110,7 +110,13 @@ class AuthControllerTest {
     @Test
     @DisplayName("SIGNIN FAIL")
     void signInFail() throws Exception {
-        when(socialService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12345L);
+        User user = User.builder()
+                .email("temp@gmail.com")
+                .password("1234")
+                .socialId(12345L)
+                .build();
+        userRepository.saveAndFlush(user);
+        when(socialService.getKakaoIdByToken("MOCKTOKEN")).thenReturn(12344L);
         SignIn signIn = SignIn.builder()
                 .accessToken("MOCKTOKEN")
                 .category("KAKAO")

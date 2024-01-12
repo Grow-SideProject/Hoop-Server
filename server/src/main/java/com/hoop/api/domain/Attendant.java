@@ -18,8 +18,13 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
+@Table(
+        indexes = {
+                @Index(name = "IDX_ATTENDANT_GAME_ID", columnList = "game_id")
+        }
+)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
-public class GameAttendant {
+public class Attendant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +47,7 @@ public class GameAttendant {
 
     // 생성자, getter 및 setter 등의 메서드 추가
     @Builder
-    public GameAttendant(User user, Game game, Boolean isHost, Boolean isBallFlag, AttendantStatus status) {
+    public Attendant(User user, Game game, Boolean isHost, Boolean isBallFlag, AttendantStatus status) {
         this.user = user;
         this.game = game;
         this.createdAt = LocalDateTime.now();

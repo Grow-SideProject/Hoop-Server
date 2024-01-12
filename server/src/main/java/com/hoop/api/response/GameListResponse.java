@@ -5,10 +5,8 @@ import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
 import com.hoop.api.domain.*;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,8 +16,9 @@ import java.util.List;
 /**
  * 서비스 정책에 맞는 클래스
  */
-@Getter
-public class GameResponse {
+@Data
+@NoArgsConstructor
+public class GameListResponse {
 
     private Long id;
     private String title; // 모집 공고명
@@ -38,13 +37,11 @@ public class GameResponse {
 
     private Boolean isBallFlag; // 공 여부
 
-    private List<GameAttendant> gameAttendants;
-    private List<Comment> comments;
 
     private Integer attendCount;
 
     // 생성자 오버로딩
-    public GameResponse(Game game) {
+    public GameListResponse(Game game) {
         this.id = game.getId();
         this.title = game.getTitle();
         this.content = game.getContent();
@@ -58,28 +55,6 @@ public class GameResponse {
         this.isBallFlag = game.getIsBallFlag();
         this.createdAt = game.getCreatedAt();
         this.levels = game.getLevels();
-        this.attendCount = game.getGameAttendants().stream().filter(gameAttendant -> gameAttendant.getStatus().equals(AttendantStatus.APPROVE)).toList().size();
-    }
-
-    @Builder
-    public GameResponse(Long id, String title, String content, LocalDateTime createdAt,
-                        Integer maxAttend, String courtName, String address, GameCategory gameCategory,
-                        String startTime, Integer duration, Gender gender, Boolean isBallFlag,
-                        List<Comment> comments, List<Level> levels, List<GameAttendant> gameAttendants) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.createdAt = createdAt;
-        this.maxAttend = maxAttend;
-        this.courtName = courtName;
-        this.address = address;
-        this.gameCategory = gameCategory;
-        this.startTime = startTime;
-        this.duration = duration;
-        this.gender = gender;
-        this.isBallFlag = isBallFlag;
-        this.levels = levels;
-        this.gameAttendants = gameAttendants.stream().filter(gameAttendant -> gameAttendant.getStatus().equals(AttendantStatus.APPROVE)).toList();
-        this.comments = comments;
+        this.attendCount = game.getAttendants().stream().filter(gameAttendant -> gameAttendant.getStatus().equals(AttendantStatus.APPROVE)).toList().size();
     }
 }
