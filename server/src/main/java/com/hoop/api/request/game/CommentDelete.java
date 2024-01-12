@@ -5,12 +5,12 @@ import lombok.Data;
 @Data
 public class CommentDelete {
 
-    private String password;
+    long commentId;
 
     public CommentDelete() {
 
     }
-    public CommentDelete(String password) {
-        this.password = password;
+    public CommentDelete(long commentId) {
+        this.commentId = commentId;
     }
 }

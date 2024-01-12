@@ -8,18 +8,17 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 @NoArgsConstructor
-public class CommentCreate {
-    private Long parentId;
-
-    private Long gameId;
+public class CommentEdit {
+    private Long commentId;
 
     @Length(min = 10, max = 1000, message = "내용은 10~1000자까지 입력해주세요.")
     @NotBlank(message = "내용을 입력해주세요.")
     private String content;
 
     @Builder
-    public CommentCreate(String content) {
+    public CommentEdit(String content) {
         this.content = content;
+
     }
 
 }

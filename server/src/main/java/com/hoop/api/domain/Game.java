@@ -72,16 +72,19 @@ public class Game {
     }
 
     public void GameEdit(GameEdit gameEdit) {
-        this.title = gameEdit.getTitle();
-        this.content = gameEdit.getContent();
-        this.courtName = gameEdit.getCourtName();
-        this.address = gameEdit.getAddress();
-        this.gameCategory = gameEdit.getGameCategory();
-        this.startTime = LocalDateTime.parse(gameEdit.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        this.duration = gameEdit.getDuration();
-        this.isBallFlag = gameEdit.getIsBallFlag();
-        this.maxAttend = gameEdit.getMaxAttend();
-        this.levels = gameEdit.getLevels();
         this.modifiedAt = LocalDateTime.now();
+        if (gameEdit.getTitle() != null) this.title = gameEdit.getTitle();
+        if (gameEdit.getContent() != null) this.content = gameEdit.getContent();
+        if (gameEdit.getCourtName() != null) this.courtName = gameEdit.getCourtName();
+        if (gameEdit.getAddress() != null) this.address = gameEdit.getAddress();
+        if (gameEdit.getGameCategory() != null) this.gameCategory = gameEdit.getGameCategory();
+        if (gameEdit.getStartTime() != null) this.startTime = LocalDateTime.parse(gameEdit.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        if (gameEdit.getDuration() != null) this.duration = gameEdit.getDuration();
+        if (gameEdit.getIsBallFlag() != null) this.isBallFlag = gameEdit.getIsBallFlag();
+        if (gameEdit.getMaxAttend() != null) this.maxAttend = gameEdit.getMaxAttend();
+        if (gameEdit.getGender() != null) this.gender = gameEdit.getGender();
+        if (gameEdit.getLevels() != null) this.levels = gameEdit.getLevels();
     }
+
+
 }

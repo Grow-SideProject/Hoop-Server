@@ -4,10 +4,7 @@ package com.hoop.api.controller;
 import com.hoop.api.config.UserPrincipal;
 
 import com.hoop.api.constant.GameCategory;
-import com.hoop.api.request.game.CommentCreate;
-import com.hoop.api.request.game.GameCreate;
-import com.hoop.api.request.game.GameEdit;
-import com.hoop.api.request.game.GameSearch;
+import com.hoop.api.request.game.*;
 import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.AttendantResponse;
@@ -88,9 +85,18 @@ public class GameController {
     public AttendantResponse rejectGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam Long userId) {
         return gameAdminService.rejectGame(userPrincipal.getUserId(), gameId, userId);
     }
-    @PostMapping("/{gameId}/comments")
-    public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId, @RequestBody @Valid CommentCreate request) {;
-        commentService.create(userPrincipal.getUserId(), gameId, request);
+    @PostMapping("/comment")
+    public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid CommentCreate commentCreate) {;
+        commentService.create(userPrincipal.getUserId(), commentCreate);
     }
 
+    @PatchMapping("/comment")
+    public void edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid CommentEdit commentEdit) {;
+        commentService.edit(userPrincipal.getUserId(),commentEdit);
+    }
+
+    @DeleteMapping("/comment")
+    public void delete(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid CommentDelete commentDelete) {;
+        commentService.delete(userPrincipal.getUserId(),commentDelete);
+    }
 }

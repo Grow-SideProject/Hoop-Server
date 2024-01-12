@@ -1,5 +1,6 @@
 package com.hoop.api.response;
 
+import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
@@ -60,6 +61,7 @@ public class GameDetailResponse {
         this.gender = gender;
         this.isBallFlag = isBallFlag;
         this.levels = levels;
+        this.attendCount = attendants.stream().filter(gameAttendant -> gameAttendant.getStatus().equals(AttendantStatus.APPROVE)).toList().size();
         this.attendantResponseList = attendants.stream().map(AttendantResponse::new).toList();
         this.commentResponseList = levelOrderComments(comments.stream().map(CommentResponse::new).toList());
     }
