@@ -4,19 +4,22 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
-@Getter
+@Data
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
+@Table(
+        indexes = {
+                @Index(name = "IDX_COMMENT_GAME_ID", columnList = "game_id")
+        }
+)
 public class Comment {
 
     @Id
@@ -34,16 +37,20 @@ public class Comment {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "game_id")
     private Game game;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+
     @Builder
-    public Comment(User user, String content) {
+    public Comment(User user, String content, Comment parent) {
         this.createdAt = LocalDateTime.now();
         this.user = user;
         this.content = content;
+        this.parent = parent;
     }
-
     public void setGame(Game game) {
         this.game = game;
         this.game.getComments().add(this);

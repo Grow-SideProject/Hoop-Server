@@ -23,13 +23,9 @@ public class AttendantResponse {
     private String userNickname;
     private String profileImagePath;
 
-    private ImageService imageService;
-
-    public void setImageService(ImageService imageService) {
-        this.imageService = imageService;
-    }
-
     public AttendantResponse(Attendant attendant) {
+        this.id = attendant.getId();
+        this.isBallFlag = attendant.getIsBallFlag();
         this.createdAt = attendant.getCreatedAt();
         this.status = attendant.getStatus();
         this.isHost = attendant.getIsHost();

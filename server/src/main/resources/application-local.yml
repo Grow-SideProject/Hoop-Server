@@ -44,10 +44,9 @@ spring:
       location: c:\\temp\\upload
 
 hoop:
-  uri: https://surely-quality-robin.ngrok-free.app
+  uri: http://localhost:8080
   jwt-key: "rTPmA9Sgk+Q1XwuJbG7E6xFFUhQpdi+al5iyPnRTK/Q="
   source-path: /hoop
-
 
 logging:
   logback:
@@ -55,9 +54,11 @@ logging:
       max-history: 30
       file-name-pattern: "/hoop/logs/abc.%d{yyyy-MM-dd}.%i"
   pattern:
-    file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+      file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
   file:
-    name: /hoop/logs/abc.log
+      name: /hoop/logs/abc.log
   level:
-    root: INFO
-    org.hibernate.SQL: ERROR
+      root: INFO
+      org.hibernate.SQL: ERROR
+      org.springframework.security: debug
+      org.springframework.web: debug

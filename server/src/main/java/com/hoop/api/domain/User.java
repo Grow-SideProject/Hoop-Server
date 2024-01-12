@@ -44,7 +44,7 @@ public class User {
     private List<Post> posts;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Attendant> gameAttends;
+    private List<Attendant> attendants;
 
 
     public ProfileEditor.ProfileEditorBuilder toEditor() {

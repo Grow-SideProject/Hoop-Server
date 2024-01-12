@@ -39,8 +39,8 @@ public class GameDetailResponse {
 
     private Integer attendCount;
 
-    private List<CommentResponse> comments;
-    private List<AttendantResponse> attendantRespons = new ArrayList<>();
+    private List<CommentResponse> commentResponseList = new ArrayList<>();
+    private List<AttendantResponse> attendantResponseList = new ArrayList<>();
 
     @Builder
     public GameDetailResponse(Long id, String title, String content, LocalDateTime createdAt,
@@ -60,8 +60,8 @@ public class GameDetailResponse {
         this.gender = gender;
         this.isBallFlag = isBallFlag;
         this.levels = levels;
-        this.attendantRespons = attendants.stream().map(AttendantResponse::new).toList();
-        this.comments = comments.stream().map(CommentResponse::new).toList();
+        this.attendantResponseList = attendants.stream().map(AttendantResponse::new).toList();
+        this.commentResponseList = levelOrderComments(comments.stream().map(CommentResponse::new).toList());
     }
 
 

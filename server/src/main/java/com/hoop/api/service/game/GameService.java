@@ -80,7 +80,7 @@ public class GameService {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
         attendantRepository.findByUserAndGame(user, game)
-                .ifPresent(gameAttendant -> {
+                .ifPresent(attendant -> {
                     throw new AlreadyExistsGameAttendException();
         });
         Attendant attendant = Attendant
