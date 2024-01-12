@@ -18,6 +18,9 @@ import com.hoop.api.response.GameDetailResponse;
 import com.hoop.api.response.GameListResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -53,10 +56,12 @@ public class GameService {
                 .build();
     }
 
-    public List<GameListResponse> getList(GameSearch gameSearch) {
-        return gameRepository.getList(gameSearch).stream()
+    public Page<GameListResponse> getList(GameSearch gameSearch) {
+        List<GameListResponse> gameList = gameRepository.getList(gameSearch).stream()
                 .map(GameListResponse::new)
                 .collect(Collectors.toList());
+        System.out.println(gameList);
+        return new PageImpl<>(gameList, PageRequest.of(gameSearch.getPage(), gameSearch.getSize()), gameRepository.count());
     }
 
 
@@ -80,7 +85,7 @@ public class GameService {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
         attendantRepository.findByUserAndGame(user, game)
-                .ifPresent(gameAttendant -> {
+                .ifPresent(attendant -> {
                     throw new AlreadyExistsGameAttendException();
         });
         Attendant attendant = Attendant

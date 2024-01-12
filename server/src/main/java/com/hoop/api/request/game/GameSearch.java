@@ -38,6 +38,6 @@ public class GameSearch {
     }
 
     public long getOffset() {
-        return (long) (max(1, page) - 1) * min(size, MAX_SIZE);
+        return (long) (page + 1) * min(size, MAX_SIZE);
     }
 }

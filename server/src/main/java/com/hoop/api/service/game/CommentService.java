@@ -31,10 +31,19 @@ public class CommentService {
                 .orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotFound::new);
+
         Comment comment = Comment.builder()
                 .user(user)
                 .content(request.getContent())
                 .build();
+
+        Comment parent = null;
+        if(request.getParentId() != null) {
+            parent = commentRepository.findById(request.getParentId())
+                    .orElseThrow(CommentNotFound::new);
+        }
+
+        comment.setParent(parent);
         comment.setGame(game);
         commentRepository.save(comment);
     }
