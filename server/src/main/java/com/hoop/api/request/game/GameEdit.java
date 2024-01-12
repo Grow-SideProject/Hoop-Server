@@ -6,6 +6,7 @@ import com.hoop.api.constant.Level;
 import com.hoop.api.domain.Game;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -15,10 +16,11 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@Getter
 //@ToString
 public class GameEdit {
 
-    private Long id;
+    private Long gameId;
     private String title; // 모집 공고명
     private String content; // 모집 내용
     private String courtName; //코트명

@@ -41,7 +41,7 @@ public class GameAdminService {
 
     @Transactional
     public void edit(Long userId, GameEdit gameEdit) {
-        Game game = gameRepository.findById(gameEdit.getId())
+        Game game = gameRepository.findById(gameEdit.getGameId())
                 .orElseThrow(GameNotFound::new);
         game.GameEdit(gameEdit);
         gameRepository.save(game);
