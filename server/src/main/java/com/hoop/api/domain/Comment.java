@@ -9,6 +9,18 @@
     import java.time.LocalDateTime;
     import java.util.ArrayList;
     import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+    import java.time.LocalDateTime;
+    import java.util.ArrayList;
+    import java.util.List;
 
     import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -21,6 +33,15 @@
             }
     )
     public class Comment {
+@Data
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(
+        indexes = {
+                @Index(name = "IDX_COMMENT_GAME_ID", columnList = "game_id")
+        }
+)
+public class Comment {
 
         @Id
         @GeneratedValue(strategy = IDENTITY)
@@ -56,4 +77,28 @@
             this.game.getComments().add(this);
         }
 
+    }
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+
+    @Builder
+    public Comment(User user, String content, Comment parent) {
+        this.createdAt = LocalDateTime.now();
+        this.user = user;
+        this.content = content;
+        this.parent = parent;
+    }
+    public void setGame(Game game) {
+        this.game = game;
+        this.game.getComments().add(this);
+    }
+
+    public void removeGame(Game game) {
+        this.game = game;
+        this.game.getComments().remove(this);
     }
