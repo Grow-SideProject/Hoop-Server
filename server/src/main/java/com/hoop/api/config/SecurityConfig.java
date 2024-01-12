@@ -40,6 +40,7 @@ public class SecurityConfig {
         return web -> web.ignoring()
                 .requestMatchers("/favicon.ico")
                 .requestMatchers("/error")
+                .requestMatchers("/image/**")
                 .requestMatchers("/helloworld/**")
                 .requestMatchers("/auth/**")
                 .requestMatchers(toH2Console());
