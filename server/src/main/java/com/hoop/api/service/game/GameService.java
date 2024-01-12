@@ -65,22 +65,6 @@ public class GameService {
     }
 
 
-    @Transactional
-    public void create(Long userId, GameCreate gameCreate) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
-        Game game = gameCreate.toGame();
-        Attendant attendant = Attendant
-                .builder()
-                .game(game)
-                .user(user)
-                .isHost(true)
-                .status(AttendantStatus.APPROVE)
-                .isBallFlag(gameCreate.getIsBallFlag())
-                .build();
-        gameRepository.save(game);
-        attendantRepository.save(attendant);
-    }
-
     public AttendantResponse attendGame(Long userId, Long gameId, boolean ballFlag) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
@@ -118,24 +102,6 @@ public class GameService {
         return new AttendantResponse(gameAttendant);
     }
 
-    @Transactional
-    public AttendantResponse approveGame(Long hostId, Long gameId, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
-        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        Attendant attendant = attendantRepository.findByUserAndGame(user, game).orElseThrow(GameNotFound::new);
-        attendant.setAttend(AttendantStatus.APPROVE);
-        attendantRepository.save(attendant);
-        return new AttendantResponse(attendant);
-    }
-    @Transactional
-    public AttendantResponse rejectGame(Long hostId, Long gameId, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
-        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        Attendant attendant = attendantRepository.findByUserAndGame(user, game).orElseThrow(GameNotFound::new);
-        attendant.setAttend(AttendantStatus.REJECT);
-        attendantRepository.save(attendant);
-        return new AttendantResponse(attendant);
-    }
 
 
     @Transactional

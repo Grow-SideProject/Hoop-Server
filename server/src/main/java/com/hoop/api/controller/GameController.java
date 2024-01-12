@@ -6,12 +6,15 @@ import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.request.game.CommentCreate;
 import com.hoop.api.request.game.GameCreate;
+import com.hoop.api.request.game.GameEdit;
 import com.hoop.api.request.game.GameSearch;
+import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.AttendantResponse;
 import com.hoop.api.response.GameDetailResponse;
 import com.hoop.api.response.GameListResponse;
 import com.hoop.api.service.game.CommentService;
+import com.hoop.api.service.game.GameAdminService;
 import com.hoop.api.service.game.GameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +35,7 @@ import java.util.List;
 public class GameController {
 
     private final GameService gameService;
+    private final GameAdminService gameAdminService;
 
     private final CommentService commentService;
 
@@ -43,10 +47,15 @@ public class GameController {
 
     @PostMapping()
     public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameCreate gameCreate) {
-        gameService.create(userPrincipal.getUserId(), gameCreate);
+        gameAdminService.create(userPrincipal.getUserId(), gameCreate);
         return new DefaultResponse();
     }
 
+    @PatchMapping()
+    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameEdit gameEdit) {
+        gameAdminService.edit(userPrincipal.getUserId(), gameEdit);
+        return new DefaultResponse();
+    }
 
     @GetMapping("/catergories")
     public HashMap<String, String> getCatergories(){
@@ -73,11 +82,11 @@ public class GameController {
 
     @GetMapping("/approve")
     public AttendantResponse approveGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam Long userId) {
-        return gameService.approveGame(userPrincipal.getUserId(), gameId, userId);
+        return gameAdminService.approveGame(userPrincipal.getUserId(), gameId, userId);
     }
     @GetMapping("/reject")
     public AttendantResponse rejectGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam Long userId) {
-        return gameService.rejectGame(userPrincipal.getUserId(), gameId, userId);
+        return gameAdminService.rejectGame(userPrincipal.getUserId(), gameId, userId);
     }
     @PostMapping("/{gameId}/comments")
     public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId, @RequestBody @Valid CommentCreate request) {;

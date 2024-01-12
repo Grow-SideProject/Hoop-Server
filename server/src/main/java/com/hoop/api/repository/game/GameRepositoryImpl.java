@@ -46,7 +46,7 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
         if(Objects.isNull(gameSearch.getOrderBy()) || gameSearch.getOrderBy().equals("createdAt")){
             orderSpecifiers.add(new OrderSpecifier(Order.DESC, game.createdAt));
         }else if(gameSearch.getOrderBy().equals("startTime")){
-            orderSpecifiers.add(new OrderSpecifier(Order.DESC, game.startTime));
+            orderSpecifiers.add(new OrderSpecifier(Order.ASC, game.startTime));
         }else{
             orderSpecifiers.add(new OrderSpecifier(Order.DESC, game.title));
         }
