@@ -65,7 +65,7 @@ public class GameController {
 
     @GetMapping("/{gameId}")
     public GameDetailResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId) {
-        return gameService.get(gameId);
+        return gameService.get(userPrincipal.getUserId(), gameId);
     }
 
     @GetMapping("/attend")

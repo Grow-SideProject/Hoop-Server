@@ -35,8 +35,9 @@ public class GameService {
     private final AttendantRepository attendantRepository;
     private final UserRepository userRepository;
 
-    public GameDetailResponse get(Long gameId) {
+    public GameDetailResponse get(Long userId, Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
+        Boolean isHost = game.getAttendants().stream().anyMatch(attendant -> (attendant.getIsHost()) && (attendant.getUser().getId().equals(userId)));
         return GameDetailResponse.builder()
                 .id(game.getId())
                 .title(game.getTitle())
@@ -53,6 +54,7 @@ public class GameService {
                 .levels(game.getLevels())
                 .comments(game.getComments())
                 .attendants(game.getAttendants())
+                .isHost(isHost)
                 .build();
     }
 
