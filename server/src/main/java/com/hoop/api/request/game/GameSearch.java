@@ -5,7 +5,6 @@ import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;

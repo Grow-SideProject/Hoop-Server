@@ -3,7 +3,6 @@ package com.hoop.api.response;
 import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.domain.Attendant;
 import com.hoop.api.domain.User;
-import com.hoop.api.service.ImageService;
 import lombok.*;
 
 import java.time.LocalDateTime;

@@ -11,7 +11,6 @@ import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.AttendantRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.game.GameCreate;
 import com.hoop.api.request.game.GameSearch;
 import com.hoop.api.response.AttendantResponse;
 import com.hoop.api.response.GameDetailResponse;

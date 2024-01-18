@@ -1,9 +1,10 @@
 package com.hoop.api.request.game;
 
+import com.hoop.api.config.annotation.StarTime;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
-import com.hoop.api.domain.Game;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -21,11 +22,18 @@ import java.util.List;
 public class GameEdit {
 
     private Long gameId;
+
     private String title; // 모집 공고명
     private String content; // 모집 내용
+
     private String courtName; //코트명
+
+
     private String address; // 코트 주소 (추후 분리 예정)
     private GameCategory gameCategory; // 게임 종류
+
+
+    @StarTime
     private String startTime;
 
     private Integer duration;

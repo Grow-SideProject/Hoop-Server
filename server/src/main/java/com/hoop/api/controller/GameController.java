@@ -5,7 +5,6 @@ import com.hoop.api.config.UserPrincipal;
 
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.request.game.*;
-import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.AttendantResponse;
 import com.hoop.api.response.GameDetailResponse;
@@ -17,13 +16,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -38,18 +34,18 @@ public class GameController {
 
 
     @PostMapping("/list")
-    public Page<GameListResponse> getList(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameSearch gameSearch) {
+    public Page<GameListResponse> getList(@RequestBody GameSearch gameSearch) {
         return gameService.getList(gameSearch);
     }
 
     @PostMapping()
-    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameCreate gameCreate) {
+    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid GameCreate gameCreate) {
         gameAdminService.create(userPrincipal.getUserId(), gameCreate);
         return new DefaultResponse();
     }
 
     @PatchMapping()
-    public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameEdit gameEdit) {
+    public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameEdit gameEdit) {
         gameAdminService.edit(userPrincipal.getUserId(), gameEdit);
         return new DefaultResponse();
     }

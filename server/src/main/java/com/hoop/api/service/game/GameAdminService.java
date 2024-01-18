@@ -3,7 +3,6 @@ package com.hoop.api.service.game;
 import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.domain.*;
 import com.hoop.api.exception.GameNotFound;
-import com.hoop.api.exception.PostNotFound;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.AttendantRepository;
 import com.hoop.api.repository.UserRepository;
@@ -14,8 +13,6 @@ import com.hoop.api.response.AttendantResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
