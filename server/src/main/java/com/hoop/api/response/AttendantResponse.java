@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class AttendantResponse {
-    private Long id;
+    private Long attendantId;
     private Boolean isBallFlag;
     private Boolean isHost;
     private AttendantStatus status;
@@ -39,7 +39,7 @@ public class AttendantResponse {
     private Level level;
 
     public AttendantResponse(Attendant attendant) {
-        this.id = attendant.getId();
+        this.attendantId = attendant.getId();
         this.isBallFlag = attendant.getIsBallFlag();
         this.createdAt = attendant.getCreatedAt();
         this.status = attendant.getStatus();
@@ -56,7 +56,7 @@ public class AttendantResponse {
     }
     @Builder
     public AttendantResponse(Long id, Boolean isBallFlag, Boolean isHost, AttendantStatus status, LocalDateTime createdAt, Long gameId, String gameTitle, Long userId, String userNickname, String profileImagePath, String desc, List<Ability> abilities, PlayStyle playStyle, Level level) {
-        this.id = id;
+        this.attendantId = id;
         this.isBallFlag = isBallFlag;
         this.isHost = isHost;
         this.status = status;
