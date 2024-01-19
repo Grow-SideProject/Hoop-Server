@@ -27,7 +27,11 @@ public class GameDetailResponse {
     private LocalDateTime createdAt;
     private Integer maxAttend; // 최대 인원
     private String courtName; //코트명
+
     private String address; // 코트 주소 (추후 분리 예정)
+    private Long xloc; // 코트 x좌표
+    private Long yloc; // 코트 y좌표
+
     private GameCategory gameCategory; // 게임 종류
     private String startTime;
     private Integer duration;
@@ -51,9 +55,10 @@ public class GameDetailResponse {
     private Integer bookmarkCount;
 
     @Builder
-    public GameDetailResponse(Long id, String title, String content, LocalDateTime createdAt,
-                              Integer maxAttend, String courtName, String address, GameCategory gameCategory,
-                              String startTime, Integer duration, Gender gender, Boolean isBallFlag, List<Level> levels,
+    public GameDetailResponse(Long id, String title, String content,String courtName,  Boolean isBallFlag, Integer maxAttend, LocalDateTime createdAt,
+                              String address, Long xloc, Long yloc,
+                              String startTime, Integer duration,
+                              GameCategory gameCategory, Gender gender,  List<Level> levels,
                               List<Attendant> attendants, List<Comment> comments, Boolean isHost, Integer views, Integer bookmarkCount) {
         this.id = id;
         this.title = title;
@@ -62,6 +67,8 @@ public class GameDetailResponse {
         this.maxAttend = maxAttend;
         this.courtName = courtName;
         this.address = address;
+        this.xloc = xloc;
+        this.yloc = yloc;
         this.gameCategory = gameCategory;
         this.startTime = startTime;
         this.duration = duration;

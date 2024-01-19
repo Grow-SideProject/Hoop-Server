@@ -28,10 +28,16 @@ public class Game {
     private String title; // 모집 공고명
     private String content; // 모집 내용
     private String courtName; //코트명
+    private Boolean isBallFlag;
+
+    //주소
     private String address; // 코트 주소 (추후 분리 예정)
+    private Long xloc; // 코트 x좌표
+    private Long yloc; // 코트 y좌표
+
+    //시간
     private LocalDateTime startTime;
     private Integer duration;
-    private Boolean isBallFlag;
     private Integer maxAttend; // 최대 인원
     private Gender gender; // 성별
     private GameCategory gameCategory; // 게임 종류
@@ -55,18 +61,25 @@ public class Game {
     private List<Attendant> attendants;
 
     @Builder
-    public Game(String title, String content, Integer maxAttend, String courtName, String address,
-                String startTime, Integer duration, GameCategory gameCategory,Gender gender,
-                Boolean isBallFlag, List<Level> levels) {
+    public Game(String title, String content, Integer maxAttend, String courtName, Boolean isBallFlag,
+                String address, Long xloc, Long yloc,
+                String startTime, Integer duration,
+                GameCategory gameCategory,Gender gender, List<Level> levels) {
         this.title = title;
         this.content = content;
         this.courtName = courtName;
+        this.isBallFlag = isBallFlag;
+
+        // 주소
         this.address = address;
+        this.xloc = xloc;
+        this.yloc = yloc;
+
         this.gameCategory = gameCategory;
         this.startTime = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.duration = duration;
         this.gender = gender;
-        this.isBallFlag = isBallFlag;
+
         this.maxAttend = maxAttend;
         this.levels = levels;
 
@@ -83,7 +96,11 @@ public class Game {
         if (gameEdit.getTitle() != null) this.title = gameEdit.getTitle();
         if (gameEdit.getContent() != null) this.content = gameEdit.getContent();
         if (gameEdit.getCourtName() != null) this.courtName = gameEdit.getCourtName();
+        //주소
         if (gameEdit.getAddress() != null) this.address = gameEdit.getAddress();
+        if (gameEdit.getXloc() != null) this.xloc = gameEdit.getXloc();
+        if (gameEdit.getYloc() != null) this.yloc = gameEdit.getYloc();
+
         if (gameEdit.getGameCategory() != null) this.gameCategory = gameEdit.getGameCategory();
         if (gameEdit.getStartTime() != null) this.startTime = LocalDateTime.parse(gameEdit.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         if (gameEdit.getDuration() != null) this.duration = gameEdit.getDuration();

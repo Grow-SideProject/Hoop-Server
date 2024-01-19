@@ -30,6 +30,9 @@ public class GameEdit {
 
 
     private String address; // 코트 주소 (추후 분리 예정)
+    private Long xloc; // 코트 x좌표
+    private Long yloc; // 코트 y좌표
+
     private GameCategory gameCategory; // 게임 종류
 
 
@@ -50,13 +53,17 @@ public class GameEdit {
 
 
     @Builder
-    public GameEdit(String title, String content, String courtName, String address,
+    public GameEdit(String title, String content, String courtName,
+                    String address, Long xloc, Long yloc,
                     GameCategory gameCategory, String startTime, Integer duration,
                     Boolean isBallFlag, Integer maxAttend, Gender gender, List<Level> levels) {
         this.title = title;
         this.content = content;
         this.courtName = courtName;
+        //주소
         this.address = address;
+        this.xloc = xloc;
+        this.yloc = yloc;
         this.gameCategory = gameCategory;
         this.startTime = startTime;
         this.duration = duration;
