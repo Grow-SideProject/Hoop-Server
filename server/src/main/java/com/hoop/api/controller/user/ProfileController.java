@@ -1,4 +1,4 @@
-package com.hoop.api.controller;
+package com.hoop.api.controller.user;
 
 import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.constant.Ability;
@@ -59,7 +59,6 @@ public class ProfileController {
         return new DefaultResponse();
     }
 
-
     /* 프로필 이미지 업로드 기능 */
     @PostMapping("/image")
     public DefaultResponse uploadImage(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("file") MultipartFile file) {
@@ -68,7 +67,6 @@ public class ProfileController {
         profileService.saveImage(userId, imageService.getImagePath(path));
         return new DefaultResponse();
     }
-    
     @GetMapping("/image")
     public String getImage(@AuthenticationPrincipal UserPrincipal userPrincipal){
         String profileImagePath = profileService.getProfileImagePath(userPrincipal.getUserId());
@@ -77,7 +75,6 @@ public class ProfileController {
         }
         return profileImagePath;
     }
-
     @GetMapping("/play-styles")
     public HashMap<String, String>  getPlayStyle(){
         HashMap<String, String> response = new HashMap<String, String>();
