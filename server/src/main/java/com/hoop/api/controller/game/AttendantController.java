@@ -4,6 +4,7 @@ package com.hoop.api.controller.game;
 import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.request.game.*;
 import com.hoop.api.response.AttendantResponse;
+import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.GameAttendantResponse;
 import com.hoop.api.service.game.AttendantService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,8 @@ public class AttendantController {
     }
 
     @GetMapping("/remove")
-    public void remove(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long attendantId) {
+    public DefaultResponse remove(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long attendantId) {
         attendantService.removeGameAttend(userPrincipal.getUserId(), attendantId);
+        return new DefaultResponse();
     }
 }
