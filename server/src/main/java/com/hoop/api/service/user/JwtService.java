@@ -3,6 +3,7 @@ package com.hoop.api.service.user;
 
 import com.hoop.api.config.AppConfig;
 import com.hoop.api.domain.User;
+import com.hoop.api.exception.TokenInvalid;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.user.TokenRequest;
@@ -103,8 +104,9 @@ public class JwtService {
     public TokenResponse reissue(TokenRequest tokenRequest) {
         Date now = new Date();
         String refreshToken = tokenRequest.getRefreshToken();
+        Date refreshTokenExp = this.getExpiration(refreshToken); // refresh token 만료일
         String subject = this.getSubject(refreshToken);
-        User user =userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new UserNotFound());
+        User user = userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new TokenInvalid("리프레쉬 토큰이 유효하지 않습니다."));
         /*
          refresh Token이 valid한다면 access token을 발급한다.
          */
@@ -113,7 +115,6 @@ public class JwtService {
         /*
          만료일이 한달 이내라면 Refresh Token 또한 재발급
          */
-        Date refreshTokenExp = this.getExpiration(refreshToken); // refresh token 만료일
         LocalDate nextMonth = LocalDate.now().plusMonths(1); // 지금부터 한달 뒤
         LocalDate refreshTokenExpLocalDate = refreshTokenExp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         if (nextMonth.isAfter(refreshTokenExpLocalDate)) {

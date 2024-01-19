@@ -38,25 +38,16 @@ public class AuthController {
         authService.signup(signup);
     }
 
-    /**
-     * 회원 가입
-     * @param
-     */
     @PostMapping("/signup/social")
     public TokenResponse signupBySocial(@RequestBody SocialSignUp socialSignUp) {
         //일단 카카오 로그인만 구현
         Long socialId;
         String category = socialSignUp.getCategory();
         UUID one = UUID.randomUUID();
-        Optional<User> user;
         TokenResponse tokenResponse = jwtService.createTokenResponse(one.toString());
         switch (category) {
             case "KAKAO" :
                 socialId = socialService.getKakaoIdByToken(socialSignUp.getAccessToken());
-                user = authService.getUserBySocialId(socialId);
-                if (user.isPresent()) {
-                    throw new AlreadyExistsUserException();
-                }
                 authService.signup(SignUp.builder()
                         .email(one.toString())
                         .password(one.toString())
@@ -86,10 +77,7 @@ public class AuthController {
             default:
                 throw new CategoryNotFound();
         }
-        User user = authService.getUserBySocialId(socialId).orElseThrow(UserNotFound::new);
-        TokenResponse tokenResponse = jwtService.createTokenResponse(user.getEmail());
-        authService.setRefreshTokenBySocialId(socialId,tokenResponse.getRefreshToken());
-        return tokenResponse;
+        return authService.signInBySocialId(socialId);
     }
 
     @PostMapping(value="/reissue")

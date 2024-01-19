@@ -5,6 +5,7 @@ import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.user.SignUp;
+import com.hoop.api.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,13 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public void signup(SignUp signup) {
-        Optional<User> userOptional = userRepository.findByEmail(signup.getEmail());
-        if (userOptional.isPresent()) {
-            throw new AlreadyExistsUserException();
-        }
+        userRepository.findBySocialId(signup.getSocialId())
+                .ifPresent(user -> {
+                    throw new AlreadyExistsUserException();
+                });
         String encryptedPassword = passwordEncoder.encode(signup.getPassword());
         var user = User.builder()
                 .email(signup.getEmail())
@@ -35,15 +37,20 @@ public class AuthService {
     }
 
     @Transactional
-    public void setRefreshTokenBySocialId(Long socialId, String token) {
-        User user = userRepository.findBySocialId(socialId).orElseThrow(UserNotFound::new);
+    public void setRefreshTokenBySocialId(User user, String token) {
         user.setRefreshToken(token);
         userRepository.save(user);
     }
 
 
-    public Optional<User> getUserBySocialId(Long socialId) {
-        return userRepository.findBySocialId(socialId);
+    @Transactional
+    public TokenResponse signInBySocialId(Long socialId) {
+        User user = userRepository.findBySocialId(socialId)
+                .orElseThrow(UserNotFound::new);
+        TokenResponse tokenResponse = jwtService.createTokenResponse(user.getEmail());
+        user.setRefreshToken(tokenResponse.getRefreshToken());
+        userRepository.save(user);
+        return tokenResponse;
     }
 
 }
