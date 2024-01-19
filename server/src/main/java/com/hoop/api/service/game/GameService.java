@@ -11,6 +11,8 @@ import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.AttendantRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
+import com.hoop.api.request.game.GameCreate;
+import com.hoop.api.request.game.GameEdit;
 import com.hoop.api.request.game.GameSearch;
 import com.hoop.api.response.AttendantResponse;
 import com.hoop.api.response.GameDetailResponse;
@@ -33,6 +35,30 @@ public class GameService {
     private final GameRepository gameRepository;
     private final AttendantRepository attendantRepository;
     private final UserRepository userRepository;
+
+    @Transactional
+    public void create(Long userId, GameCreate gameCreate) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+        Game game = gameCreate.toGame();
+        Attendant attendant = Attendant
+                .builder()
+                .game(game)
+                .user(user)
+                .isHost(true)
+                .status(AttendantStatus.APPROVE)
+                .isBallFlag(gameCreate.getIsBallFlag())
+                .build();
+        gameRepository.save(game);
+        attendantRepository.save(attendant);
+    }
+
+    @Transactional
+    public void edit(Long userId, GameEdit gameEdit) {
+        Game game = gameRepository.findById(gameEdit.getGameId())
+                .orElseThrow(GameNotFound::new);
+        game.GameEdit(gameEdit);
+        gameRepository.save(game);
+    }
 
     public GameDetailResponse get(Long userId, Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
@@ -105,12 +131,5 @@ public class GameService {
 
 
 
-    @Transactional
-    public void removeGameAttend(Long userId, Long gameId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
-        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        Attendant attendant = attendantRepository.findByUserAndGame(user, game)
-                .orElseThrow(GameNotFound::new);
-        attendantRepository.delete(attendant);
-    }
+
 }

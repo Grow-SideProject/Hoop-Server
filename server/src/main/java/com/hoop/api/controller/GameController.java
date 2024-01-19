@@ -10,7 +10,7 @@ import com.hoop.api.response.AttendantResponse;
 import com.hoop.api.response.GameDetailResponse;
 import com.hoop.api.response.GameListResponse;
 import com.hoop.api.service.game.CommentService;
-import com.hoop.api.service.game.GameAdminService;
+import com.hoop.api.service.game.AttendantService;
 import com.hoop.api.service.game.GameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +28,7 @@ import java.util.HashMap;
 public class GameController {
 
     private final GameService gameService;
-    private final GameAdminService gameAdminService;
-
+    private final AttendantService attendantService;
     private final CommentService commentService;
 
 
@@ -40,13 +39,13 @@ public class GameController {
 
     @PostMapping()
     public DefaultResponse create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid GameCreate gameCreate) {
-        gameAdminService.create(userPrincipal.getUserId(), gameCreate);
+        gameService.create(userPrincipal.getUserId(), gameCreate);
         return new DefaultResponse();
     }
 
     @PatchMapping()
     public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameEdit gameEdit) {
-        gameAdminService.edit(userPrincipal.getUserId(), gameEdit);
+        gameService.edit(userPrincipal.getUserId(), gameEdit);
         return new DefaultResponse();
     }
 
@@ -75,11 +74,11 @@ public class GameController {
 
     @GetMapping("/approve")
     public AttendantResponse approveGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam Long userId) {
-        return gameAdminService.approveGame(userPrincipal.getUserId(), gameId, userId);
+        return attendantService.approveAttendant(userPrincipal.getUserId(), gameId, userId);
     }
     @GetMapping("/reject")
     public AttendantResponse rejectGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam Long userId) {
-        return gameAdminService.rejectGame(userPrincipal.getUserId(), gameId, userId);
+        return attendantService.rejectAttendant(userPrincipal.getUserId(), gameId, userId);
     }
     @PostMapping("/comment")
     public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid CommentCreate commentCreate) {;
