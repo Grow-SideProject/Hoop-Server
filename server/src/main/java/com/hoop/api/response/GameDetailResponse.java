@@ -6,6 +6,7 @@ import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
 import com.hoop.api.domain.Attendant;
 import com.hoop.api.domain.Comment;
+import com.hoop.api.domain.Game;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,8 +30,8 @@ public class GameDetailResponse {
     private String courtName; //코트명
 
     private String address; // 코트 주소 (추후 분리 예정)
-    private Long xloc; // 코트 x좌표
-    private Long yloc; // 코트 y좌표
+    private Double xLoc; // 코트 x좌표
+    private Double yLoc; // 코트 y좌표
 
     private GameCategory gameCategory; // 게임 종류
     private String startTime;
@@ -56,10 +57,10 @@ public class GameDetailResponse {
 
     @Builder
     public GameDetailResponse(Long id, String title, String content,String courtName,  Boolean isBallFlag, Integer maxAttend, LocalDateTime createdAt,
-                              String address, Long xloc, Long yloc,
+                              String address, Double xLoc, Double yLoc,
                               String startTime, Integer duration,
                               GameCategory gameCategory, Gender gender,  List<Level> levels,
-                              List<Attendant> attendants, List<Comment> comments, Boolean isHost, Integer views, Integer bookmarkCount) {
+                              List<GameAttendantResponse> attendants, List<CommentResponse> comments, Boolean isHost, Integer views, Integer bookmarkCount) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -67,37 +68,23 @@ public class GameDetailResponse {
         this.maxAttend = maxAttend;
         this.courtName = courtName;
         this.address = address;
-        this.xloc = xloc;
-        this.yloc = yloc;
+        this.xLoc = xLoc;
+        this.yLoc = yLoc;
         this.gameCategory = gameCategory;
         this.startTime = startTime;
         this.duration = duration;
         this.gender = gender;
         this.isBallFlag = isBallFlag;
         this.levels = levels;
-        this.gameAttendantResponseList = attendants.stream().filter(gameAttendant -> gameAttendant.getStatus().equals(AttendantStatus.APPROVE)).map(GameAttendantResponse::new).toList();
-        this.attendCount = gameAttendantResponseList.size();
-        this.commentResponseList = levelOrderComments(comments.stream().map(CommentResponse::new).toList());
+
+        this.gameAttendantResponseList = attendants;
+        this.attendCount = attendants.size();
+        this.commentResponseList = comments;
+
         this.isHost = isHost;
         this.views = views;
         this.bookmarkCount = bookmarkCount;
     }
 
-
-    public List<CommentResponse> levelOrderComments(List<CommentResponse> comments) {
-        List<CommentResponse> commentResponses = new ArrayList<>();
-        for (CommentResponse comment : comments) {
-            if (comment.getParentId() == null) {
-                commentResponses.add(comment);
-            } else {
-                for (CommentResponse commentResponse1 : commentResponses) {
-                    if (commentResponse1.getId().equals(comment.getParentId())) {
-                        commentResponse1.getChildren().add(comment);
-                    }
-                }
-            }
-        }
-        return commentResponses;
-    }
 
 }

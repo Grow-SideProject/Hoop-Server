@@ -3,7 +3,6 @@ package com.hoop.api.controller;
 import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.response.BookMarkResponse;
 import com.hoop.api.response.DefaultResponse;
-import com.hoop.api.response.GameDetailResponse;
 import com.hoop.api.service.BookMarkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

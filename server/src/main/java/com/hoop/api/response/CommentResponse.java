@@ -27,6 +27,8 @@ public class CommentResponse {
 
     private List<CommentResponse> children = new ArrayList<>();
 
+    private Boolean isMine;
+
     @Builder
     public CommentResponse(Comment comment) {
         this.id = comment.getId();

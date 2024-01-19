@@ -28,10 +28,8 @@ public class GameCreate {
 
     @NotBlank(message = "주소를 입력하세요.")
     private String address; // 코트 주소 (추후 분리 예정)
-    @NotBlank(message = "주소를 입력하세요.")
-    private Long xloc; // 코트 주소 (추후 분리 예정)
-    @NotBlank(message = "주소를 입력하세요.")
-    private Long yloc; // 코트 주소 (추후 분리 예정)
+    private Double xLoc; // 코트 주소 (추후 분리 예정)
+    private Double yLoc; // 코트 주소 (추후 분리 예정)
 
 
     private GameCategory gameCategory; // 게임 종류
@@ -53,15 +51,15 @@ public class GameCreate {
 
     @Builder
     public GameCreate(String title, String content, String courtName,
-                      String address, Long xloc, Long yloc,
+                      String address, Double xLoc, Double yLoc,
                       GameCategory gameCategory, String startTime, Integer duration,
                       Boolean isBallFlag, Integer maxAttend, Gender gender, List<Level> levels) {
         this.title = title;
         this.content = content;
         this.courtName = courtName;
         this.address = address;
-        this.xloc = xloc;
-        this.yloc = yloc;
+        this.xLoc = xLoc;
+        this.yLoc = yLoc;
         this.gameCategory = gameCategory;
         this.startTime = startTime;
         this.duration = duration;
@@ -79,8 +77,8 @@ public class GameCreate {
                 .content(content)
                 .courtName(courtName)
                 .address(address)
-                .xloc(xloc)
-                .yloc(yloc)
+                .xLoc(xLoc)
+                .yLoc(yLoc)
                 .gameCategory(gameCategory)
                 .startTime(startTime)
                 .duration(duration)
