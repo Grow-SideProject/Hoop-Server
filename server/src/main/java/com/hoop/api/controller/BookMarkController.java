@@ -1,11 +1,10 @@
-package com.hoop.api.controller.game;
+package com.hoop.api.controller;
 
 import com.hoop.api.config.UserPrincipal;
-import com.hoop.api.request.user.FeedbackRequest;
 import com.hoop.api.response.BookMarkResponse;
 import com.hoop.api.response.DefaultResponse;
-import com.hoop.api.service.game.BookMarkService;
-import com.hoop.api.service.game.FeedbackService;
+import com.hoop.api.response.GameDetailResponse;
+import com.hoop.api.service.BookMarkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,7 +15,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/bookmark")
+@RequestMapping("/book-mark")
 public class BookMarkController {
 
     private final BookMarkService bookMarkService;
@@ -25,14 +24,14 @@ public class BookMarkController {
     public List<BookMarkResponse> bookMark(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return bookMarkService.getList(userPrincipal.getUserId());
     }
-    @PostMapping()
-    public DefaultResponse addBookMark(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody Long gameId) {
+    @PostMapping("/{gameId}")
+    public DefaultResponse addBookMark(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId) {
         bookMarkService.addBookMark(userPrincipal.getUserId(), gameId);
         return new DefaultResponse();
     }
-    @DeleteMapping()
-    public DefaultResponse delBookMark(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody Long bookMarkId) {
-        bookMarkService.delBookMark(bookMarkId);
+    @DeleteMapping("/{gameId}")
+    public DefaultResponse delBookMark(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId) {
+        bookMarkService.delBookMark(userPrincipal.getUserId(), gameId);
         return new DefaultResponse();
     }
 

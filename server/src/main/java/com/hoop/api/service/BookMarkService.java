@@ -1,9 +1,9 @@
-package com.hoop.api.service.game;
+package com.hoop.api.service;
 
 import com.hoop.api.domain.BookMark;
 import com.hoop.api.domain.Game;
 import com.hoop.api.domain.User;
-import com.hoop.api.repository.game.BookMarkRepository;
+import com.hoop.api.repository.BookMarkRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.response.BookMarkResponse;
@@ -30,14 +30,14 @@ public class BookMarkService {
     public void addBookMark(Long userId, Long gameId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        BookMark bookMark =BookMark.builder()
+        BookMark bookMark = BookMark.builder()
                 .user(user)
                 .game(game)
                 .build();
         bookMarkRepository.save(bookMark);
     }
-    public void delBookMark(Long bookMarkId) {
-        BookMark bookMark = bookMarkRepository.findById(bookMarkId).orElseThrow(BookMarkNotFound::new);
+    public void delBookMark(Long userId, Long gameId) {
+        BookMark bookMark = bookMarkRepository.findByUserIdAndGameId(userId, gameId).orElseThrow(BookMarkNotFound::new);
         bookMarkRepository.delete(bookMark);
     }
 }

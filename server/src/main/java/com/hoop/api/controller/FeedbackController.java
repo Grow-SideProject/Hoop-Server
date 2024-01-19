@@ -1,9 +1,9 @@
-package com.hoop.api.controller.game;
+package com.hoop.api.controller;
 
 import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.request.user.FeedbackRequest;
 import com.hoop.api.response.DefaultResponse;
-import com.hoop.api.service.game.FeedbackService;
+import com.hoop.api.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -12,17 +12,18 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookMarkResponse {
     private Long id;
-    private User user;
-    private Game game;
-    @Builder
-    public BookMarkResponse(User user, Game game) {
-        this.user = user;
-        this.game = game;
+    private Long gameId;
+    private String gameTitle;
+
+    public BookMarkResponse(Long id, String gameTitle, Long gameId) {
+        this.id = id;
+        this.gameTitle = gameTitle;
+        this.gameId = gameId;
     }
 
     public BookMarkResponse(BookMark bookMark) {
         this.id = bookMark.getId();
-        this.user = bookMark.getUser();
-        this.game = bookMark.getGame();
+        this.gameTitle = bookMark.getGame().getTitle();
+        this.gameId = bookMark.getGame().getId();
     }
 }

@@ -1,4 +1,4 @@
-package com.hoop.api.repository.game;
+package com.hoop.api.repository;
 
 import com.hoop.api.domain.Feedback;
 import com.hoop.api.domain.Game;
