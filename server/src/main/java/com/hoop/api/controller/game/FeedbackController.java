@@ -1,4 +1,4 @@
-package com.hoop.api.controller;
+package com.hoop.api.controller.game;
 
 import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.request.user.FeedbackRequest;
@@ -20,7 +20,7 @@ public class FeedbackController {
 
     private final FeedbackService feedbackService;
 
-    @PostMapping("/feedback")
+    @PostMapping()
     public DefaultResponse feedback(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody FeedbackRequest request) {
         feedbackService.create(userPrincipal.getUserId(), request);
         return new DefaultResponse();

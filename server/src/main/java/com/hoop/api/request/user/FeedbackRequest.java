@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 public class FeedbackRequest {
 
 
-    private Long targetId;
+    private Long attendantId;
     private Long gameId;
     private String content;
     private Integer score;
 
     @Builder
-    public FeedbackRequest(Long targetId, Long gameId, String content, Integer score) {
-        this.targetId = targetId;
+    public FeedbackRequest(Long attendantId, Long gameId, String content, Integer score) {
+        this.attendantId = attendantId;
         this.gameId = gameId;
         this.content = content;
         this.score = score;

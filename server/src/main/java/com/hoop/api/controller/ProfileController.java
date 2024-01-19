@@ -30,7 +30,6 @@ public class ProfileController {
     private  final ProfileService profileService;
     private  final ImageService imageService;
 
-
     @GetMapping("/phone-validation")
     public DefaultResponse validNumber(@RequestParam String phoneNumber) {
         profileService.validateNumber(phoneNumber);
@@ -106,9 +105,4 @@ public class ProfileController {
         return response;
     }
 
-    @PostMapping("/feedback")
-    public DefaultResponse feedback(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody FeedbackRequest request) {
-        profileService.createFeedback(userPrincipal.getUserId(), request);
-        return new DefaultResponse();
-    }
 }

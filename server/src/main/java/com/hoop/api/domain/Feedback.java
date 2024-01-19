@@ -25,16 +25,12 @@ public class Feedback {
     private User user;
 
     @OneToOne
-    private User target;
-
-    @ManyToOne
-    private Game game;
+    private Attendant target;
 
     @Builder
-    public Feedback(User user, User target, Game game, String content, int score) {
+    public Feedback(User user, Attendant target, String content, int score) {
         this.user = user;
         this.target = target;
-        this.game = game;
         this.content = content;
         this.score = score;
     }

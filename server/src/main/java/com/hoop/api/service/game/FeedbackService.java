@@ -1,11 +1,13 @@
 package com.hoop.api.service.game;
 
+import com.hoop.api.domain.Attendant;
 import com.hoop.api.domain.Feedback;
 import com.hoop.api.domain.Game;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.GameNotFound;
 import com.hoop.api.repository.FeedbackRepository;
 import com.hoop.api.repository.UserRepository;
+import com.hoop.api.repository.game.AttendantRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.request.user.FeedbackRequest;
 import jakarta.transaction.Transactional;
@@ -16,23 +18,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FeedbackService {
 
-    private final GameRepository gameRepository;
-
     private final UserRepository userRepository;
-
+    private final AttendantRepository attendantRepository;
     private final FeedbackRepository feedbackRepository;
     @Transactional
     public void create(Long userId, FeedbackRequest feedbackRequest) {
-        Game game = gameRepository.findById(feedbackRequest.getGameId())
-                .orElseThrow(GameNotFound::new);
         User user = userRepository.findById(userId)
                 .orElseThrow(GameNotFound::new);
-        User target = userRepository.findById(feedbackRequest.getTargetId())
+        Attendant attendant = attendantRepository.findById(feedbackRequest.getAttendantId())
                 .orElseThrow(GameNotFound::new);
         Feedback feedback = Feedback.builder()
                 .user(user)
-                .target(target)
-                .game(game)
+                .target(attendant)
                 .content(feedbackRequest.getContent())
                 .score(feedbackRequest.getScore())
                 .build();

@@ -27,12 +27,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
-
-
     private final UserRepository userRepository;
-    private final GameRepository gameRepository;
-    private final FeedbackRepository feedbackRepository;
-
 
     public ProfileResponse get(Long userId) {
         User profile = userRepository.findById(userId)
@@ -127,18 +122,4 @@ public class ProfileService {
         userRepository.save(user);
     }
 
-    public void createFeedback(Long userId, FeedbackRequest feedbackRequest) {
-        if ( userId == feedbackRequest.getTargetId()) throw new ProfileException("자기 자신에게 피드백을 남길 수 없습니다.");
-        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
-        User target = userRepository.findById(feedbackRequest.getTargetId()).orElseThrow(UserNotFound::new);
-        Game game = gameRepository.findById(feedbackRequest.getGameId()).orElseThrow(GameNotFound::new);
-        Feedback feedback = Feedback.builder()
-                .user(user)
-                .target(target)
-                .game(game)
-                .content(feedbackRequest.getContent())
-                .score(feedbackRequest.getScore())
-                .build();
-        feedbackRepository.save(feedback);
-    }
 }
