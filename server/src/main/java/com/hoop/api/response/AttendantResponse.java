@@ -25,6 +25,11 @@ public class AttendantResponse {
     private Boolean isHost;
     private AttendantStatus status;
     private LocalDateTime createdAt;
+    //game
+    private Long gameId;
+    private String gameTitle;
+
+    //user
     private Long userId;
     private String userNickname;
     private String profileImagePath;
@@ -39,6 +44,8 @@ public class AttendantResponse {
         this.createdAt = attendant.getCreatedAt();
         this.status = attendant.getStatus();
         this.isHost = attendant.getIsHost();
+        this.gameId = attendant.getGame().getId();
+        this.gameTitle = attendant.getGame().getTitle();
         this.userNickname = attendant.getUser().getNickName();
         this.userId = attendant.getUser().getId();
         this.profileImagePath = attendant.getUser().getProfileImagePath();
@@ -48,16 +55,14 @@ public class AttendantResponse {
         this.level = attendant.getUser().getLevel();
     }
     @Builder
-    public AttendantResponse(Long id, Boolean isBallFlag,
-                             Boolean isHost, AttendantStatus status,
-                             LocalDateTime createdAt, Long userId,
-                             String userNickname, String profileImagePath, String desc,
-                             List<Ability> abilities, PlayStyle playStyle, Level level) {
+    public AttendantResponse(Long id, Boolean isBallFlag, Boolean isHost, AttendantStatus status, LocalDateTime createdAt, Long gameId, String gameTitle, Long userId, String userNickname, String profileImagePath, String desc, List<Ability> abilities, PlayStyle playStyle, Level level) {
         this.id = id;
         this.isBallFlag = isBallFlag;
         this.isHost = isHost;
         this.status = status;
         this.createdAt = createdAt;
+        this.gameId = gameId;
+        this.gameTitle = gameTitle;
         this.userId = userId;
         this.userNickname = userNickname;
         this.profileImagePath = profileImagePath;

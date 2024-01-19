@@ -1,4 +1,4 @@
-package com.hoop.api.controller;
+package com.hoop.api.controller.user;
 
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsUserException;
