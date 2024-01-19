@@ -1,18 +1,12 @@
 package com.hoop.api.service.user;
 
 import com.hoop.api.constant.Ability;
-import com.hoop.api.domain.Feedback;
-import com.hoop.api.domain.Game;
 import com.hoop.api.domain.ProfileEditor;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.ProfileException;
 import com.hoop.api.exception.UserNotFound;
-import com.hoop.api.exception.GameNotFound;
-import com.hoop.api.repository.FeedbackRepository;
-import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.user.FeedbackRequest;
 import com.hoop.api.request.user.PhoneRequest;
 import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.ProfileResponse;

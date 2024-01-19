@@ -31,24 +31,30 @@ public class GameDetailResponse {
     private GameCategory gameCategory; // 게임 종류
     private String startTime;
     private Integer duration;
-
     private Gender gender; // 성별
-
     private List<Level> levels = new ArrayList<>();
-
     private Boolean isBallFlag; // 공 여부
-
     private Integer attendCount;
 
+    //댓글
     private List<CommentResponse> commentResponseList = new ArrayList<>();
+    // 참여자 정보
     private List<GameAttendantResponse> gameAttendantResponseList = new ArrayList<>();
 
+    // 내가 host인지
     private Boolean isHost;
+
+    // 좋아요 수
+    private Integer views;
+
+    // 북마크 수
+    private Integer bookmarkCount;
+
     @Builder
     public GameDetailResponse(Long id, String title, String content, LocalDateTime createdAt,
                               Integer maxAttend, String courtName, String address, GameCategory gameCategory,
                               String startTime, Integer duration, Gender gender, Boolean isBallFlag, List<Level> levels,
-                              List<Attendant> attendants, List<Comment> comments, Boolean isHost) {
+                              List<Attendant> attendants, List<Comment> comments, Boolean isHost, Integer views, Integer bookmarkCount) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -66,6 +72,8 @@ public class GameDetailResponse {
         this.attendCount = gameAttendantResponseList.size();
         this.commentResponseList = levelOrderComments(comments.stream().map(CommentResponse::new).toList());
         this.isHost = isHost;
+        this.views = views;
+        this.bookmarkCount = bookmarkCount;
     }
 
 

@@ -7,14 +7,13 @@ import com.hoop.api.exception.CommentNotFound;
 
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.exception.GameNotFound;
-import com.hoop.api.repository.CommentRepository;
+import com.hoop.api.repository.game.CommentRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.request.game.CommentCreate;
 import com.hoop.api.request.game.CommentDelete;
 import com.hoop.api.request.game.CommentEdit;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

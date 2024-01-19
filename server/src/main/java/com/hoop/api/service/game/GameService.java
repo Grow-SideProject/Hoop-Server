@@ -36,6 +36,7 @@ public class GameService {
     private final AttendantRepository attendantRepository;
     private final UserRepository userRepository;
 
+
     @Transactional
     public void create(Long userId, GameCreate gameCreate) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
@@ -62,6 +63,9 @@ public class GameService {
 
     public GameDetailResponse get(Long userId, Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
+        Integer views = game.getViews() +1;
+        game.setViews(views);
+        gameRepository.save(game);
         Boolean isHost = game.getAttendants().stream().anyMatch(attendant -> (attendant.getIsHost()) && (attendant.getUser().getId().equals(userId)));
         return GameDetailResponse.builder()
                 .id(game.getId())
@@ -80,6 +84,8 @@ public class GameService {
                 .comments(game.getComments())
                 .attendants(game.getAttendants())
                 .isHost(isHost)
+                .views(views)
+                .bookmarkCount(game.getBookMarks().size())
                 .build();
     }
 

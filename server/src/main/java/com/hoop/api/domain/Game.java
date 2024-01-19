@@ -24,37 +24,40 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    // 기본 정보
     private String title; // 모집 공고명
     private String content; // 모집 내용
     private String courtName; //코트명
     private String address; // 코트 주소 (추후 분리 예정)
-
-
     private LocalDateTime startTime;
     private Integer duration;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
-
     private Boolean isBallFlag;
-
     private Integer maxAttend; // 최대 인원
-
     private Gender gender; // 성별
-
     private GameCategory gameCategory; // 게임 종류
     @ElementCollection
     private List<Level> levels = new ArrayList<>();
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
+    //조회수
+    private Integer views;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    private List<BookMark> bookMarks;
+
+    //댓글
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<Comment> comments;
 
+    //참여자 정보
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<Attendant> attendants;
 
     @Builder
     public Game(String title, String content, Integer maxAttend, String courtName, String address,
                 String startTime, Integer duration, GameCategory gameCategory,Gender gender,
-                Boolean isBallFlag, List<Level> levels, LocalDateTime modifiedAt) {
+                Boolean isBallFlag, List<Level> levels) {
         this.title = title;
         this.content = content;
         this.courtName = courtName;
@@ -65,10 +68,14 @@ public class Game {
         this.gender = gender;
         this.isBallFlag = isBallFlag;
         this.maxAttend = maxAttend;
+        this.levels = levels;
+
+        //초기화
         this.createdAt = LocalDateTime.now();
         this.comments = new ArrayList<>();
-        this.levels = levels;
         this.attendants = new ArrayList<>();
+        this.views = 0;
+        this.bookMarks = new ArrayList<>();
     }
 
     public void GameEdit(GameEdit gameEdit) {

@@ -2,13 +2,11 @@ package com.hoop.api.service.game;
 
 import com.hoop.api.domain.Attendant;
 import com.hoop.api.domain.Feedback;
-import com.hoop.api.domain.Game;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.GameNotFound;
-import com.hoop.api.repository.FeedbackRepository;
+import com.hoop.api.repository.game.FeedbackRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.repository.game.AttendantRepository;
-import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.request.user.FeedbackRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
