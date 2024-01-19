@@ -5,7 +5,7 @@ import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.domain.Game;
 import com.hoop.api.domain.User;
-import com.hoop.api.repository.AttendantRepository;
+import com.hoop.api.repository.game.AttendantRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.game.GameCreate;
@@ -76,7 +76,7 @@ class GameControllerTest {
                 .title("같이 농구합시다 3대3")
                 .content("고수만 오셈")
                 .address("마포구 서교동 12-1")
-                .startTime("2021-10-10 10:00:00")
+                .startTime("2031-10-10 10:00:00")
                 .duration(120)
                 .courtName("창천체육관")
                 .maxAttend(Integer.valueOf(6))

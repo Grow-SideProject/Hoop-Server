@@ -41,7 +41,7 @@ public class GameDetailResponse {
     private Integer attendCount;
 
     private List<CommentResponse> commentResponseList = new ArrayList<>();
-    private List<AttendantResponse> attendantResponseList = new ArrayList<>();
+    private List<GameAttendantResponse> gameAttendantResponseList = new ArrayList<>();
 
     private Boolean isHost;
     @Builder
@@ -62,8 +62,8 @@ public class GameDetailResponse {
         this.gender = gender;
         this.isBallFlag = isBallFlag;
         this.levels = levels;
-        this.attendCount = attendants.stream().filter(gameAttendant -> gameAttendant.getStatus().equals(AttendantStatus.APPROVE)).toList().size();
-        this.attendantResponseList = attendants.stream().map(AttendantResponse::new).toList();
+        this.gameAttendantResponseList = attendants.stream().filter(gameAttendant -> gameAttendant.getStatus().equals(AttendantStatus.APPROVE)).map(GameAttendantResponse::new).toList();
+        this.attendCount = gameAttendantResponseList.size();
         this.commentResponseList = levelOrderComments(comments.stream().map(CommentResponse::new).toList());
         this.isHost = isHost;
     }

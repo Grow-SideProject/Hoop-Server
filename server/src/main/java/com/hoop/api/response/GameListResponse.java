@@ -37,7 +37,6 @@ public class GameListResponse {
 
     private Boolean isBallFlag; // 공 여부
 
-
     private Integer attendCount;
 
     // 생성자 오버로딩

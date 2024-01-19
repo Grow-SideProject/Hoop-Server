@@ -1,4 +1,4 @@
-package com.hoop.api.controller;
+package com.hoop.api.controller.game;
 
 
 import com.hoop.api.config.UserPrincipal;
@@ -6,11 +6,10 @@ import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.request.game.*;
 import com.hoop.api.response.DefaultResponse;
-import com.hoop.api.response.AttendantResponse;
+import com.hoop.api.response.GameAttendantResponse;
 import com.hoop.api.response.GameDetailResponse;
 import com.hoop.api.response.GameListResponse;
 import com.hoop.api.service.game.CommentService;
-import com.hoop.api.service.game.AttendantService;
 import com.hoop.api.service.game.GameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +27,7 @@ import java.util.HashMap;
 public class GameController {
 
     private final GameService gameService;
-    private final AttendantService attendantService;
     private final CommentService commentService;
-
 
     @PostMapping("/list")
     public Page<GameListResponse> getList(@RequestBody GameSearch gameSearch) {
@@ -64,34 +61,11 @@ public class GameController {
     }
 
     @GetMapping("/attend")
-    public AttendantResponse attendGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam boolean ballFlag) {
+    public GameAttendantResponse attendGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam boolean ballFlag) {
         return gameService.attendGame(userPrincipal.getUserId(), gameId, ballFlag);
     }
     @GetMapping("/exit")
-    public AttendantResponse exitGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId) {
+    public GameAttendantResponse exitGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId) {
         return gameService.exitGame(userPrincipal.getUserId(), gameId);
-    }
-
-    @GetMapping("/approve")
-    public AttendantResponse approveGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam Long userId) {
-        return attendantService.approveAttendant(userPrincipal.getUserId(), gameId, userId);
-    }
-    @GetMapping("/reject")
-    public AttendantResponse rejectGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam Long userId) {
-        return attendantService.rejectAttendant(userPrincipal.getUserId(), gameId, userId);
-    }
-    @PostMapping("/comment")
-    public void create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid CommentCreate commentCreate) {;
-        commentService.create(userPrincipal.getUserId(), commentCreate);
-    }
-
-    @PatchMapping("/comment")
-    public void edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid CommentEdit commentEdit) {;
-        commentService.edit(userPrincipal.getUserId(),commentEdit);
-    }
-
-    @DeleteMapping("/comment")
-    public void delete(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid CommentDelete commentDelete) {;
-        commentService.delete(userPrincipal.getUserId(),commentDelete);
     }
 }
