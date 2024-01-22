@@ -53,14 +53,18 @@ public class GameDetailResponse {
     private Integer views;
 
     // 북마크 수
+    private Boolean isBookmarked;
     private Integer bookmarkCount;
+
 
     @Builder
     public GameDetailResponse(Long id, String title, String content,String courtName,  Boolean isBallFlag, Integer maxAttend, LocalDateTime createdAt,
                               String address, Double xLoc, Double yLoc,
                               String startTime, Integer duration,
                               GameCategory gameCategory, Gender gender,  List<Level> levels,
-                              List<GameAttendantResponse> attendants, List<CommentResponse> comments, Boolean isHost, Integer views, Integer bookmarkCount) {
+                              List<GameAttendantResponse> attendants, List<CommentResponse> comments,
+                              Boolean isHost, Integer views, Boolean isBookmarked, Integer bookmarkCount) {
+
         this.id = id;
         this.title = title;
         this.content = content;
@@ -81,8 +85,10 @@ public class GameDetailResponse {
         this.attendCount = attendants.size();
         this.commentResponseList = comments;
 
+
         this.isHost = isHost;
         this.views = views;
+        this.isBookmarked = isBookmarked;
         this.bookmarkCount = bookmarkCount;
     }
 

@@ -28,6 +28,7 @@ public class CommentResponse {
     private List<CommentResponse> children = new ArrayList<>();
 
     private Boolean isMine;
+    private Boolean isHost;
 
     @Builder
     public CommentResponse(Comment comment) {

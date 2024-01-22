@@ -27,7 +27,7 @@ public class CommentService {
 
 
     @Transactional
-    public void create(Long userId, CommentCreate request) {
+    public Comment create(Long userId, CommentCreate request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(request.getGameId())
@@ -48,14 +48,14 @@ public class CommentService {
         }
         comment.setParent(parent);
         comment.setGame(game);
-        commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
-    public void edit(Long userId, CommentEdit request) {
+    public Comment edit(Long userId, CommentEdit request) {
         Comment comment = commentRepository.findById(request.getCommentId())
                 .orElseThrow(CommentNotFound::new);
         comment.setContent(request.getContent());
-        commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
     @Transactional

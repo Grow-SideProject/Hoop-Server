@@ -2,6 +2,7 @@ package com.hoop.api.service.game;
 
 import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.domain.Attendant;
+import com.hoop.api.domain.Comment;
 import com.hoop.api.domain.Game;
 
 import com.hoop.api.domain.User;
@@ -62,23 +63,13 @@ public class GameService {
         game.GameEdit(gameEdit);
         gameRepository.save(game);
     }
-    public GameDetailResponse get(Long userId, Long gameId) {
-        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
-        Integer views = game.getViews() +1;
-        game.setViews(views);
-        gameRepository.save(game);
 
-        Boolean isHost = game.getAttendants().stream().anyMatch(attendant -> (attendant.getIsHost()) && (attendant.getUser().getId().equals(userId)));
 
-        // 참여자 Response 생성
-        List<GameAttendantResponse> gameAttendantResponseList
-                = game.getAttendants().stream().filter(attendant -> attendant.getStatus().equals(AttendantStatus.APPROVE))
-                .map(GameAttendantResponse::new).toList();
-
-        // 댓글 Response 생성
+    private List<CommentResponse> getComments(Long userId, Long hostId, List<Comment> comments){
         List<CommentResponse> commentResponseList = new ArrayList<>();
-        game.getComments().stream().map(CommentResponse::new).forEach(comment -> {
+        comments.stream().map(CommentResponse::new).forEach(comment -> {
             comment.setIsMine(comment.getUserId().equals(userId));
+            comment.setIsHost(comment.getUserId().equals(hostId));
             if (comment.getParentId() == null) {
                 commentResponseList.add(comment);
             } else {
@@ -89,6 +80,27 @@ public class GameService {
                 }
             }
         });
+        return commentResponseList;
+    }
+
+    @Transactional
+    public GameDetailResponse get(Long userId, Long gameId) {
+        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
+
+        // 참여자 Response 생성
+        List<GameAttendantResponse> gameAttendantResponseList
+                = game.getAttendants().stream().filter(attendant -> attendant.getStatus().equals(AttendantStatus.APPROVE))
+                .map(GameAttendantResponse::new).toList();
+
+        Long hostId = game.getAttendants().stream().filter(Attendant::getIsHost).findFirst().get().getUser().getId();
+        // 댓글 Response 생성
+        List<CommentResponse> commentResponseList = getComments(userId, hostId, game.getComments());
+        Boolean isHost = userId.equals(hostId);
+        Boolean isBookmarked = game.getBookMarks().stream().anyMatch(bookMark -> bookMark.getUser().getId().equals(userId));
+        Integer bookmarkCount = game.getBookMarks().size();
+        Integer views = game.getViews() +1;
+        game.setViews(views);
+        gameRepository.save(game);
         return GameDetailResponse.builder()
                 .id(game.getId())
                 .title(game.getTitle())
@@ -105,11 +117,12 @@ public class GameService {
                 .isBallFlag(game.getIsBallFlag())
                 .createdAt(game.getCreatedAt())
                 .levels(game.getLevels())
-                .comments(commentResponseList)
                 .attendants(gameAttendantResponseList)
+                .comments(commentResponseList)
                 .isHost(isHost)
+                .isBookmarked(isBookmarked)
                 .views(views)
-                .bookmarkCount(game.getBookMarks().size())
+                .bookmarkCount(bookmarkCount)
                 .build();
     }
 
