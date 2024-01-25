@@ -63,7 +63,7 @@ public class Game {
     @Builder
     public Game(String title, String content, Integer maxAttend, String courtName, Boolean isBallFlag,
                 String address, Double xLoc, Double yLoc,
-                String startTime, Integer duration,
+                LocalDateTime startTime, Integer duration,
                 GameCategory gameCategory,Gender gender, List<Level> levels) {
         this.title = title;
         this.content = content;
@@ -76,7 +76,7 @@ public class Game {
         this.yLoc = yLoc;
 
         this.gameCategory = gameCategory;
-        this.startTime = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.startTime = startTime;
         this.duration = duration;
         this.gender = gender;
 
@@ -102,7 +102,7 @@ public class Game {
         if (gameEdit.getYLoc() != null) this.yLoc = gameEdit.getYLoc();
 
         if (gameEdit.getGameCategory() != null) this.gameCategory = gameEdit.getGameCategory();
-        if (gameEdit.getStartTime() != null) this.startTime = LocalDateTime.parse(gameEdit.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        if (gameEdit.getStartTime() != null) this.startTime = gameEdit.getStartTime();
         if (gameEdit.getDuration() != null) this.duration = gameEdit.getDuration();
         if (gameEdit.getIsBallFlag() != null) this.isBallFlag = gameEdit.getIsBallFlag();
         if (gameEdit.getMaxAttend() != null) this.maxAttend = gameEdit.getMaxAttend();

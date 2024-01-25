@@ -10,6 +10,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +82,7 @@ public class GameCreate {
                 .xLoc(xLoc)
                 .yLoc(yLoc)
                 .gameCategory(gameCategory)
-                .startTime(startTime)
+                .startTime(LocalDateTime.parse(this.startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .duration(duration)
                 .isBallFlag(isBallFlag)
                 .gender(gender)

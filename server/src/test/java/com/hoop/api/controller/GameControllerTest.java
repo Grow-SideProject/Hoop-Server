@@ -20,6 +20,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -107,7 +109,7 @@ class GameControllerTest {
                 .title("같이 농구합시다 3대3")
                 .content("고수만 오셈")
                 .address("마포구 서교동 12-1")
-                .startTime("2021-10-10 10:00:00")
+                .startTime(LocalDateTime.now())
                 .duration(120)
                 .courtName("창천체육관")
                 .maxAttend(Integer.valueOf(6))
@@ -141,7 +143,7 @@ class GameControllerTest {
                 .title("같이 농구합시다 3대3")
                 .content("고수만 오셈")
                 .address("마포구 서교동 12-1")
-                .startTime("2021-10-10 10:00:00")
+                .startTime(LocalDateTime.now())
                 .duration(120)
                 .courtName("창천체육관")
                 .maxAttend(Integer.valueOf(6))
@@ -172,7 +174,7 @@ class GameControllerTest {
                 .title("같이 농구합시다 3대3")
                 .content("고수만 오셈")
                 .address("마포구 서교동 12-1")
-                .startTime("2021-10-10 10:00:00")
+                .startTime(LocalDateTime.now())
                 .duration(120)
                 .courtName("창천체육관")
                 .maxAttend(Integer.valueOf(6))

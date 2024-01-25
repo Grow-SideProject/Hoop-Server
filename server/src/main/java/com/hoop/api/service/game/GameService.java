@@ -60,6 +60,7 @@ public class GameService {
     public void edit(Long userId, GameEdit gameEdit) {
         Game game = gameRepository.findById(gameEdit.getGameId())
                 .orElseThrow(GameNotFound::new);
+
         game.GameEdit(gameEdit);
         gameRepository.save(game);
     }
@@ -110,7 +111,7 @@ public class GameService {
                 .xLoc(game.getXLoc())
                 .yLoc(game.getYLoc())
                 .gameCategory(game.getGameCategory())
-                .startTime(game.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .startTime(game.getStartTime())
                 .duration(game.getDuration())
                 .gender(game.getGender())
                 .maxAttend(game.getMaxAttend())

@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,5 +73,9 @@ public class GameEdit {
         this.gender = gender;
         this.levels = levels;
         this.modifiedAt = LocalDateTime.now();
+    }
+
+    public LocalDateTime getStartTime() {
+        return LocalDateTime.parse(this.startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

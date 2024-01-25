@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class GameDetailResponse {
     @Builder
     public GameDetailResponse(Long id, String title, String content,String courtName,  Boolean isBallFlag, Integer maxAttend, LocalDateTime createdAt,
                               String address, Double xLoc, Double yLoc,
-                              String startTime, Integer duration,
+                              LocalDateTime startTime, Integer duration,
                               GameCategory gameCategory, Gender gender,  List<Level> levels,
                               List<AttendantResponse> attendants, List<CommentResponse> comments,
                               Boolean isHost, Integer views, Boolean isBookmarked, Integer bookmarkCount) {
@@ -75,7 +76,7 @@ public class GameDetailResponse {
         this.xLoc = xLoc;
         this.yLoc = yLoc;
         this.gameCategory = gameCategory;
-        this.startTime = startTime;
+        this.startTime = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.duration = duration;
         this.gender = gender;
         this.isBallFlag = isBallFlag;
