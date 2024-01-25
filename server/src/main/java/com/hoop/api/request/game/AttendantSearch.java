@@ -23,10 +23,6 @@ public class AttendantSearch {
     private Integer page;
     private Integer size;
     private String orderBy = "createdAt";
-
-    private List<Game> gameList = new ArrayList<>();
-
-    private Long userId;
     private AttendantStatus attendantStatus;
 
     @Builder
@@ -35,14 +31,6 @@ public class AttendantSearch {
         this.size = size;
         this.orderBy = orderBy;
         this.attendantStatus = attendantStatus;
-    }
-
-    public void setGameList(List<Game> gameList) {
-        this.gameList = gameList;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public void setAttendantStatus(AttendantStatus attendantStatus) {

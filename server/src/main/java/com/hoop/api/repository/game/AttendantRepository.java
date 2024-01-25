@@ -16,10 +16,10 @@ import java.util.Optional;
 public interface AttendantRepository extends JpaRepository<Attendant, Long>, AttendantRepositoryCustom {
 
 
-    List<Attendant> findByUserAndIsHost(User user, Boolean isHost);
+    List<Attendant> findByUser(User user);
     Optional<Attendant> findByUserAndGame(User user, Game game);
     Optional<Attendant> findByUserIdAndGameId(Long userId, Long gameId);
 
     List<Attendant> getList(AttendantSearch attendantSearch);
-    List<Attendant> getListByHost(AttendantSearch attendantSearch);
+    List<Attendant> getListByHost(Long userId);
 }

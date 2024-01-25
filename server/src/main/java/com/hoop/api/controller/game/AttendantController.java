@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +27,13 @@ public class AttendantController {
     public Page<AttendantResponse> getList(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody AttendantSearch attendantSearch) {
         return attendantService.getList(userPrincipal.getUserId(),attendantSearch);
     }
-    @PostMapping("/host")
-    public Page<AttendantResponse> getListByHost(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody AttendantSearch attendantSearch) {
-        return attendantService.getListByHost(userPrincipal.getUserId(),attendantSearch);
+    @GetMapping("/my-list")
+    public List<AttendantResponse> getListByUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return attendantService.getListByUser(userPrincipal.getUserId());
+    }
+    @GetMapping("/host")
+    public List<AttendantResponse> getListByHost(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return attendantService.getListByHost(userPrincipal.getUserId());
     }
 
     @GetMapping("/approve")

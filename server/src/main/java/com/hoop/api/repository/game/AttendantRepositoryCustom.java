@@ -11,7 +11,7 @@ import java.util.List;
 public interface AttendantRepositoryCustom {
     List<Attendant> getList(AttendantSearch attendantSearch);
 
-    List<Attendant> getListByHost(AttendantSearch attendantSearch);
+    List<Attendant> getListByHost(Long userId);
 
 //    OrderSpecifier[] createOrderSpecifier(GameSearch gameSearch);
 

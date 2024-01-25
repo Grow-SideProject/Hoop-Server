@@ -30,22 +30,22 @@ public class AttendantRepositoryImpl implements AttendantRepositoryCustom {
     public List<Attendant> getList(AttendantSearch attendantSearch) {
         return jpaQueryFactory.selectFrom(attendant)
                 .where(
-                        eqUserId(attendantSearch.getUserId())
-                        ,eqAttendantStatus(attendantSearch.getAttendantStatus())
+//                        eqUserId(attendantSearch.getUserId())
+                        eqAttendantStatus(attendantSearch.getAttendantStatus())
                 )
                 .limit(attendantSearch.getSize())
                 .offset(attendantSearch.getOffset())
                 .fetch();
     }
 
-    public List<Attendant> getListByHost(AttendantSearch attendantSearch) {
+    public List<Attendant> getListByHost(Long userId) {
         QAttendant attendant1 = new QAttendant("attendant1");
         QAttendant attendant2 = new QAttendant("attendant2");
         return jpaQueryFactory
                 .select(attendant2)
                 .from(attendant1)
                 .where(
-                        attendant1.user.id.eq(attendantSearch.getUserId())
+                        attendant1.user.id.eq(userId)
                         ,attendant1.isHost.eq(true)
                 )
                 .rightJoin(attendant2).on(attendant1.game.id.eq(attendant2.game.id))

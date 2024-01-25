@@ -26,7 +26,6 @@ public class AttendantService {
 
 
     public Page<AttendantResponse> getList(Long userId, AttendantSearch attendantSearch) {
-        attendantSearch.setUserId(userId);
         List<AttendantResponse> gameAttendantResponseList = attendantRepository.getList(attendantSearch)
                 .stream()
                 .map(AttendantResponse::new)
@@ -34,13 +33,19 @@ public class AttendantService {
         return new PageImpl<>(gameAttendantResponseList, PageRequest.of(attendantSearch.getPage(), attendantSearch.getSize()), attendantRepository.count());
     }
 
-    public Page<AttendantResponse> getListByHost(Long userId, AttendantSearch attendantSearch) {
-        attendantSearch.setUserId(userId);
-        List<AttendantResponse> gameAttendantResponseList = attendantRepository.getListByHost(attendantSearch)
+    public List<AttendantResponse> getListByUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+        return attendantRepository.findByUser(user)
                 .stream()
                 .map(AttendantResponse::new)
                 .toList();
-        return new PageImpl<>(gameAttendantResponseList, PageRequest.of(attendantSearch.getPage(), attendantSearch.getSize()), attendantRepository.count());
+    }
+
+    public List<AttendantResponse> getListByHost(Long userId) {
+        return attendantRepository.getListByHost(userId)
+                .stream()
+                .map(AttendantResponse::new)
+                .toList();
     }
 
     @Transactional
