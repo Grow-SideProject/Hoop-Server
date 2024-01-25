@@ -30,6 +30,7 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(gameSearch);
         return jpaQueryFactory.selectFrom(game)
                 .where(
+                        afterNow(),
                         inGameCategories(gameSearch.getGameCategories()),
                         eqGameGender(gameSearch.getGender()),
                         inGameLevels(gameSearch.getLevels()),
@@ -40,6 +41,11 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
                 .orderBy(orderSpecifiers)
                 .fetch();
     }
+
+    private BooleanExpression afterNow() {
+        return game.startTime.after(LocalDateTime.now());
+    }
+
     @Override
     public OrderSpecifier[] createOrderSpecifier(GameSearch gameSearch) {
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
