@@ -39,7 +39,6 @@ public class Attendant {
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game; //복합키 ID
-    private Boolean isBallFlag;
     private Boolean isHost;
     private AttendantStatus status;
     private LocalDateTime createdAt;
@@ -53,12 +52,6 @@ public class Attendant {
         this.createdAt = LocalDateTime.now();
         this.status = status;
         this.isHost = isHost;
-        this.isBallFlag = isBallFlag;
-    }
-
-
-    public void setBallFlag(Boolean ballFlag) {
-        this.isBallFlag = ballFlag;
     }
 
     public void setHost(Boolean host) {

@@ -61,9 +61,10 @@ public class GameController {
     }
 
     @GetMapping("/attend")
-    public AttendantResponse attendGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam boolean ballFlag) {
-        return gameService.attendGame(userPrincipal.getUserId(), gameId, ballFlag);
+    public AttendantResponse attendGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId) {
+        return gameService.attendGame(userPrincipal.getUserId(), gameId);
     }
+
     @GetMapping("/exit")
     public AttendantResponse exitGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId) {
         return gameService.exitGame(userPrincipal.getUserId(), gameId);

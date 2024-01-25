@@ -39,7 +39,6 @@ public class AttendantResponse {
 
     public AttendantResponse(Attendant attendant) {
         this.attendantId = attendant.getId();
-        this.isBallFlag = attendant.getIsBallFlag();
         this.createdAt = attendant.getCreatedAt();
         this.status = attendant.getStatus();
         this.isHost = attendant.getIsHost();
@@ -55,9 +54,8 @@ public class AttendantResponse {
         this.gender = attendant.getUser().getGender();
     }
     @Builder
-    public AttendantResponse(Long id, Boolean isBallFlag, Boolean isHost, AttendantStatus status, LocalDateTime createdAt, Long gameId, String gameTitle, Long userId, String userNickname, String profileImagePath, String desc, List<Ability> abilities, PlayStyle playStyle, Level level) {
+    public AttendantResponse(Long id, Boolean isHost, AttendantStatus status, LocalDateTime createdAt, Long gameId, String gameTitle, Long userId, String userNickname, String profileImagePath, String desc, List<Ability> abilities, PlayStyle playStyle, Level level) {
         this.attendantId = id;
-        this.isBallFlag = isBallFlag;
         this.isHost = isHost;
         this.status = status;
         this.createdAt = createdAt;

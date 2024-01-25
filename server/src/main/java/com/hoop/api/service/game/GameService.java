@@ -135,7 +135,7 @@ public class GameService {
     }
 
 
-    public AttendantResponse attendGame(Long userId, Long gameId, boolean ballFlag) {
+    public AttendantResponse attendGame(Long userId, Long gameId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
         attendantRepository.findByUserAndGame(user, game)
@@ -148,7 +148,6 @@ public class GameService {
                 .game(game)
                 .status(AttendantStatus.DEFAULT)
                 .isHost(false)
-                .isBallFlag(ballFlag)
                 .build();
         attendantRepository.save(attendant);
         return new AttendantResponse(attendant);

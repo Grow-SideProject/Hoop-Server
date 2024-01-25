@@ -31,7 +31,7 @@ public class AttendantRepositoryImpl implements AttendantRepositoryCustom {
         return jpaQueryFactory.selectFrom(attendant)
                 .where(
                         eqUserId(attendantSearch.getUserId())
-                        ,eqAttendantStatus(attendant, attendantSearch.getAttendantStatus())
+                        ,eqAttendantStatus(attendantSearch.getAttendantStatus())
                 )
                 .limit(attendantSearch.getSize())
                 .offset(attendantSearch.getOffset())
@@ -49,25 +49,12 @@ public class AttendantRepositoryImpl implements AttendantRepositoryCustom {
                         ,attendant1.isHost.eq(true)
                 )
                 .rightJoin(attendant2).on(attendant1.game.id.eq(attendant2.game.id))
-                .where(eqAttendantStatus(attendant2, attendantSearch.getAttendantStatus()))
+                .where(
+                        attendant2.status.eq(AttendantStatus.DEFAULT)
+                )
                 .fetch();
     }
-
-
-
-//    private BooleanBuilder inGame(List<Game> games) {
-//
-//        if (games == null || games.isEmpty()) {
-//            return null;
-//        }
-//        BooleanBuilder booleanBuilder = new BooleanBuilder();
-//        for (Game game : games) {
-//            booleanBuilder.or(attendant.game.eq(game));
-//        }
-//        return booleanBuilder;
-//    }
-
-    private BooleanExpression eqAttendantStatus(QAttendant attendant, AttendantStatus attendantStatus) {
+    private BooleanExpression eqAttendantStatus(AttendantStatus attendantStatus) {
         if (attendantStatus == null) return null;
         return attendant.status.eq(attendantStatus);
     }
