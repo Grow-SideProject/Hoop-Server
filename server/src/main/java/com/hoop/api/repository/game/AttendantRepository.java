@@ -21,5 +21,5 @@ public interface AttendantRepository extends JpaRepository<Attendant, Long>, Att
     Optional<Attendant> findByUserIdAndGameId(Long userId, Long gameId);
 
     List<Attendant> getList(AttendantSearch attendantSearch);
-
+    List<Attendant> getListByHost(AttendantSearch attendantSearch);
 }

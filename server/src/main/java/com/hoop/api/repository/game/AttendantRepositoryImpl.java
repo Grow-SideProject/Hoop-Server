@@ -6,14 +6,18 @@ import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
 import com.hoop.api.domain.Attendant;
 import com.hoop.api.domain.Game;
+import com.hoop.api.domain.QAttendant;
 import com.hoop.api.request.game.AttendantSearch;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import static com.hoop.api.domain.QAttendant.attendant;
+import static com.hoop.api.domain.QGame.game;
 
 
 @RequiredArgsConstructor
@@ -21,32 +25,55 @@ public class AttendantRepositoryImpl implements AttendantRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+
     @Override
     public List<Attendant> getList(AttendantSearch attendantSearch) {
         return jpaQueryFactory.selectFrom(attendant)
                 .where(
-                        inGame(attendantSearch.getGameList())
-                        ,eqAttendantStatus(attendantSearch.getAttendantStatus())
+                        eqUserId(attendantSearch.getUserId())
+                        ,eqAttendantStatus(attendant, attendantSearch.getAttendantStatus())
                 )
                 .limit(attendantSearch.getSize())
                 .offset(attendantSearch.getOffset())
                 .fetch();
     }
 
-    private BooleanBuilder inGame(List<Game> games) {
-
-        if (games == null || games.isEmpty()) {
-            return null;
-        }
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-        for (Game game : games) {
-            booleanBuilder.or(attendant.game.eq(game));
-        }
-        return booleanBuilder;
+    public List<Attendant> getListByHost(AttendantSearch attendantSearch) {
+        QAttendant attendant1 = new QAttendant("attendant1");
+        QAttendant attendant2 = new QAttendant("attendant2");
+        return jpaQueryFactory
+                .select(attendant2)
+                .from(attendant1)
+                .where(
+                        attendant1.user.id.eq(attendantSearch.getUserId())
+                        ,attendant1.isHost.eq(true)
+                )
+                .rightJoin(attendant2).on(attendant1.game.id.eq(attendant2.game.id))
+                .where(eqAttendantStatus(attendant2, attendantSearch.getAttendantStatus()))
+                .fetch();
     }
 
-    private BooleanExpression eqAttendantStatus(AttendantStatus attendantStatus) {
+
+
+//    private BooleanBuilder inGame(List<Game> games) {
+//
+//        if (games == null || games.isEmpty()) {
+//            return null;
+//        }
+//        BooleanBuilder booleanBuilder = new BooleanBuilder();
+//        for (Game game : games) {
+//            booleanBuilder.or(attendant.game.eq(game));
+//        }
+//        return booleanBuilder;
+//    }
+
+    private BooleanExpression eqAttendantStatus(QAttendant attendant, AttendantStatus attendantStatus) {
         if (attendantStatus == null) return null;
         return attendant.status.eq(attendantStatus);
+    }
+
+    private BooleanExpression eqUserId(Long userId) {
+        if (userId == null) return null;
+        return attendant.user.id.eq(userId);
     }
 }

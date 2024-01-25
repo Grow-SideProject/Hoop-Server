@@ -7,6 +7,7 @@ import com.hoop.api.constant.Level;
 import com.hoop.api.domain.Game;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static java.lang.Math.min;
 
-@Data
+@Getter
 @NoArgsConstructor
 public class AttendantSearch {
 
@@ -25,6 +26,7 @@ public class AttendantSearch {
 
     private List<Game> gameList = new ArrayList<>();
 
+    private Long userId;
     private AttendantStatus attendantStatus;
 
     @Builder
@@ -32,6 +34,18 @@ public class AttendantSearch {
         this.page = page;
         this.size = size;
         this.orderBy = orderBy;
+        this.attendantStatus = attendantStatus;
+    }
+
+    public void setGameList(List<Game> gameList) {
+        this.gameList = gameList;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setAttendantStatus(AttendantStatus attendantStatus) {
         this.attendantStatus = attendantStatus;
     }
 

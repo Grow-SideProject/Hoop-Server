@@ -24,14 +24,19 @@ public class AttendantService {
 
     private final UserRepository userRepository;
 
-    public Page<AttendantResponse> getList(Long hostId, AttendantSearch attendantSearch) {
-        User user = userRepository.findById(hostId).orElseThrow(UserNotFound::new);
-        List<Game> isHostGameList = attendantRepository.findByUserAndIsHost(user, true)
-                .stream()
-                .map(Attendant::getGame)
-                .toList();
-        attendantSearch.setGameList(isHostGameList);
+
+    public Page<AttendantResponse> getList(Long userId, AttendantSearch attendantSearch) {
+        attendantSearch.setUserId(userId);
         List<AttendantResponse> gameAttendantResponseList = attendantRepository.getList(attendantSearch)
+                .stream()
+                .map(AttendantResponse::new)
+                .toList();
+        return new PageImpl<>(gameAttendantResponseList, PageRequest.of(attendantSearch.getPage(), attendantSearch.getSize()), attendantRepository.count());
+    }
+
+    public Page<AttendantResponse> getListByHost(Long userId, AttendantSearch attendantSearch) {
+        attendantSearch.setUserId(userId);
+        List<AttendantResponse> gameAttendantResponseList = attendantRepository.getListByHost(attendantSearch)
                 .stream()
                 .map(AttendantResponse::new)
                 .toList();
@@ -58,4 +63,19 @@ public class AttendantService {
         Attendant attendant = attendantRepository.findById(attendantId).orElseThrow(GameNotFound::new);
         attendantRepository.delete(attendant);
     }
+
+
+    //    public Page<AttendantResponse> getListByHost(Long userId, AttendantSearch attendantSearch) {
+//        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+//        List<Game> isHostGameList = attendantRepository.findByUserAndIsHost(user, true)
+//                .stream()
+//                .map(Attendant::getGame)
+//                .toList();
+//        attendantSearch.setGameList(isHostGameList);
+//        List<AttendantResponse> gameAttendantResponseList = attendantRepository.getList(attendantSearch)
+//                .stream()
+//                .map(AttendantResponse::new)
+//                .toList();
+//        return new PageImpl<>(gameAttendantResponseList, PageRequest.of(attendantSearch.getPage(), attendantSearch.getSize()), attendantRepository.count());
+//    }
 }

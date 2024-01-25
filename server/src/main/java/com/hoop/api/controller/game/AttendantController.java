@@ -20,9 +20,14 @@ public class AttendantController {
 
     private final AttendantService attendantService;
 
+
     @PostMapping()
     public Page<AttendantResponse> getList(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody AttendantSearch attendantSearch) {
         return attendantService.getList(userPrincipal.getUserId(),attendantSearch);
+    }
+    @PostMapping("/host")
+    public Page<AttendantResponse> getListByHost(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody AttendantSearch attendantSearch) {
+        return attendantService.getListByHost(userPrincipal.getUserId(),attendantSearch);
     }
 
     @GetMapping("/approve")
