@@ -15,8 +15,8 @@ import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.game.GameCreate;
 import com.hoop.api.request.game.GameEdit;
 import com.hoop.api.request.game.GameSearch;
+import com.hoop.api.response.AttendantResponse;
 import com.hoop.api.response.CommentResponse;
-import com.hoop.api.response.GameAttendantResponse;
 import com.hoop.api.response.GameDetailResponse;
 import com.hoop.api.response.GameListResponse;
 import jakarta.transaction.Transactional;
@@ -88,9 +88,9 @@ public class GameService {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
 
         // 참여자 Response 생성
-        List<GameAttendantResponse> gameAttendantResponseList
+        List<AttendantResponse> gameAttendantResponseList
                 = game.getAttendants().stream().filter(attendant -> attendant.getStatus().equals(AttendantStatus.APPROVE))
-                .map(GameAttendantResponse::new).toList();
+                .map(AttendantResponse::new).toList();
 
         Long hostId = game.getAttendants().stream().filter(Attendant::getIsHost).findFirst().get().getUser().getId();
         // 댓글 Response 생성
@@ -134,7 +134,7 @@ public class GameService {
     }
 
 
-    public GameAttendantResponse attendGame(Long userId, Long gameId, boolean ballFlag) {
+    public AttendantResponse attendGame(Long userId, Long gameId, boolean ballFlag) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
         attendantRepository.findByUserAndGame(user, game)
@@ -150,11 +150,11 @@ public class GameService {
                 .isBallFlag(ballFlag)
                 .build();
         attendantRepository.save(attendant);
-        return new GameAttendantResponse(attendant);
+        return new AttendantResponse(attendant);
     }
 
     @Transactional
-    public GameAttendantResponse exitGame(Long userId, Long gameId) {
+    public AttendantResponse exitGame(Long userId, Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
         Attendant gameAttendant = attendantRepository.findByUserIdAndGameId(userId, gameId)
                     .orElseThrow(GameNotFound::new);
@@ -168,7 +168,7 @@ public class GameService {
         gameAttendant.setHost(false);
         gameAttendant.setAttend(AttendantStatus.EXIT);
         attendantRepository.save(gameAttendant);
-        return new GameAttendantResponse(gameAttendant);
+        return new AttendantResponse(gameAttendant);
     }
 
 

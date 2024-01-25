@@ -1,9 +1,6 @@
 package com.hoop.api.response;
 
-import com.hoop.api.constant.Ability;
-import com.hoop.api.constant.AttendantStatus;
-import com.hoop.api.constant.Level;
-import com.hoop.api.constant.PlayStyle;
+import com.hoop.api.constant.*;
 import com.hoop.api.domain.Attendant;
 import com.hoop.api.domain.User;
 import lombok.AccessLevel;
@@ -38,6 +35,8 @@ public class AttendantResponse {
     private PlayStyle playStyle;
     private Level level;
 
+    private Gender gender;
+
     public AttendantResponse(Attendant attendant) {
         this.attendantId = attendant.getId();
         this.isBallFlag = attendant.getIsBallFlag();
@@ -53,6 +52,7 @@ public class AttendantResponse {
         this.abilities = attendant.getUser().getAbilities();
         this.playStyle = attendant.getUser().getPlayStyle();
         this.level = attendant.getUser().getLevel();
+        this.gender = attendant.getUser().getGender();
     }
     @Builder
     public AttendantResponse(Long id, Boolean isBallFlag, Boolean isHost, AttendantStatus status, LocalDateTime createdAt, Long gameId, String gameTitle, Long userId, String userNickname, String profileImagePath, String desc, List<Ability> abilities, PlayStyle playStyle, Level level) {

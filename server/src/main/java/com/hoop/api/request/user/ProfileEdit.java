@@ -1,6 +1,7 @@
 package com.hoop.api.request.user;
 
 import com.hoop.api.constant.Ability;
+import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import java.util.List;
 public class ProfileEdit {
     private String phoneNumber;
     private String nickName;
-    private String gender;
+    private Gender gender;
     private String address;
     private String desc;
     private PlayStyle playStyle;
@@ -24,7 +25,7 @@ public class ProfileEdit {
 
 
     @Builder
-    public ProfileEdit(String phoneNumber, String nickName, String gender, String address,
+    public ProfileEdit(String phoneNumber, String nickName, Gender gender, String address,
                        String desc, PlayStyle playStyle, String birth, Level level, List<Ability> abilities) {
         this.phoneNumber = phoneNumber;
         this.nickName = nickName;

@@ -1,6 +1,7 @@
 package com.hoop.api.domain;
 
 import com.hoop.api.constant.Ability;
+import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
 import jakarta.persistence.*;
@@ -31,7 +32,7 @@ public class User {
     @Column(unique = true)
     private String phoneNumber;
     private String birth;
-    private String gender;
+    private Gender gender;
     private String address;
     @Column(name = "description")
     private String desc;
@@ -78,7 +79,7 @@ public class User {
 
 
     @Builder
-    public User(String email, String password, Long socialId, String phoneNumber, String nickName, String gender, String address, String desc, String birth,
+    public User(String email, String password, Long socialId, String phoneNumber, String nickName, Gender gender, String address, String desc, String birth,
                    PlayStyle playStyle, Level level, User user, List<Ability> abilities, String refreshToken) {
         this.email = email;
         this.password = password;

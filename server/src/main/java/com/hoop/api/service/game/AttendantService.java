@@ -8,7 +8,6 @@ import com.hoop.api.repository.game.AttendantRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.game.AttendantSearch;
 import com.hoop.api.response.AttendantResponse;
-import com.hoop.api.response.GameAttendantResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,18 +39,18 @@ public class AttendantService {
     }
 
     @Transactional
-    public GameAttendantResponse approveAttendant(Long hostId, Long attendantId) {
+    public AttendantResponse approveAttendant(Long hostId, Long attendantId) {
        Attendant attendant = attendantRepository.findById(attendantId).orElseThrow(GameNotFound::new);
         attendant.setAttend(AttendantStatus.APPROVE);
         attendantRepository.save(attendant);
-        return new GameAttendantResponse(attendant);
+        return new AttendantResponse(attendant);
     }
     @Transactional
-    public GameAttendantResponse rejectAttendant(Long hostId, Long attendantId) {
+    public AttendantResponse rejectAttendant(Long hostId, Long attendantId) {
         Attendant attendant = attendantRepository.findById(attendantId).orElseThrow(GameNotFound::new);
         attendant.setAttend(AttendantStatus.REJECT);
         attendantRepository.save(attendant);
-        return new GameAttendantResponse(attendant);
+        return new AttendantResponse(attendant);
     }
 
     @Transactional

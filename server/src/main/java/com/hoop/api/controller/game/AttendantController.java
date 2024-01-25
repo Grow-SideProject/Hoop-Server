@@ -5,7 +5,6 @@ import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.request.game.*;
 import com.hoop.api.response.AttendantResponse;
 import com.hoop.api.response.DefaultResponse;
-import com.hoop.api.response.GameAttendantResponse;
 import com.hoop.api.service.game.AttendantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +26,11 @@ public class AttendantController {
     }
 
     @GetMapping("/approve")
-    public GameAttendantResponse approve(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long attendantId) {
+    public AttendantResponse approve(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long attendantId) {
         return attendantService.approveAttendant(userPrincipal.getUserId(), attendantId);
     }
     @GetMapping("/reject")
-    public GameAttendantResponse reject(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long attendantId) {
+    public AttendantResponse reject(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long attendantId) {
         return attendantService.rejectAttendant(userPrincipal.getUserId(), attendantId);
     }
 

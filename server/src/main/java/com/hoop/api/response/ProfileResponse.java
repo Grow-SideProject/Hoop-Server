@@ -1,6 +1,7 @@
 package com.hoop.api.response;
 
 import com.hoop.api.constant.Ability;
+import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
 import lombok.Builder;
@@ -17,7 +18,7 @@ public class ProfileResponse {
 
     private String phoneNumber;
     private String nickName;
-    private String gender;
+    private Gender gender;
     private String address;
     private String desc;
     private String playStyle;
@@ -25,7 +26,7 @@ public class ProfileResponse {
     private List<String> abilities = new ArrayList<>();
 
     @Builder
-    public ProfileResponse(String phoneNumber, String nickName, String gender, String address,
+    public ProfileResponse(String phoneNumber, String nickName, Gender gender, String address,
                            String desc, PlayStyle playStyle, Level level, List<Ability> abilities) {
         this.phoneNumber = phoneNumber;
         this.nickName = nickName;

@@ -1,6 +1,7 @@
 package com.hoop.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoop.api.config.HoopMockUser;
+import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.UserRepository;
@@ -63,7 +64,7 @@ class ProfileControllerTest {
                 .nickName("닉네임이요")
                 .birth("2000-01-01")
                 .phoneNumber("010-1234-5678")
-                .gender("남")
+                .gender(Gender.MALE)
                 .address("마포구")
                 .desc("강한 타입")
                 .playStyle(PlayStyle.DEFENSIVE)
@@ -87,7 +88,7 @@ class ProfileControllerTest {
         ProfileEdit profileCreate = ProfileEdit.builder()
                 .nickName("닉네임이요")
                 .phoneNumber("010-1234-5678")
-                .gender("남")
+                .gender(Gender.MALE)
                 .address("마포구")
                 .desc("강한 타입")
                 .playStyle(PlayStyle.DEFENSIVE)
@@ -117,7 +118,7 @@ class ProfileControllerTest {
         ProfileEdit profileCreate = ProfileEdit.builder()
                 .nickName("닉네임이요")
                 .phoneNumber("010-1234-5678")
-                .gender("남")
+                .gender(Gender.MALE)
                 .address("마포구")
                 .desc("강한 타입")
                 .playStyle(PlayStyle.DEFENSIVE)
@@ -131,7 +132,7 @@ class ProfileControllerTest {
                 .andDo(print());
 
         ProfileEdit profileEdit = ProfileEdit.builder()
-                .gender("여")
+                .gender(Gender.FEMALE)
                 .address("은평구")
                 .desc("매우 강한 타입")
                 .playStyle(PlayStyle.BALANCE)

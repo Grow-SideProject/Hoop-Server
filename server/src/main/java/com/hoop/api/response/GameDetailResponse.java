@@ -44,7 +44,7 @@ public class GameDetailResponse {
     //댓글
     private List<CommentResponse> commentResponseList = new ArrayList<>();
     // 참여자 정보
-    private List<GameAttendantResponse> gameAttendantResponseList = new ArrayList<>();
+    private List<AttendantResponse> gameAttendantResponseList = new ArrayList<>();
 
     // 내가 host인지
     private Boolean isHost;
@@ -62,7 +62,7 @@ public class GameDetailResponse {
                               String address, Double xLoc, Double yLoc,
                               String startTime, Integer duration,
                               GameCategory gameCategory, Gender gender,  List<Level> levels,
-                              List<GameAttendantResponse> attendants, List<CommentResponse> comments,
+                              List<AttendantResponse> attendants, List<CommentResponse> comments,
                               Boolean isHost, Integer views, Boolean isBookmarked, Integer bookmarkCount) {
 
         this.id = id;

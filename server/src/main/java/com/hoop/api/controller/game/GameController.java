@@ -5,8 +5,8 @@ import com.hoop.api.config.UserPrincipal;
 
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.request.game.*;
+import com.hoop.api.response.AttendantResponse;
 import com.hoop.api.response.DefaultResponse;
-import com.hoop.api.response.GameAttendantResponse;
 import com.hoop.api.response.GameDetailResponse;
 import com.hoop.api.response.GameListResponse;
 import com.hoop.api.service.game.CommentService;
@@ -61,11 +61,11 @@ public class GameController {
     }
 
     @GetMapping("/attend")
-    public GameAttendantResponse attendGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam boolean ballFlag) {
+    public AttendantResponse attendGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId, @RequestParam boolean ballFlag) {
         return gameService.attendGame(userPrincipal.getUserId(), gameId, ballFlag);
     }
     @GetMapping("/exit")
-    public GameAttendantResponse exitGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId) {
+    public AttendantResponse exitGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId) {
         return gameService.exitGame(userPrincipal.getUserId(), gameId);
     }
 }

@@ -1,6 +1,7 @@
 package com.hoop.api.domain;
 
 import com.hoop.api.constant.Ability;
+import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
 import com.hoop.api.constant.PlayStyle;
 import lombok.Builder;
@@ -13,7 +14,7 @@ public class ProfileEditor {
 
     private final String phoneNumber;
     private final String nickName;
-    private final String gender;
+    private final Gender gender;
     private final String address;
     private final String desc;
     private PlayStyle playStyle;
@@ -22,7 +23,7 @@ public class ProfileEditor {
     private List<Ability> abilities;
 
     @Builder
-    public ProfileEditor(String phoneNumber, String nickName, String gender, String address,
+    public ProfileEditor(String phoneNumber, String nickName, Gender gender, String address,
                          String desc, PlayStyle playStyle, String birth, Level level, List<Ability> abilities) {
         this.phoneNumber = phoneNumber;
         this.nickName = nickName;
