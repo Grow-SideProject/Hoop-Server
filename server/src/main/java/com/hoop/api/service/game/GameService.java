@@ -8,6 +8,7 @@ import com.hoop.api.domain.Game;
 import com.hoop.api.domain.User;
 import com.hoop.api.exception.AlreadyExistsGameAttendException;
 import com.hoop.api.exception.GameNotFound;
+import com.hoop.api.exception.RecruitmentClosedException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.game.AttendantRepository;
 import com.hoop.api.repository.game.GameRepository;
@@ -138,6 +139,10 @@ public class GameService {
     public AttendantResponse attendGame(Long userId, Long gameId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
+        Integer attendCount = game.getAttendants().stream().filter(gameAttendant -> gameAttendant.getStatus().equals(AttendantStatus.APPROVE)).toList().size();
+        if (attendCount >= game.getMaxAttend()) {
+            throw new RecruitmentClosedException();
+        }
         attendantRepository.findByUserAndGame(user, game)
                 .ifPresent(attendant -> {
                     throw new AlreadyExistsGameAttendException();

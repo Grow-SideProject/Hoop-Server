@@ -75,31 +75,5 @@ public class ProfileController {
         }
         return profileImagePath;
     }
-    @GetMapping("/play-styles")
-    public HashMap<String, String>  getPlayStyle(){
-        HashMap<String, String> response = new HashMap<String, String>();
-        for (PlayStyle playStyle : PlayStyle.values()) {
-            response.put(playStyle.name(), playStyle.getValue());
-        }
-        return response;
-    }
-
-    @GetMapping("/abilities")
-    public HashMap<String, String> getAbilities(){
-        HashMap<String, String> response = new HashMap<String, String>();
-        for (Ability ability : Ability.values()) {
-            response.put(ability.name(), ability.getValue());
-        }
-        return response;
-    }
-
-    @GetMapping("/levels")
-    public HashMap<String, String> getLevels(){
-        HashMap<String, String> response = new HashMap<String, String>();
-        for (Level level : Level.values()) {
-            response.put(level.name(), level.getValue());
-        }
-        return response;
-    }
 
 }

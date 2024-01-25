@@ -13,6 +13,6 @@ public class AlreadyExistsGameAttendException extends HoopException {
 
     @Override
     public Integer getStatusCode() {
-        return 400;
+        return 409;
     }
 }

@@ -46,14 +46,6 @@ public class GameController {
         return new DefaultResponse();
     }
 
-    @GetMapping("/catergories")
-    public HashMap<String, String> getCatergories(){
-        HashMap<String, String> response = new HashMap<String, String>();
-        for (GameCategory gameCategory : GameCategory.values()) {
-            response.put(gameCategory.name(), gameCategory.getValue());
-        }
-        return response;
-    }
 
     @GetMapping("/{gameId}")
     public GameDetailResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId) {

@@ -1,5 +1,6 @@
 package com.hoop.api.controller;
 
+import com.hoop.api.constant.*;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.user.SignUp;
@@ -12,13 +13,14 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/helloworld")
-public class HelloController {
+@RequestMapping("/test")
+public class TestController {
 
     private static final String HELLO = "helloworld-nice to meet you";
     private final AuthService authService;
@@ -79,5 +81,58 @@ public class HelloController {
 //                .accessTokenExpirationTime(jwtService.getAccessTokenExpiration())
 //                .refreshTokenExpirationTime(jwtService.getRefreshTokenExpiration())
                 .build();
+    }
+
+
+    /*
+    ** ENUM TEST
+     */
+    @GetMapping("/abilities")
+    public HashMap<String, String> getAbilities(){
+        HashMap<String, String> response = new HashMap<String, String>();
+        for (Ability ability : Ability.values()) {
+            response.put(ability.name(), ability.getValue());
+        }
+        return response;
+    }
+    @GetMapping("/attendant-status")
+    public HashMap<String, String> getAttendantStatus(){
+        HashMap<String, String> response = new HashMap<String, String>();
+        for (AttendantStatus attendantStatus : AttendantStatus.values()) {
+            response.put(attendantStatus.name(), attendantStatus.getValue());
+        }
+        return response;
+    }
+    @GetMapping("/catergories")
+    public HashMap<String, String> getCatergories(){
+        HashMap<String, String> response = new HashMap<String, String>();
+        for (GameCategory gameCategory : GameCategory.values()) {
+            response.put(gameCategory.name(), gameCategory.getValue());
+        }
+        return response;
+    }
+    @GetMapping("/genders")
+    public HashMap<String, String> getGenders(){
+        HashMap<String, String> response = new HashMap<String, String>();
+        for (Gender gender : Gender.values()) {
+            response.put(gender.name(), gender.getValue());
+        }
+        return response;
+    }
+    @GetMapping("/levels")
+    public HashMap<String, String> getLevels(){
+        HashMap<String, String> response = new HashMap<String, String>();
+        for (Level level : Level.values()) {
+            response.put(level.name(), level.getValue());
+        }
+        return response;
+    }
+    @GetMapping("/play-styles")
+    public HashMap<String, String> getPlayStyle(){
+        HashMap<String, String> response = new HashMap<String, String>();
+        for (PlayStyle playStyle : PlayStyle.values()) {
+            response.put(playStyle.name(), playStyle.getValue());
+        }
+        return response;
     }
 }

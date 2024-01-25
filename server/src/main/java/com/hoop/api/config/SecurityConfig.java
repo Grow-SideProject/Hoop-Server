@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/favicon.ico")
                 .requestMatchers("/error")
                 .requestMatchers("/image/**")
-                .requestMatchers("/helloworld/**")
+                .requestMatchers("/test/**")
                 .requestMatchers("/auth/**")
                 .requestMatchers(toH2Console());
     }
