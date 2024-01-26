@@ -7,8 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GameRepositoryCustom {
+
+    Optional<Game> getMyGameAfterNowAndIsOpened(Long userId);
     List<Game> getList(GameSearch gameSearch);
 
     OrderSpecifier[] createOrderSpecifier(GameSearch gameSearch);

@@ -4,7 +4,7 @@ import com.hoop.api.constant.*;
 import com.hoop.api.domain.User;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.user.SignUp;
-import com.hoop.api.response.TokenResponse;
+import com.hoop.api.response.user.TokenResponse;
 import com.hoop.api.service.user.AuthService;
 import com.hoop.api.service.user.JwtService;
 import lombok.Getter;

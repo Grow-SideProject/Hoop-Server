@@ -1,4 +1,4 @@
-package com.hoop.api.response;
+package com.hoop.api.response.user;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -2,7 +2,7 @@ package com.hoop.api.exception;
 
 public class AlreadyExistsUserException extends HoopException {
 
-    private static final String MESSAGE = "이미 게임에 참가 중입니다.";
+    private static final String MESSAGE = "이미 사용 중 입니다.";
 
     public AlreadyExistsUserException() {
         super(MESSAGE);

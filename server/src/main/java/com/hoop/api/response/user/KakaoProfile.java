@@ -1,4 +1,4 @@
-package com.hoop.api.response;
+package com.hoop.api.response.user;
 
 import lombok.*;
 
@@ -28,5 +28,3 @@ public class KakaoProfile {
         public String email;
     }
 }
-
-

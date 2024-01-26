@@ -1,4 +1,4 @@
-package com.hoop.api.response;
+package com.hoop.api.response.game;
 
 import com.hoop.api.constant.*;
 import com.hoop.api.domain.Attendant;
@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class AttendantResponse {
     private Long attendantId;
-    private Boolean isBallFlag;
     private Boolean isHost;
     private AttendantStatus status;
     private LocalDateTime createdAt;

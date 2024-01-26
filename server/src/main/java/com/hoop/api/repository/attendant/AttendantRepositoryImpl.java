@@ -1,23 +1,15 @@
-package com.hoop.api.repository.game;
+package com.hoop.api.repository.attendant;
 
 import com.hoop.api.constant.AttendantStatus;
-import com.hoop.api.constant.GameCategory;
-import com.hoop.api.constant.Gender;
-import com.hoop.api.constant.Level;
 import com.hoop.api.domain.Attendant;
-import com.hoop.api.domain.Game;
 import com.hoop.api.domain.QAttendant;
 import com.hoop.api.request.game.AttendantSearch;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import static com.hoop.api.domain.QAttendant.attendant;
-import static com.hoop.api.domain.QGame.game;
 
 
 @RequiredArgsConstructor

@@ -38,6 +38,7 @@ public class Game {
     //시간
     private LocalDateTime startTime;
     private Integer duration;
+
     private Integer maxAttend; // 최대 인원
     private Gender gender; // 성별
     private GameCategory gameCategory; // 게임 종류
@@ -61,27 +62,25 @@ public class Game {
     private List<Attendant> attendants;
 
     @Builder
-    public Game(String title, String content, Integer maxAttend, String courtName, Boolean isBallFlag,
+    public Game(String title, String content,String courtName, Integer maxAttend, Boolean isBallFlag,
+                GameCategory gameCategory,Gender gender, List<Level> levels,
                 String address, Double xLoc, Double yLoc,
-                LocalDateTime startTime, Integer duration,
-                GameCategory gameCategory,Gender gender, List<Level> levels) {
+                LocalDateTime startTime, Integer duration) {
         this.title = title;
         this.content = content;
         this.courtName = courtName;
         this.isBallFlag = isBallFlag;
+        this.maxAttend = maxAttend;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.gender = gender;
+        this.gameCategory = gameCategory;
+        this.levels = levels;
 
         // 주소
         this.address = address;
         this.xLoc = xLoc;
         this.yLoc = yLoc;
-
-        this.gameCategory = gameCategory;
-        this.startTime = startTime;
-        this.duration = duration;
-        this.gender = gender;
-
-        this.maxAttend = maxAttend;
-        this.levels = levels;
 
         //초기화
         this.createdAt = LocalDateTime.now();
@@ -96,6 +95,8 @@ public class Game {
         if (gameEdit.getTitle() != null) this.title = gameEdit.getTitle();
         if (gameEdit.getContent() != null) this.content = gameEdit.getContent();
         if (gameEdit.getCourtName() != null) this.courtName = gameEdit.getCourtName();
+        if (gameEdit.getIsBallFlag() != null) this.isBallFlag = gameEdit.getIsBallFlag();
+        if (gameEdit.getMaxAttend() != null) this.maxAttend = gameEdit.getMaxAttend();
         //주소
         if (gameEdit.getAddress() != null) this.address = gameEdit.getAddress();
         if (gameEdit.getXLoc() != null) this.xLoc = gameEdit.getXLoc();
@@ -104,8 +105,8 @@ public class Game {
         if (gameEdit.getGameCategory() != null) this.gameCategory = gameEdit.getGameCategory();
         if (gameEdit.getStartTime() != null) this.startTime = gameEdit.getStartTime();
         if (gameEdit.getDuration() != null) this.duration = gameEdit.getDuration();
-        if (gameEdit.getIsBallFlag() != null) this.isBallFlag = gameEdit.getIsBallFlag();
-        if (gameEdit.getMaxAttend() != null) this.maxAttend = gameEdit.getMaxAttend();
+
+
         if (gameEdit.getGender() != null) this.gender = gameEdit.getGender();
         if (gameEdit.getLevels() != null) this.levels = gameEdit.getLevels();
     }

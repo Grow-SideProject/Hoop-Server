@@ -1,24 +1,19 @@
-package com.hoop.api.controller.user;
+package com.hoop.api.controller;
 
 import com.hoop.api.config.UserPrincipal;
-import com.hoop.api.constant.Ability;
-import com.hoop.api.constant.Level;
-import com.hoop.api.constant.PlayStyle;
 import com.hoop.api.exception.FileNotFound;
-import com.hoop.api.request.user.FeedbackRequest;
-import com.hoop.api.request.user.PhoneRequest;
+import com.hoop.api.request.user.PhoneValidation;
 import com.hoop.api.request.user.ProfileEdit;
 import com.hoop.api.response.DefaultResponse;
-import com.hoop.api.response.ProfileResponse;
+import com.hoop.api.response.user.ProfileResponse;
 import com.hoop.api.service.ImageService;
 import com.hoop.api.service.user.ProfileService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.HashMap;
 
 
 @Slf4j
@@ -42,8 +37,8 @@ public class ProfileController {
         return new DefaultResponse();
     }
     @PostMapping("/phone")
-    public DefaultResponse verifyNumber(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody PhoneRequest phoneRequest) {
-        profileService.savePhoneNumber(userPrincipal.getUserId(), phoneRequest);
+    public DefaultResponse verifyNumber(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid PhoneValidation phoneValidation) {
+        profileService.savePhoneNumber(userPrincipal.getUserId(), phoneValidation);
         return new DefaultResponse();
     }
 
@@ -54,7 +49,7 @@ public class ProfileController {
     }
 
     @PostMapping()
-    public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileEdit request) {
+    public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid ProfileEdit request) {
         profileService.edit(userPrincipal.getUserId(), request);
         return new DefaultResponse();
     }

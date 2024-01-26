@@ -1,11 +1,10 @@
-package com.hoop.api.controller.game;
+package com.hoop.api.controller;
 
 
 import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.domain.Comment;
-import com.hoop.api.domain.Game;
 import com.hoop.api.request.game.*;
-import com.hoop.api.response.CommentResponse;
+import com.hoop.api.response.game.CommentResponse;
 import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.service.game.CommentService;
 import jakarta.validation.Valid;

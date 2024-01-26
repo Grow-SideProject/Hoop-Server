@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,9 +25,9 @@ public class GameEdit {
 
     private Long gameId;
 
+
     private String title; // 모집 공고명
     private String content; // 모집 내용
-
     private String courtName; //코트명
 
 

@@ -1,11 +1,8 @@
-package com.hoop.api.response;
+package com.hoop.api.response.game;
 
-import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
-import com.hoop.api.domain.Attendant;
-import com.hoop.api.domain.Comment;
 import com.hoop.api.domain.Game;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,6 +53,25 @@ public class GameDetailResponse {
     // 북마크 수
     private Boolean isBookmarked;
     private Integer bookmarkCount;
+
+    public GameDetailResponse(Game game){
+        this.id  = game.getId();
+        this.title =game.getTitle();
+        this.content = game.getContent();
+        this.courtName = game.getCourtName();
+        this.address = game.getAddress();
+        this.xLoc = game.getXLoc();
+        this.yLoc = game.getYLoc();
+        this.gameCategory = game.getGameCategory();
+        this.startTime = game.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.duration = game.getDuration();
+        this.gender = game.getGender();
+        this.maxAttend = game.getMaxAttend();
+        this.isBallFlag = game.getIsBallFlag();
+        this .createdAt = game.getCreatedAt();
+        this.levels = game.getLevels();
+        this.views = game.getViews();
+    }
 
 
     @Builder

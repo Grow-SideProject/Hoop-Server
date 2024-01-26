@@ -2,12 +2,9 @@ package com.hoop.api.service.game;
 import com.hoop.api.domain.Comment;
 import com.hoop.api.domain.Game;
 import com.hoop.api.domain.User;
-import com.hoop.api.exception.CommentLevelConfilct;
-import com.hoop.api.exception.CommentNotFound;
+import com.hoop.api.exception.*;
 
-import com.hoop.api.exception.UserNotFound;
-import com.hoop.api.exception.GameNotFound;
-import com.hoop.api.repository.game.CommentRepository;
+import com.hoop.api.repository.CommentRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.request.game.CommentCreate;
@@ -41,7 +38,7 @@ public class CommentService {
         Comment parent = null;
         if(request.getParentId() != null) {
             parent = commentRepository.findById(request.getParentId())
-                    .orElseThrow(CommentNotFound::new);
+                    .orElseThrow(CommunicationException.CommentNotFound::new);
             if (parent.getParent() != null) {
                 throw new CommentLevelConfilct();
             }
@@ -53,7 +50,8 @@ public class CommentService {
 
     public Comment edit(Long userId, CommentEdit request) {
         Comment comment = commentRepository.findById(request.getCommentId())
-                .orElseThrow(CommentNotFound::new);
+                .orElseThrow(CommunicationException.CommentNotFound::new);
+        if (!comment.getUser().getId().equals(userId)) throw new PermissionException();
         comment.setContent(request.getContent());
         return commentRepository.save(comment);
     }
@@ -61,7 +59,8 @@ public class CommentService {
     @Transactional
     public void delete(Long userId, CommentDelete request) {
         Comment comment = commentRepository.findById(request.getCommentId())
-                .orElseThrow(CommentNotFound::new);
+                .orElseThrow(CommunicationException.CommentNotFound::new);
+        if (!comment.getUser().getId().equals(userId)) throw new PermissionException();
         commentRepository.deleteByParentId(comment.getId());
         commentRepository.delete(comment);
     }

@@ -7,6 +7,7 @@ import com.hoop.api.constant.Level;
 import com.hoop.api.domain.Game;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
@@ -30,10 +31,15 @@ public class GameCreate {
 
     @NotBlank(message = "주소를 입력하세요.")
     private String address; // 코트 주소 (추후 분리 예정)
+
+
+    @NotNull(message = "좌표를 입력하세요.")
     private Double xLoc; // 코트 주소 (추후 분리 예정)
+    @NotNull(message = "좌표를 입력하세요.")
     private Double yLoc; // 코트 주소 (추후 분리 예정)
 
 
+    @NotNull(message = "게임 종류를 입력하세요.")
     private GameCategory gameCategory; // 게임 종류
 
     @NotBlank(message = "시작 시간을 입력하세요.")
@@ -45,10 +51,13 @@ public class GameCreate {
 
     private Boolean isBallFlag;
 
+    @NotNull(message = "성별을 입력하세요.")
     private Gender gender; // 성별
 
+    @Positive(message = "최대 인원은 양수여야 합니다.")
     private Integer maxAttend; // 최대 인원
 
+    @NotNull(message = "레벨을 입력하세요.")
     private List<Level> levels = new ArrayList<>();
 
     @Builder
@@ -69,8 +78,6 @@ public class GameCreate {
         this.maxAttend = maxAttend;
         this.gender = gender;
         this.levels = levels;
-
-
     }
 
     public Game toGame() {

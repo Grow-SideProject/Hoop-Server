@@ -1,14 +1,13 @@
-package com.hoop.api.controller.game;
+package com.hoop.api.controller;
 
 
 import com.hoop.api.config.UserPrincipal;
 
-import com.hoop.api.constant.GameCategory;
 import com.hoop.api.request.game.*;
-import com.hoop.api.response.AttendantResponse;
+import com.hoop.api.response.game.AttendantResponse;
 import com.hoop.api.response.DefaultResponse;
-import com.hoop.api.response.GameDetailResponse;
-import com.hoop.api.response.GameListResponse;
+import com.hoop.api.response.game.GameDetailResponse;
+import com.hoop.api.response.game.GameListResponse;
 import com.hoop.api.service.game.CommentService;
 import com.hoop.api.service.game.GameService;
 import jakarta.validation.Valid;
@@ -17,8 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -41,15 +38,14 @@ public class GameController {
     }
 
     @PatchMapping()
-    public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GameEdit gameEdit) {
+    public DefaultResponse edit(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid GameEdit gameEdit) {
         gameService.edit(userPrincipal.getUserId(), gameEdit);
         return new DefaultResponse();
     }
 
-
     @GetMapping("/{gameId}")
     public GameDetailResponse get(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId) {
-        return gameService.get(userPrincipal.getUserId(), gameId);
+        return gameService.getById(userPrincipal.getUserId(), gameId);
     }
 
     @GetMapping("/attend")

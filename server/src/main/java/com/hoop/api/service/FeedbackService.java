@@ -6,7 +6,7 @@ import com.hoop.api.domain.User;
 import com.hoop.api.exception.GameNotFound;
 import com.hoop.api.repository.FeedbackRepository;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.repository.game.AttendantRepository;
+import com.hoop.api.repository.attendant.AttendantRepository;
 import com.hoop.api.request.user.FeedbackRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

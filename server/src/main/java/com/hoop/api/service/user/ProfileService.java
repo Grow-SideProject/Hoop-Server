@@ -7,9 +7,9 @@ import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.ProfileException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.request.user.PhoneRequest;
+import com.hoop.api.request.user.PhoneValidation;
 import com.hoop.api.request.user.ProfileEdit;
-import com.hoop.api.response.ProfileResponse;
+import com.hoop.api.response.user.ProfileResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -109,10 +109,10 @@ public class ProfileService {
     }
 
     @Transactional
-    public void savePhoneNumber(Long userId, PhoneRequest phoneRequest) {
-        if (phoneRequest.getSmsNumber() == null) throw new ProfileException("인증번호가 잘못되었습니다");
+    public void savePhoneNumber(Long userId, PhoneValidation phoneValidation) {
+        if (phoneValidation.getSmsNumber() == null) throw new ProfileException("인증번호가 잘못되었습니다");
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
-        user.setPhoneNumber(phoneRequest.getPhoneNumber());
+        user.setPhoneNumber(phoneValidation.getPhoneNumber());
         userRepository.save(user);
     }
 

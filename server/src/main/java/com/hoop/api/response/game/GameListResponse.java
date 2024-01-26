@@ -1,4 +1,4 @@
-package com.hoop.api.response;
+package com.hoop.api.response.game;
 
 import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;

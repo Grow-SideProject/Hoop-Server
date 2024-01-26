@@ -16,4 +16,21 @@ public class CommunicationException extends HoopException {
     public Integer getStatusCode() {
         return 405;
     }
+
+    /**
+     * status -> 404
+     */
+    public static class CommentNotFound extends HoopException {
+
+        private static final String MESSAGE = "존재하지 않는 댓글입니다.";
+
+        public CommentNotFound() {
+            super(MESSAGE);
+        }
+
+        @Override
+        public Integer getStatusCode() {
+            return 404;
+        }
+    }
 }

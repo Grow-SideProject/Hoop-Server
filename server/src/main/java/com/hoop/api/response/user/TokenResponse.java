@@ -1,4 +1,4 @@
-package com.hoop.api.response;
+package com.hoop.api.response.user;
 
 import com.hoop.api.domain.Post;
 import lombok.Builder;

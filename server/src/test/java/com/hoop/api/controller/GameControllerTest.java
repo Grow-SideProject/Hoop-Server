@@ -5,7 +5,7 @@ import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.domain.Game;
 import com.hoop.api.domain.User;
-import com.hoop.api.repository.game.AttendantRepository;
+import com.hoop.api.repository.attendant.AttendantRepository;
 import com.hoop.api.repository.game.GameRepository;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.game.GameCreate;

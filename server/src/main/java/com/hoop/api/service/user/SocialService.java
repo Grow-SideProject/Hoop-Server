@@ -1,9 +1,9 @@
 package com.hoop.api.service.user;
 import com.google.gson.Gson;
 import com.hoop.api.repository.UserRepository;
-import com.hoop.api.response.KakaoProfile;
+import com.hoop.api.response.user.KakaoProfile;
 import com.hoop.api.exception.CommunicationException;
-import com.hoop.api.response.KakaoAuth;
+import com.hoop.api.response.user.KakaoAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;

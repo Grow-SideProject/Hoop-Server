@@ -5,6 +5,7 @@ import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
 import com.hoop.api.domain.Game;
+import jakarta.validation.constraints.Max;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -19,7 +20,8 @@ import static java.lang.Math.min;
 @NoArgsConstructor
 public class AttendantSearch {
 
-    private static final Integer MAX_SIZE = 2000;
+    private static final Integer MAX_SIZE = 100;
+
     private Integer page;
     private Integer size;
     private String orderBy = "createdAt";

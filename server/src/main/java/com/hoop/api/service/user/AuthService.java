@@ -5,13 +5,11 @@ import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.repository.UserRepository;
 import com.hoop.api.request.user.SignUp;
-import com.hoop.api.response.TokenResponse;
+import com.hoop.api.response.user.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

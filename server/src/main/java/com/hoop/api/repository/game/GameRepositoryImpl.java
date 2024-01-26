@@ -1,5 +1,6 @@
 package com.hoop.api.repository.game;
 
+import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
@@ -17,13 +18,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.hoop.api.domain.QGame.game;
 
+
+import static com.hoop.api.domain.QAttendant.attendant;
 @RequiredArgsConstructor
 public class GameRepositoryImpl implements GameRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+
+    @Override
+    public Optional<Game> getMyGameAfterNowAndIsOpened(Long userId) {
+        return Optional.ofNullable(jpaQueryFactory.select(attendant.game)
+                .from(attendant)
+                .where(
+                        attendant.user.id.eq(userId)
+                        ,attendant.status.eq(AttendantStatus.APPROVE).or(attendant.status.eq(AttendantStatus.DEFAULT))
+                )
+                .innerJoin(attendant.game, game)
+                .where(afterNow())
+                .fetchOne());
+    }
 
     @Override
     public List<Game> getList(GameSearch gameSearch) {
@@ -31,6 +49,7 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
         return jpaQueryFactory.selectFrom(game)
                 .where(
                         afterNow(),
+                        eqAttendantStatus(AttendantStatus.APPROVE),
                         inGameCategories(gameSearch.getGameCategories()),
                         eqGameGender(gameSearch.getGender()),
                         inGameLevels(gameSearch.getLevels()),
@@ -59,9 +78,12 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
         return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
     }
 
+    private BooleanExpression eqAttendantStatus(AttendantStatus attendantStatus) {
+        if (attendantStatus == null) return null;
+        return game.attendants.any().status.eq(attendantStatus);
+    }
 
     private BooleanBuilder inStartTimes(List<String> startTimes) {
-
         if (startTimes == null || startTimes.isEmpty()) {
             return null;
         }

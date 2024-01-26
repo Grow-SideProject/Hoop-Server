@@ -11,6 +11,6 @@ public class FileUploadException extends HoopException {
 
     @Override
     public Integer getStatusCode() {
-        return 404;
+        return 400;
     }
 }

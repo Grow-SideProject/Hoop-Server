@@ -2,10 +2,10 @@
 //
 //import com.hoop.api.domain.PostComment;
 //import com.hoop.api.domain.Post;
-//import com.hoop.api.exception.CommentNotFound;
+//import com.hoop.api.exception.CommunicationException.CommentNotFound;
 //import com.hoop.api.exception.InvalidPassword;
 //import com.hoop.api.exception.PostNotFound;
-//import com.hoop.api.repository.game.CommentRepository;
+//import com.hoop.api.repository.CommentRepository;
 //import com.hoop.api.repository.PostCommentRepository;
 //import com.hoop.api.repository.post.PostRepository;
 //import com.hoop.api.request.post.PostCommentCreate;

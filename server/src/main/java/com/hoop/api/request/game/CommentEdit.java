@@ -1,6 +1,7 @@
 package com.hoop.api.request.game;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,10 @@ import org.hibernate.validator.constraints.Length;
 @Data
 @NoArgsConstructor
 public class CommentEdit {
+    @NotNull(message = "댓글 아이디를 입력해주세요.")
     private Long commentId;
 
-    @Length(min = 10, max = 1000, message = "내용은 10~1000자까지 입력해주세요.")
+    @Length(max = 1000, message = "내용은 10~1000자까지 입력해주세요.")
     @NotBlank(message = "내용을 입력해주세요.")
     private String content;
 

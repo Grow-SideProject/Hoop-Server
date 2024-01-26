@@ -1,22 +1,19 @@
-package com.hoop.api.controller.user;
+package com.hoop.api.controller;
 
-import com.hoop.api.domain.User;
-import com.hoop.api.exception.AlreadyExistsUserException;
 import com.hoop.api.exception.CategoryNotFound;
-import com.hoop.api.exception.UserNotFound;
 import com.hoop.api.request.user.SignIn;
 import com.hoop.api.request.user.SignUp;
 import com.hoop.api.request.user.SocialSignUp;
 import com.hoop.api.request.user.TokenRequest;
-import com.hoop.api.response.TokenResponse;
+import com.hoop.api.response.user.TokenResponse;
 import com.hoop.api.service.user.AuthService;
 import com.hoop.api.service.user.JwtService;
 import com.hoop.api.service.user.SocialService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -39,7 +36,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup/social")
-    public TokenResponse signupBySocial(@RequestBody SocialSignUp socialSignUp) {
+    public TokenResponse signupBySocial(@RequestBody @Valid SocialSignUp socialSignUp) {
         //일단 카카오 로그인만 구현
         Long socialId;
         String category = socialSignUp.getCategory();
@@ -67,7 +64,7 @@ public class AuthController {
      * @return tokenResponse
      */
     @PostMapping(value = "/signin")
-    public TokenResponse signIn (@RequestBody SignIn signIn) {
+    public TokenResponse signIn (@RequestBody @Valid SignIn signIn) {
         String category = signIn.getCategory();
         Long socialId;
         switch (category) {
@@ -81,7 +78,7 @@ public class AuthController {
     }
 
     @PostMapping(value="/reissue")
-    private TokenResponse reissue(@RequestBody TokenRequest tokenRequest) {
+    private TokenResponse reissue(@RequestBody @Valid TokenRequest tokenRequest) {
         TokenResponse tokenResponse = jwtService.reissue(tokenRequest);
         return tokenResponse;
     }

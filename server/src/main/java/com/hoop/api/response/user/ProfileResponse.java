@@ -1,4 +1,4 @@
-package com.hoop.api.response;
+package com.hoop.api.response.user;
 
 import com.hoop.api.constant.Ability;
 import com.hoop.api.constant.Gender;

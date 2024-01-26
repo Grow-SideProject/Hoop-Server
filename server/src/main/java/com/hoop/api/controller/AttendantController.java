@@ -1,14 +1,12 @@
-package com.hoop.api.controller.game;
+package com.hoop.api.controller;
 
 
 import com.hoop.api.config.UserPrincipal;
-import com.hoop.api.request.game.*;
-import com.hoop.api.response.AttendantResponse;
+import com.hoop.api.response.game.AttendantResponse;
 import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.service.game.AttendantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,16 +20,7 @@ public class AttendantController {
 
     private final AttendantService attendantService;
 
-
-    @PostMapping()
-    public Page<AttendantResponse> getList(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody AttendantSearch attendantSearch) {
-        return attendantService.getList(userPrincipal.getUserId(),attendantSearch);
-    }
-    @GetMapping("/my-list")
-    public List<AttendantResponse> getListByUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return attendantService.getListByUser(userPrincipal.getUserId());
-    }
-    @GetMapping("/host")
+    @GetMapping()
     public List<AttendantResponse> getListByHost(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return attendantService.getListByHost(userPrincipal.getUserId());
     }
