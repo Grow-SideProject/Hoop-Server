@@ -89,14 +89,17 @@ public class GameService {
                 = game.getAttendants().stream().filter(attendant -> attendant.getStatus().equals(AttendantStatus.APPROVE))
                 .map(AttendantResponse::new).toList();
 
+
+        if (gameAttendantResponseList.size() < game.getMaxAttend()) {
+            // TODO : ISCLOSED
+        } else if (gameAttendantResponseList.isEmpty()) {
+            // TODO : ISCANCELED
+        }
         Long hostId = game.getAttendants().stream().filter(Attendant::getIsHost).findFirst()
                 .orElseThrow(GameNotFound::new)
                 .getUser().getId();
-
         // 댓글 Response 생성
         List<CommentResponse> commentResponseList = converseCommentResponse(userId, hostId, game.getComments());
-
-        // 이외 값 생성
         Boolean isHost = userId.equals(hostId);
         Boolean isBookmarked = game.getBookMarks().stream().anyMatch(bookMark -> bookMark.getUser().getId().equals(userId));
         Integer bookmarkCount = game.getBookMarks().size();
@@ -157,14 +160,16 @@ public class GameService {
                 .orElseThrow(GameNotFound::new);
         if (gameAttendant.getStatus().equals(AttendantStatus.EXIT)) throw new AttendantStatusException();
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
+        boolean ishostChanged = false;
         for (Attendant attendant : game.getAttendants()) {
             if (!attendant.getIsHost() && attendant.getStatus().equals(AttendantStatus.APPROVE) ) {
+                ishostChanged = true;
                 attendant.setHost(true);
                 attendantRepository.save(attendant);
                 break;
             }
         }
-        gameAttendant.setHost(false);
+        if (ishostChanged) gameAttendant.setHost(false); // 호스트 변경에 성공했으면 기존 호스트를 false로 변경
         gameAttendant.setAttend(AttendantStatus.EXIT);
         attendantRepository.save(gameAttendant);
         return new AttendantResponse(gameAttendant);
