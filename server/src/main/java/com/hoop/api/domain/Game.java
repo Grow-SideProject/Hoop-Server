@@ -50,8 +50,8 @@ public class Game {
     //조회수
     private Integer views;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
-    private List<BookMark> bookMarks;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+//    private List<BookMark> bookMarks;
 
     //댓글
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
@@ -87,7 +87,7 @@ public class Game {
         this.comments = new ArrayList<>();
         this.attendants = new ArrayList<>();
         this.views = 0;
-        this.bookMarks = new ArrayList<>();
+//        this.bookMarks = new ArrayList<>();
     }
 
     public void GameEdit(GameEdit gameEdit) {

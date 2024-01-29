@@ -101,14 +101,18 @@ public class GameService {
         // 댓글 Response 생성
         List<CommentResponse> commentResponseList = converseCommentResponse(userId, hostId, game.getComments());
         Boolean isHost = userId.equals(hostId);
-        Boolean isBookmarked = game.getBookMarks().stream().anyMatch(bookMark -> bookMark.getUser().getId().equals(userId));
-        Integer bookmarkCount = game.getBookMarks().size();
         gameDetailResponse.setGameAttendantResponseList(gameAttendantResponseList);
         gameDetailResponse.setCommentResponseList(commentResponseList);
         gameDetailResponse.setIsHost(isHost);
+        /*
+        // BookMark 기능 임시 주석 처리
+        Boolean isBookmarked = game.getBookMarks().stream().anyMatch(bookMark -> bookMark.getUser().getId().equals(userId));
+        Integer bookmarkCount = game.getBookMarks().size();
         gameDetailResponse.setIsBookmarked(isBookmarked);
         gameDetailResponse.setBookmarkCount(bookmarkCount);
+        */
         return gameDetailResponse;
+
     }
 
     private List<CommentResponse> converseCommentResponse(Long userId, Long hostId, List<Comment> comments){

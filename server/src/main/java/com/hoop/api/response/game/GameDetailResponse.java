@@ -51,8 +51,8 @@ public class GameDetailResponse {
     private Integer views;
 
     // 북마크 수
-    private Boolean isBookmarked;
-    private Integer bookmarkCount;
+//    private Boolean isBookmarked;
+//    private Integer bookmarkCount;
 
     public GameDetailResponse(Game game){
         this.id  = game.getId();
@@ -105,8 +105,8 @@ public class GameDetailResponse {
 
         this.isHost = isHost;
         this.views = views;
-        this.isBookmarked = isBookmarked;
-        this.bookmarkCount = bookmarkCount;
+//        this.isBookmarked = isBookmarked;
+//        this.bookmarkCount = bookmarkCount;
     }
 
 
