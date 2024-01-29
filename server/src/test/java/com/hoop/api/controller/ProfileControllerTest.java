@@ -132,10 +132,12 @@ class ProfileControllerTest {
                 .andDo(print());
 
         ProfileEdit profileEdit = ProfileEdit.builder()
+                .nickName("닉네임이요")
+                .phoneNumber("010-1234-5678")
                 .gender(Gender.FEMALE)
-                .address("은평구")
-                .desc("매우 강한 타입")
-                .playStyle(PlayStyle.BALANCE)
+                .address("마포구")
+                .desc("강한 타입")
+                .playStyle(PlayStyle.DEFENSIVE)
                 .build();
 
         // expected
@@ -145,6 +147,8 @@ class ProfileControllerTest {
                         .content(objectMapper.writeValueAsString(profileEdit)))
                 .andExpect(status().isOk())
                 .andDo(print());
+        User user = userRepository.findByNickName("닉네임이요").get();
+        assertEquals(Gender.FEMALE, user.getGender());
     }
 
 
