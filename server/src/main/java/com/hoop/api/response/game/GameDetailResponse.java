@@ -1,5 +1,6 @@
 package com.hoop.api.response.game;
 
+import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
@@ -46,6 +47,7 @@ public class GameDetailResponse {
 
     // 내가 host인지
     private Boolean isHost;
+    private AttendantStatus attendantStatus;
 
     // 좋아요 수
     private Integer views;
@@ -80,7 +82,7 @@ public class GameDetailResponse {
                               LocalDateTime startTime, Integer duration,
                               GameCategory gameCategory, Gender gender,  List<Level> levels,
                               List<AttendantResponse> attendants, List<CommentResponse> comments,
-                              Boolean isHost, Integer views, Boolean isBookmarked, Integer bookmarkCount) {
+                              Boolean isHost, AttendantStatus attendantStatus, Integer views, Boolean isBookmarked, Integer bookmarkCount) {
 
         this.id = id;
         this.title = title;
@@ -104,6 +106,7 @@ public class GameDetailResponse {
 
 
         this.isHost = isHost;
+        this.attendantStatus = attendantStatus;
         this.views = views;
 //        this.isBookmarked = isBookmarked;
 //        this.bookmarkCount = bookmarkCount;

@@ -1,5 +1,6 @@
 package com.hoop.api.service.game;
 
+import com.hoop.api.config.UserPrincipal;
 import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.domain.Attendant;
 import com.hoop.api.domain.Comment;
@@ -22,10 +23,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,7 +44,7 @@ public class GameService {
     @Transactional
     public void create(Long userId, GameCreate gameCreate) {
         gameRepository.getMyGameAfterNowAndIsOpened(userId).ifPresent(dup -> {
-            throw new AlreadyExistsGameAttendException();
+            if(dup.getStatus().equals(AttendantStatus.APPROVE)) throw new AlreadyExistsGameAttendException();
         });
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameCreate.toGame();
@@ -89,21 +93,14 @@ public class GameService {
                 = game.getAttendants().stream().filter(attendant -> attendant.getStatus().equals(AttendantStatus.APPROVE))
                 .map(AttendantResponse::new).toList();
 
-
-        if (gameAttendantResponseList.size() < game.getMaxAttend()) {
-            // TODO : ISCLOSED
-        } else if (gameAttendantResponseList.isEmpty()) {
-            // TODO : ISCANCELED
-        }
         Long hostId = game.getAttendants().stream().filter(Attendant::getIsHost).findFirst()
                 .orElseThrow(GameNotFound::new)
                 .getUser().getId();
         // 댓글 Response 생성
         List<CommentResponse> commentResponseList = converseCommentResponse(userId, hostId, game.getComments());
-        Boolean isHost = userId.equals(hostId);
         gameDetailResponse.setGameAttendantResponseList(gameAttendantResponseList);
         gameDetailResponse.setCommentResponseList(commentResponseList);
-        gameDetailResponse.setIsHost(isHost);
+        gameDetailResponse.setIsHost(userId.equals(hostId));
         /*
         // BookMark 기능 임시 주석 처리
         Boolean isBookmarked = game.getBookMarks().stream().anyMatch(bookMark -> bookMark.getUser().getId().equals(userId));
@@ -111,6 +108,13 @@ public class GameService {
         gameDetailResponse.setIsBookmarked(isBookmarked);
         gameDetailResponse.setBookmarkCount(bookmarkCount);
         */
+        Attendant isAttend = game.getAttendants().stream().filter(attendant -> attendant.getUser().getId().equals(userId))
+                .findFirst().orElse(null);
+        if (isAttend != null) {
+            gameDetailResponse.setAttendantStatus(isAttend.getStatus());
+        } else {
+            gameDetailResponse.setAttendantStatus(AttendantStatus.ETC);
+        }
         return gameDetailResponse;
 
     }
@@ -137,7 +141,7 @@ public class GameService {
     public AttendantResponse attendGame(Long userId, Long gameId) {
         // 중복참여시 예외처리
         gameRepository.getMyGameAfterNowAndIsOpened(userId).ifPresent(dup -> {
-            throw new AlreadyExistsGameAttendException();
+            if(dup.getStatus().equals(AttendantStatus.APPROVE)) throw new AlreadyExistsGameAttendException();
         });
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFound::new);
@@ -179,5 +183,30 @@ public class GameService {
         return new AttendantResponse(gameAttendant);
     }
 
+    public void delete(Long userId, Long gameId) {
+        gameRepository.deleteById(gameId);
+    }
+
+
+    public GameDetailResponse getMyGame(Long userId) {
+        Optional<Attendant> gameAttendant = gameRepository.getMyGameAfterNowAndIsOpened(userId);
+        if (gameAttendant.isEmpty()) throw new GameNotFound();
+        else {
+            Game game = gameAttendant.get().getGame();
+            GameDetailResponse gameDetailResponse = new GameDetailResponse(game);
+            gameDetailResponse.setAttendantStatus(gameAttendant.get().getStatus());
+            List<AttendantResponse> gameAttendantResponseList
+                    = game.getAttendants().stream().filter(attendant -> attendant.getStatus().equals(AttendantStatus.APPROVE))
+                    .map(AttendantResponse::new).toList();
+            Long hostId = game.getAttendants().stream().filter(Attendant::getIsHost).findFirst()
+                    .orElseThrow(GameNotFound::new)
+                    .getUser().getId();
+            List<CommentResponse> commentResponseList = converseCommentResponse(userId, hostId, game.getComments());
+            gameDetailResponse.setGameAttendantResponseList(gameAttendantResponseList);
+            gameDetailResponse.setCommentResponseList(commentResponseList);
+            gameDetailResponse.setIsHost(userId.equals(hostId));
+            return gameDetailResponse;
+        }
+    }
 
 }

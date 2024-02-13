@@ -4,6 +4,7 @@ import com.hoop.api.constant.AttendantStatus;
 import com.hoop.api.constant.GameCategory;
 import com.hoop.api.constant.Gender;
 import com.hoop.api.constant.Level;
+import com.hoop.api.domain.Attendant;
 import com.hoop.api.domain.Game;
 import com.hoop.api.request.game.GameSearch;
 import com.querydsl.core.BooleanBuilder;
@@ -31,12 +32,11 @@ public class GameRepositoryImpl implements GameRepositoryCustom {
 
 
     @Override
-    public Optional<Game> getMyGameAfterNowAndIsOpened(Long userId) {
-        return Optional.ofNullable(jpaQueryFactory.select(attendant.game)
+    public Optional<Attendant> getMyGameAfterNowAndIsOpened(Long userId) {
+        return Optional.ofNullable(jpaQueryFactory.select(attendant)
                 .from(attendant)
                 .where(
                         attendant.user.id.eq(userId)
-                        ,attendant.status.eq(AttendantStatus.APPROVE).or(attendant.status.eq(AttendantStatus.DEFAULT))
                 )
                 .innerJoin(attendant.game, game)
                 .where(afterNow())

@@ -39,4 +39,7 @@ public class AttendantController {
         attendantService.removeGameAttend(userPrincipal.getUserId(), attendantId);
         return new DefaultResponse();
     }
+
+
+
 }

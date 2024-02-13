@@ -8,7 +8,6 @@ import com.hoop.api.response.game.AttendantResponse;
 import com.hoop.api.response.DefaultResponse;
 import com.hoop.api.response.game.GameDetailResponse;
 import com.hoop.api.response.game.GameListResponse;
-import com.hoop.api.service.game.CommentService;
 import com.hoop.api.service.game.GameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 public class GameController {
 
     private final GameService gameService;
-    private final CommentService commentService;
 
     @PostMapping("/list")
     public Page<GameListResponse> getList(@RequestBody GameSearch gameSearch) {
@@ -56,5 +54,15 @@ public class GameController {
     @GetMapping("/exit")
     public AttendantResponse exitGame(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam Long gameId) {
         return gameService.exitGame(userPrincipal.getUserId(), gameId);
+    }
+
+    @DeleteMapping("/{gameId}")
+    public void delete(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long gameId) {
+        gameService.delete(userPrincipal.getUserId(), gameId);
+    }
+
+    @GetMapping("/my-game")
+    public GameDetailResponse getMyGame(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return gameService.getMyGame(userPrincipal.getUserId());
     }
 }

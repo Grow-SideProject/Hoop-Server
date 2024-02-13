@@ -83,7 +83,28 @@ public class TestController {
                 .build();
     }
 
-
+    @GetMapping("/temp-auth2")
+    public @ResponseBody TokenResponse signupBySocial2() {
+        //일단 카카오 로그인만 구현
+        Long id = 99998L;
+        String accessToken = jwtService.createAccessToken(Long.toString(id));
+        String refreshToken = jwtService.createRefreshToken(Long.toString(id));
+        Optional<User> user =userRepository.findBySocialId(id);
+        if (user.isEmpty())  authService.signup(SignUp.builder()
+                .email(Long.toString(id))
+                .password(Long.toString(id))
+                .socialId(id)
+                .build());
+        User user2 =user.get();
+        user2.setRefreshToken(refreshToken);
+        userRepository.save(user2);
+        return TokenResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+//                .accessTokenExpirationTime(jwtService.getAccessTokenExpiration())
+//                .refreshTokenExpirationTime(jwtService.getRefreshTokenExpiration())
+                .build();
+    }
     /*
     ** ENUM TEST
      */
