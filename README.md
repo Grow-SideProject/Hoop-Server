@@ -4,7 +4,7 @@
 ## 프로젝트 설명
 - 농구를 하고 싶어도 같이할 인원이 충분하지 못해 하지못하는 사람들은 위한 토이 프로젝트
 
-1. 개발 환경
+## 1. 개발 환경
    
 Front-End/App : iOS
 
@@ -18,8 +18,7 @@ CICD : Jenkins
 
 티켓 : Jira
 
-
-3. 구현 내용
+## 2. 구현 페이지
 - 회원가입
 <img src="https://github.com/user-attachments/assets/79a05c61-3936-4d5a-b087-cd854681632e"  alt="image" height="400"/>
 <img src="https://github.com/user-attachments/assets/a50ecadc-3e56-4f37-8d4e-975b75b92175"  alt="image" height="400"/>
