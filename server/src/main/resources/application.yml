@@ -32,7 +32,7 @@ spring:
   base-url: http://localhost:8080
   social:
     kakao:
-      client_id: c821057d14c2438354f518b12064a435
+      client_id: kakaoSample
       redirect: http://localhost:8080/auth/kakao?
       url:
         login: https://kauth.kakao.com/oauth/authorize
@@ -45,4 +45,4 @@ spring:
       location: c:\\temp\\upload
 
 hoop:
-  jwt-key: "rTPmA9Sgk+Q1XwuJbG7E6xFFUhQpdi+al5iyPnRTK/Q="
+  jwt-key: jwtkeySample
