@@ -6,14 +6,19 @@
 
 1. 개발 환경
 Front-End/App : iOS
+
 BackEnd : Spring boot 3
+
 배포 : AWS EC2
+
 CICD : Jenkins
+
 디자인 : Figma
+
 티켓 : Jira
 
 
-2. 구현 내용
+3. 구현 내용
 - 회원가입
 <img src="https://github.com/user-attachments/assets/79a05c61-3936-4d5a-b087-cd854681632e"  alt="image" height="400"/>
 <img src="https://github.com/user-attachments/assets/a50ecadc-3e56-4f37-8d4e-975b75b92175"  alt="image" height="400"/>
