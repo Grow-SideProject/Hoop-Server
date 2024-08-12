@@ -16,6 +16,8 @@ CICD : Jenkins
 2. 구현 내용
 - 회원가입
 <img src="https://github.com/user-attachments/assets/79a05c61-3936-4d5a-b087-cd854681632e"  alt="image" height="400"/>
+<img src="https://github.com/user-attachments/assets/1497ec71-82c6-45d5-aeb3-410526127b10"  alt="image" height="400"/>
+
 
   
 - 프로필
