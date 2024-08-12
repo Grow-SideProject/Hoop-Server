@@ -15,10 +15,10 @@ CICD : Jenkins
 
 2. 구현 내용
 - 회원가입
-![image](https://github.com/user-attachments/assets/c284cda7-3adb-4a93-845d-af9c30454fcf)
+<img src="https://github.com/user-attachments/assets/79a05c61-3936-4d5a-b087-cd854681632e" alt="image" width="400"/>
+
   
 - 프로필
-![image](https://github.com/user-attachments/assets/0fbd5199-5c70-44e9-87eb-5f869a6e3df4)
 
 - 매칭 기능
-![image](https://github.com/user-attachments/assets/bba99dd3-dd0b-4ce8-9f20-a1a4952e764f)
+
