@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/f600ba7b-67cf-4bb8-866a-e230477ed8bc)### Hoop-Server
+### Hoop-Server
 
 # 📖 같이 농구할 사람을 구하는 앱
 ## 프로젝트 설명
