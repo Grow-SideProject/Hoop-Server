@@ -18,7 +18,10 @@ CICD : Jenkins
 
 티켓 : Jira
 
-## 2. 구현 페이지
+## 2. 사용 기술
+- SpringBoot3, Spring Security
+
+## 3. 구현 페이지
 - 회원가입
 <img src="https://github.com/user-attachments/assets/79a05c61-3936-4d5a-b087-cd854681632e"  alt="image" height="400"/>
 <img src="https://github.com/user-attachments/assets/a50ecadc-3e56-4f37-8d4e-975b75b92175"  alt="image" height="400"/>
